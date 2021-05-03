@@ -1,0 +1,51 @@
+/*
+ * Copyright (c) 2021 Callender-Consulting, LLC
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+#if 1
+
+&spi1 {
+    status = "okay";
+    compatible = "nordic,nrf-spi";
+    status = "okay";
+    sck-pin  = <47>;  // p1.15
+    miso-pin = <46>;  // p1.14
+    mosi-pin = <45>;  // p1.13
+    cs-gpios = <&arduino_header 16 GPIO_ACTIVE_LOW>; /* D10 */
+
+    dwm3000@0 {
+        compatible = "qorvo,dwm3000";
+        label = "DWS3000";
+        spi-max-frequency = <1000000>;
+        reg = <0>;
+        dwm-wakeup-gpios = <&arduino_header 15 GPIO_ACTIVE_LOW>; /* D9 */
+        dwm-irq-gpios    = <&arduino_header 14 GPIO_ACTIVE_LOW>; /* D8 */
+        dwm-reset-gpios  = <&arduino_header 13 GPIO_ACTIVE_LOW>; /* D7 */
+        dwm-rx-led-gpios = <&arduino_header 10 GPIO_ACTIVE_LOW>; /* D4 */
+        dwm-tx-led-gpios = <&arduino_header  9 GPIO_ACTIVE_LOW>; /* D3 */
+        //dwm-tx-led-gpios = <&gpio1 4 0>; /* P1.04 */
+    };
+};
+
+#else
+
+&arduino_spi {
+    status = "okay";
+    cs-gpios = <&arduino_header 16 GPIO_ACTIVE_LOW>; /* D10 */
+
+    dwm3000@0 {
+        compatible = "qorvo,dwm3000";
+        label = "DWS3000";
+        spi-max-frequency = <1000000>;
+        reg = <0>;
+        dwm-wakeup-gpios = <&arduino_header 15 GPIO_ACTIVE_LOW>; /* D9 */
+        dwm-irq-gpios    = <&arduino_header 14 GPIO_ACTIVE_LOW>; /* D8 */
+        dwm-reset-gpios  = <&arduino_header 13 GPIO_ACTIVE_LOW>; /* D7 */
+        dwm-rx-led-gpios = <&arduino_header 10 GPIO_ACTIVE_LOW>; /* D4 */
+        dwm-tx-led-gpios = <&arduino_header  9 GPIO_ACTIVE_LOW>; /* D3 */
+    };
+};
+
+#endif

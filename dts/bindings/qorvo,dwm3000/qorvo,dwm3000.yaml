@@ -1,0 +1,46 @@
+# Copyright (c) 2021, Callender-Consulting, LLC.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+description: Qorvo DWM3000 controller on SPI bus
+
+compatible: "qorvo,dwm3000"
+
+include: spi-device.yaml
+
+properties:
+
+    dwm-wakeup-gpios:
+      type: phandle-array
+      required: true
+      description: WAKEUP pin.
+
+        The WAKEUP pin is active low.
+
+    dwm-irq-gpios:
+      type: phandle-array
+      required: true
+      description: IRQ pin.
+
+        The IRQ pin is active low.
+
+    dwm-reset-gpios:
+      type: phandle-array
+      required: true
+      description: RESET pin.
+
+        The RESET pin is active low.
+
+    dwm-rx-led-gpios:
+      type: phandle-array
+      required: true
+      description: RX-LED pin.
+
+        The RX LED pin is active low.
+
+    dwm-tx-led-gpios:
+      type: phandle-array
+      required: true
+      description: TX-LED pin.
+
+        The TX LED pin is active low.
