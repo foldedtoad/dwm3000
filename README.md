@@ -125,6 +125,7 @@ Using the first project (./examples/ex_00a_reading_dev_id) as a build example, d
 > cd build
 > make
 ```
+**NOTE:** If you want to change the target board to something other than the nRF52840, then edit the individual example's CMakeLists.txt and change the `set(BOARD nrf52840dk_nrf52840)` option to your target board.
 
 #### Flashing
 There are two ways to flash one of the example project's firmware onto a PCA10056 board.
@@ -136,11 +137,13 @@ GDB may also be use with the PCA10056 on-board JLink support in conjunction with
 
 ### Console Messages (JLink RTT Console)
 If you are using Ozone for debugging, the RTT console support is built into the debugger: just select `terminal` under the View menu. 
-See the screenshot showing this within Ozone.oz
+Below is a screenshot of Ozone staging the ex_00a_reading_dev_id example. 
+![screenshot](https://github.com/foldedtoad/dwm3000/blob/master/docs/ozone_debugger.png)
 
 If you are developing on a Linux or MacOS system and have installled the JLink package, then you can use the `rtt.sh` script (in the root directory) to start console instance.  Something like the `rtt.sh` script may be possible on Windows, but it has not be tried.  Be sure to follow the directions displayed when `rtt.sh` starts: `h`, `r`, `g` in the JLinkExe shell.
 
 For the above build example of ex_00a_reading_dev_id, if you have RTT message support and started, then you should see the following
+[screenshot2](https://github.com/foldedtoad/dwm3000/blob/master/docs/rtt_console.png)
 
 ```
 *** Booting Zephyr OS build zephyr-v2.5.0-1675-gd6567ad494a0  ***
