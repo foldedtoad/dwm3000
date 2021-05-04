@@ -7,7 +7,7 @@ This project contains firmware examples for the Decawave DWM3000-series Ultra Wi
 ### Terminology
 * "Decawave" means "Qorvo/Decwave".   Decawave was recently acquiered by Qorvo.
 * "DWS3000" is the Qorvo/Decawave DevKit which implements a DWM3000-series module on an Arduino form-factor board. 
-* "PCA10056" means "Nordic nRF52840DK board". The PCA10056 is part of DevKit for the Nordic nRF52840 SoC product. The PCA10056 board form-factor is compliant with the Arduino form-factor layout, thus allowing the DWS3000 shield plugged on top of the PCA10056 board.
+* "PCA10056" means "Nordic nRF52840DK board". The PCA10056 board is part of DevKit for the Nordic nRF52840 SoC product. The PCA10056 board form-factor is compliant with the Arduino form-factor layout, thus allowing the DWS3000 shield plugged on top of the PCA10056 board.
 
 ### Assumptions 
 * This project assumes some familiarity with the Zephyr RTOS.  
@@ -21,7 +21,7 @@ The major changes from the original Decawave project are:
 * Port SPI-bus access and GPIO access.
 * Most of the porting effort entailed changes to the "platform" directory modules.
 
-* The original code had comment lines which extended well past 80 columns.  This is very inconvienent for development within VMs on laptops where screen real-estate limited. So the code was reformatted to 80-column max lines.  It's just easier to read and understand: that is the point of examples, right?!
+* The original code had comment lines which extended well past 80 columns.  This is inconvienent for development within VMs on laptops where screen real-estate limited. So the code was reformatted to 80-column max lines.  It's just easier to read and understand: that is the point of examples, right?!
 
 ## Getting Started
 
@@ -40,17 +40,17 @@ You wil need two boards:
 
 The conbination of PCA10056 board + DWS3000 shield will be the standard/default platform thoughout this document.
 
-While other Zephyr-supported boards might be used, they have not been tested. Only Zephyr API calls have been used, so code >>should<< be portable.
+While other Zephyr-supported boards might be used, they have not been tested. Only Zephyr API calls have been used, so the code is intended to be portable to other boards.
 
-A `micro-USB` cable will also be needed. This USB cable will allow both debugging and flashing of firmware onto the PCA10056 board. Use of Segger's Ozone is recommended, but not required.
+A `micro-USB` cable will also be needed to connect the PCA10056 to your build system. This USB cable will allow both debugging and flashing of firmware onto the PCA10056 board. Use of Segger's Ozone is recommended, but not required.
 
 Many of the examples will require two or more PCA10056+DWS3000 setups, such as the micro-location examples.
 
-**WARNING:** You will need to trim the PCA10056 board's P20 connector pins, as they extend too far upwards and will contact pads on the bottom of the DWS3000 shield, causing electical problems.
+**WARNING:** You will need to trim the pins on the PCA10056 board's P20 connector, as they extend too far upwards and will contact pads on the bottom of the DWS3000 shield, causing electical problems.
 
 **NOTE:** Because the PCA10056 board incorporates a Segger JLink debugger (on-board), it is highly recommended to install the Segger JLink package on your development system: it's free, and provides support for gdb, pyocd, and Ozone (Segger's debugger).  
 
-**NOTE:** The PCA10056 board incorporates JLink software includes RTT-console support, which is used as a logging console.  This eliminates the need to configure and run a seperated UART-based console when developing. An easy-to-use shell command (rtt.sh) included, can be use to display console output.
+**NOTE:** The PCA10056 board incorporates JLink software includes RTT-console support, which is used as a logging console.  This eliminates the need to configure and run a seperated UART-based console when developing. An easy-to-use shell command (rtt.sh, see below) included, can be use to display console output.
 
 ### DWS3000 Board/Shield Support
 
@@ -88,86 +88,73 @@ set(SHIELD qorvo_dwm3000)
 * Install Zephyr (V2.5) on your build system.
 * Install Segger JLink (latest) on your build system.
 * (Optional) Install Segger Ozone (latest) on your build system.
-* (Optional) Install the Nordic [nrfjprog](https://www.nordicsemi.com/Software-and-tools/Development-Tools/nRF-Command-Line-Tools/Download) utility.
+* (Optional) Install the Nordic [nrfjprog](https://www.nordicsemi.com/Software-and-tools/Development-Tools/nRF-Command-Line-Tools/Download) utility. After installing, make sure that your system PATH contains the path to where it is installed.
 
 **NOTE:** For MacOS build systems, you may need to install the ARM toolchain. The Zephyr install instructions can guide you though this process.
 
-#### Building
+#### Establishing the Build Environment
+
+Before firmware made, you must establish the Zephyr build environment.  In this readme, it is assumed `~/zephyr` is the root directory for Zephyr: make the appropiate changes if your Zephyr root path is different.
+```
+> cd ~/zephyr/zephyrproject/zephyr
+> source zephyr-env.sh
+```
+**NOTE** These projects was developed using only `cmake`, not `west` or `ninja`, but you should be able to use them if you prefer.  
+The build examples which follow will use `cmake`.
+
+#### Build All Examples
+To build all this examples at one time, use the `./examples/build_all.sh` shell script. This will build all the projects and put the `*.hex` file for each project into the `./examples/bin` directory.  You can then install this hex files individually with the `examples/install_hex.sh` shell script.
+
+#### Build Individual Examples
 Follow the instructions from Zephyr [here](https://docs.zephyrproject.org/latest/getting_started/index.html#set-up-a-development-system).
 
-**NOTE:** The toolchain is now provided in the latest version of Zephyr, so you will not need to install or build them yourself.
+**NOTE:** For Ubuntu, the ARM toolchain is provided in the version of Zephyr, so you will not need to install or build them yourself.
 This provides build-consistency across Zephyr projects.
 
-This project was developed using only `cmake`, not `west` or `ninja`, but you should be able to use them if you prefer.
+
+Next, navigate to the location where you've cloned the dwm3000 root directory, and then to the examples directory.
+```
+> cd ~/zephyr/dwm3000
+> cd examples
+```
+Using the first project (./examples/ex_00a_reading_dev_id) as a build example, do the following.
+
+```
+> cd ex_00a_reading_dev_id
+> ./configure.sh
+> cd build
+> make
+```
 
 #### Flashing
 There are two ways to flash one of the example project's firmware onto a PCA10056 board.
 * Use the debugger (gdb, Ozone, etc) to flash.
 * Use the Nordic-provided `nrfjprog` utility.
 
-In order to flash the boards with `nrfjprog` you will need to install `nrfjprog`. This tool is also available on all 3 main OS's. You can find it [here](https://www.nordicsemi.com/Software-and-Tools/Development-Tools/nRF5-Command-Line-Tools). After installing, make sure that your system PATH contains the path to where it is installed.
-
-After installing `nrfjprog`, quickest way is probably using `make flash`. 
-But note, this does not allow you to see the console messages.
-If you are developing a new project or modifying an existig project, the you will probably be using an debugger with some form of graphical interface. 
-
-### Zephyr Environment Variables
-Now change your active directory:
-```
-    cd zephyr
-```
-
-Now source the script zephyr-env.sh (linux & macOS) or run zephyr-env.cmd to make sure all the environment variables are set correctly.
-
-### Build Your First Application
-The github repository is the one that contains the specific DWM3000 example code.
-Download or clone [this](https://github.com/foldedtoad/dwm3000) repository to your local computer:
-```
-    git clone https://github.com/foldedtoad/dwm3000.git
-```
-
-Start building the real examples from the project.  
-NOTE: The procedure is identical for all examples.  
-
-We will proceed with building the first simple example: `./examples/ex_01a_simple_tx/`.
-```
-    cd examples/ex_01a_simple_tx
-```
-Configure the build system with `cmake` as follows:
-```
-    cmake -B build -DBOARD=nrf52840dk-nrf52840 .
-```
-NOTE: You will need to re-do the above step whenever new "C"-type files are added to your project.  The Zephyr cmake support is good at detecting changes in existing files, but doesn't detect newly added files; thus the need to run the above again.
-
-NOTE: Sometimes you might get error messages from the above configuration procedure. If so, delete the whole build directory and try again; often there are residual files in an existing build directory which appear to collide with the new configuration definitions. 
-
-OPTIONAL: If you are developing on a Linux or OSX system, then you may use the script `configure.sh`, which does the same operation.
-
-And we actually build or firmware with `make`:
-```
-    cd build
-    make
-```
-
-### Flash
-Now let's flash the binary file that we just built onto the board. 
-Make sure you have nrfjprog properly installed and that it is in the system PATH.
-
-#### Program the binary file on the board:
-```
-make flash
-```
+The Segger debugger, `Ozone`, was used extensively during development, and is recommended.  
+GDB may also be use with the PCA10056 on-board JLink support in conjunction with OpenODB.
 
 ### Console Messages (JLink RTT Console)
-If you are developing on a Linux or OSX system and have installled the JLink package, then you can use the `rtt.sh` script (in the root directory) to start console instance.  Something like the `rtt.sh` script may be possible on Windows, but it has not be tried.  Be sure to follow the directions displayed when `rtt.sh` starts: `h`, `r`, `g` in the JLinkExe shell.
+If you are using Ozone for debugging, the RTT console support is built into the debugger: just select `terminal` under the View menu. 
+See the screenshot showing this within Ozone.oz
 
-If you have RTT message support and started, then you should see the following
+If you are developing on a Linux or MacOS system and have installled the JLink package, then you can use the `rtt.sh` script (in the root directory) to start console instance.  Something like the `rtt.sh` script may be possible on Windows, but it has not be tried.  Be sure to follow the directions displayed when `rtt.sh` starts: `h`, `r`, `g` in the JLinkExe shell.
+
+For the above build example of ex_00a_reading_dev_id, if you have RTT message support and started, then you should see the following
 
 ```
-***** Booting Zephyr OS build zehpher-V2.0.0-882-g89a984e64424 *****
-main_thread
-SIMPLE TX 13
-device_id: deca0130
+*** Booting Zephyr OS build zephyr-v2.5.0-1675-gd6567ad494a0  ***
+
+[00:00:12.476,837] <inf> main: main_thread
+[00:00:12.476,867] <inf> port: Configure WAKEUP pin
+[00:00:12.476,867] <inf> port: Configure RESET pin
+[00:00:12.476,867] <inf> port: Configure RX LED pin
+[00:00:12.476,898] <inf> port: Configure TX LED pin
+[00:00:12.476,898] <inf> deca_spi: openspi bus SPI_1
+[00:00:13.505,004] <inf> read_devid: READ DEV ID
+[00:00:13.505,035] <inf> port: reset_DWIC
+[00:00:13.509,368] <inf> deca_device: dev_id "deca0302"
+[00:00:13.509,368] <inf> read_devid: DEV ID OK
 ```
 
 ## Examples
