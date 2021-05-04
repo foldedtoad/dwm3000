@@ -25,12 +25,8 @@ The major changes from the original Decawave project are:
 
 * The original code had comment lines which extended well past 80 columns.  This is inconvienent for development within VMs on laptops where screen real-estate limited. So the code was reformatted to 80-column max lines.  It's just easier to read and understand: that is the point of examples, right?!
 
-## Getting Started
-
-## What's required?
-### OS
+### Supported Development OSes
 Linux, Mac or Windows
-
 
 This project was developed in a Ubuntu 18.04 (LTS) and MacOS (Big Sur), but there is no reason these changes should work with the other OSes.
 Windows OSes have not been part of the development process, but following Zephyr's instruction for Windows setup, it should not be a problem.
@@ -52,10 +48,9 @@ Many of the examples will require two or more PCA10056+DWS3000 setups, such as t
 
 **NOTE:** Because the PCA10056 board incorporates a Segger JLink debugger (on-board), it is highly recommended to install the Segger JLink package on your development system: it's free, and provides support for gdb, pyocd, and Ozone (Segger's debugger).  
 
-**NOTE:** The PCA10056 board incorporates JLink software includes RTT-console support, which is used as a logging console.  This eliminates the need to configure and run a seperated UART-based console when developing. An easy-to-use shell command (rtt.sh, see below) included, can be use to display console output.
+**NOTE:** The PCA10056 board incorporates JLink software includes RTT-console support, which is used as a logging console.  This eliminates the need to configure and run a seperated UART-based console when developing firmware. An easy-to-use shell command (rtt.sh, see below) included, can be use to display console output.
 
 ### DWS3000 Board/Shield Support
-
 Under this project's root directory, there is a the following file tree structure: 
 
 ```
@@ -96,7 +91,7 @@ set(SHIELD qorvo_dwm3000)
 
 #### Establishing the Build Environment
 
-Before firmware made, you must establish the Zephyr build environment.  In this readme, it is assumed `~/zephyr` is the root directory for Zephyr: make the appropiate changes if your Zephyr root path is different.
+Before the firmware can be built, you must establish the Zephyr-build environment.  In this document it is assumed that `~/zephyr` is the root directory for Zephyr: make the appropiate changes if your Zephyr root path is different.
 ```
 > cd ~/zephyr/zephyrproject/zephyr
 > source zephyr-env.sh
