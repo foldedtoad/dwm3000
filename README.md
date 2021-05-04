@@ -143,7 +143,7 @@ Below is a screenshot of Ozone staging the ex_00a_reading_dev_id example.
 If you are developing on a Linux or MacOS system and have installled the JLink package, then you can use the `rtt.sh` script (in the root directory) to start console instance.  Something like the `rtt.sh` script may be possible on Windows, but it has not be tried.  Be sure to follow the directions displayed when `rtt.sh` starts: `h`, `r`, `g` in the JLinkExe shell.
 
 For the above build example of ex_00a_reading_dev_id, if you have RTT message support and started, then you should see the following
-[screenshot2](https://github.com/foldedtoad/dwm3000/blob/master/docs/rtt_console.png)
+![screenshot2](https://github.com/foldedtoad/dwm3000/blob/master/docs/rtt_console.png)
 
 ```
 *** Booting Zephyr OS build zephyr-v2.5.0-1675-gd6567ad494a0  ***
