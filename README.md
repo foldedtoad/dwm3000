@@ -4,6 +4,8 @@
 
 This project contains firmware examples for the Decawave DWM3000-series Ultra Wideband (UWB) modules with Zephyr RTOS. It's a port of Qorvo/Decawave's SDK found on their website. 
 
+Since this Zephyr port generally follows the the Qorvo/Decawave [DWM3000 SDK](https://www.qorvo.com/products/p/DWS3000#documents) code, it is advised to review their SDK to get a general understanding of how the examples are intended to function. 
+
 ### Terminology
 * "Decawave" means "Qorvo/Decwave".   Decawave was recently acquiered by Qorvo.
 * "DWS3000" is the Qorvo/Decawave DevKit which implements a DWM3000-series module on an Arduino form-factor board. 
@@ -138,27 +140,14 @@ GDB may also be use with the PCA10056 on-board JLink support in conjunction with
 ### Console Messages (JLink RTT Console)
 If you are using Ozone for debugging, the RTT console support is built into the debugger: just select `terminal` under the View menu. 
 Below is a screenshot of Ozone staging the ex_00a_reading_dev_id example. 
-![screenshot](https://github.com/foldedtoad/dwm3000/blob/master/docs/ozone_debugger.png)
+![screenshot1](https://github.com/foldedtoad/dwm3000/blob/master/docs/ozone_debugger.png)
 
 If you are developing on a Linux or MacOS system and have installled the JLink package, then you can use the `rtt.sh` script (in the root directory) to start console instance.  Something like the `rtt.sh` script may be possible on Windows, but it has not be tried.  Be sure to follow the directions displayed when `rtt.sh` starts: `h`, `r`, `g` in the JLinkExe shell.
 
-For the above build example of ex_00a_reading_dev_id, if you have RTT message support and started, then you should see the following
+For the above build example of `ex_00a_reading_dev_id`, if you have RTT message support and started, then you should see the following.
+
 ![screenshot2](https://github.com/foldedtoad/dwm3000/blob/master/docs/rtt_console.png)
 
-```
-*** Booting Zephyr OS build zephyr-v2.5.0-1675-gd6567ad494a0  ***
-
-[00:00:12.476,837] <inf> main: main_thread
-[00:00:12.476,867] <inf> port: Configure WAKEUP pin
-[00:00:12.476,867] <inf> port: Configure RESET pin
-[00:00:12.476,867] <inf> port: Configure RX LED pin
-[00:00:12.476,898] <inf> port: Configure TX LED pin
-[00:00:12.476,898] <inf> deca_spi: openspi bus SPI_1
-[00:00:13.505,004] <inf> read_devid: READ DEV ID
-[00:00:13.505,035] <inf> port: reset_DWIC
-[00:00:13.509,368] <inf> deca_device: dev_id "deca0302"
-[00:00:13.509,368] <inf> read_devid: DEV ID OK
-```
 
 ## Examples
 Below is the examples directory tree layout.
