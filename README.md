@@ -1,4 +1,4 @@
-# DWM3000 and Zephyr 2.5
+# Nordic NRF82840 + DWM3000 on Zephyr v2.5
 
 **NOTE: This set of projects require Zephyr Version 2.5.**  
 
@@ -32,11 +32,11 @@ This project was developed in a Ubuntu 18.04 (LTS) and MacOS (Big Sur), but ther
 Windows OSes have not been part of the development process, but following Zephyr's instruction for Windows setup, it should not be a problem.
 
 ### Hardware
-You wil need two boards: 
-* host board PCA10056
+You will need two boards: 
+* Host board PCA10056 
 * DWS3000 arduino shield board.
 
-The conbination of PCA10056 board + DWS3000 shield will be the standard/default platform thoughout this document.
+**NOTE:** The conbination of PCA10056 board + DWS3000 shield will be the standard/default platform thoughout this document.
 
 While other Zephyr-supported boards might be used, they have not been tested. Only Zephyr API calls have been used, so the code is intended to be portable to other boards.
 
@@ -71,7 +71,7 @@ Under this project's root directory, there is a the following file tree structur
 │       └── qorvo,dwm3000
 │           └── qorvo,dwm3000.yaml
 ```
-
+**NOTE:** Problems have been encountered in developing the device-tree definition for the DWS3000 shield. You can see that the qorvo_dwm3000.overlay has conditional compile sections: one (default) which uses `spi1` and the second uses `arduino_spi` (see nrf52840 DTS for details). Using the `spi1` definition, SPI access works properly, but its not an arduino-spi defined bus. Using the `arduino_spi` definition, the code compiles without problems, but fails to communicate over the SPI bus. The default will be set to `spi1` until this issue is resolved, which will allow building and testing of this project.
 
 In each example sub-project, the CMakeList.txt file has been updated with the following statement. This statement merges the custom board definitions into the Zephyr board configuration process. 
 
@@ -153,21 +153,18 @@ Below is the examples directory tree layout.
 ├── ex_00a_reading_dev_id
 │   ├── CMakeLists.txt
 │   ├── configure.sh
-│   ├── ozone.jdebug
 │   ├── prj.conf
 │   └── read_dev_id.c
 ├── ex_01a_simple_tx
 │   ├── CMakeLists.txt
 │   ├── README.rst
 │   ├── configure.sh
-│   ├── ozone.jdebug
 │   ├── prj.conf
 │   └── simple_tx.c
 ├── ex_01b_tx_sleep
 │   ├── CMakeLists.txt
 │   ├── README.rst
 │   ├── configure.sh
-│   ├── ozone.jdebug
 │   ├── prj.conf
 │   ├── tx_sleep.c
 │   └── tx_sleep_idleRC.c
@@ -175,42 +172,36 @@ Below is the examples directory tree layout.
 │   ├── CMakeLists.txt
 │   ├── README.rst
 │   ├── configure.sh
-│   ├── ozone.jdebug
 │   ├── prj.conf
 │   └── tx_sleep_auto.c
 ├── ex_01d_tx_timed_sleep
 │   ├── CMakeLists.txt
 │   ├── README.rst
 │   ├── configure.sh
-│   ├── ozone.jdebug
 │   ├── prj.conf
 │   └── tx_timed_sleep.c
 ├── ex_01e_tx_with_cca
 │   ├── CMakeLists.txt
 │   ├── README.rst
 │   ├── configure.sh
-│   ├── ozone.jdebug
 │   ├── prj.conf
 │   └── tx_with_cca.c
 ├── ex_01g_simple_tx_sts_sdc
 │   ├── CMakeLists.txt
 │   ├── README.rst
 │   ├── configure.sh
-│   ├── ozone.jdebug
 │   ├── prj.conf
 │   └── simple_tx_sts_sdc.c
 ├── ex_01h_simple_tx_pdoa
 │   ├── CMakeLists.txt
 │   ├── README.rst
 │   ├── configure.sh
-│   ├── ozone.jdebug
 │   ├── prj.conf
 │   └── simple_tx_pdoa.c
 ├── ex_01i_simple_tx_aes
 │   ├── CMakeLists.txt
 │   ├── README.rst
 │   ├── configure.sh
-│   ├── ozone.jdebug
 │   ├── prj.conf
 │   └── simple_tx_aes.c
 ├── ex_02a_simple_rx
@@ -368,7 +359,6 @@ Below is the examples directory tree layout.
 │   ├── README.rst
 │   ├── configure.sh
 │   ├── gpio_example.c
-│   ├── ozone.jdebug
 │   └── prj.conf
 ├── ex_14a_otp_write
 │   ├── CMakeLists.txt
