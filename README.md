@@ -35,6 +35,7 @@ Windows OSes have not been part of the development process, but following Zephyr
 You will need two boards: 
 * Host board PCA10056 
 * DWS3000 arduino shield board.
+![image1](https://github.com/foldedtoad/dwm3000/blob/master/docs/dws3000.jpg)
 
 **NOTE:** The conbination of PCA10056 board + DWS3000 shield will be the standard/default platform thoughout this document.
 
