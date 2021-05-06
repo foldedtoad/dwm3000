@@ -1,4 +1,4 @@
-# Nordic NRF82840 + DWM3000 on Zephyr v2.5
+# Nordic nRF52840 + Decawave DWM3000 on Zephyr v2.5
 
 **NOTE: This set of projects require Zephyr Version 2.5.**  
 
