@@ -143,7 +143,7 @@ Using the first project (./examples/ex_00a_reading_dev_id) as a build example, d
 ```
 
 #### Flashing
-There are two ways to flash one of the example project's firmware onto a PCA10056 board.
+There are two ways to flash one of the example project's firmware onto a PCA100xx board.
 * Use the debugger (gdb, Ozone, etc) to flash.
 * Use the Nordic-provided `nrfjprog` utility.
 
