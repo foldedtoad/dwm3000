@@ -8,7 +8,7 @@ Since this Zephyr port generally follows the the Qorvo/Decawave [DWM3000 SDK](ht
 
 ### Terminology
 * "Decawave" means "Qorvo/Decwave".   Decawave was recently acquiered by Qorvo.
-* "DWM3000" is the Qorvo/Decawave hardware module with embedded DW3110 IC chips.
+* "DWM3000" is the Qorvo/Decawave hardware module with embedded DW3110 UWB IC chip.
 * "DWS3000" is the Qorvo/Decawave DevKit which implements a DWM3000-series module on an Arduino form-factor board. 
 * "PCA10056" means "Nordic nRF52840DK board". 
 * "PCA10040" means "Nordic nRF52832DK board".
