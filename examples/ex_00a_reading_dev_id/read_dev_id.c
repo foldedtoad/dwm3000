@@ -58,10 +58,10 @@ int app_main(void)
      */
     err = dwt_check_dev_id();
     if (err == DWT_SUCCESS) {
-        LOG_INF("DEV ID OK\n");
+        LOG_INF("DEV ID OK");
     }
     else {
-        LOG_ERR("DEV ID FAILED\n");
+        LOG_ERR("DEV ID FAILED");
     }
 
     return err;

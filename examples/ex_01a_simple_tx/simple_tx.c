@@ -87,8 +87,21 @@ int app_main(void)
      *( or could wait for SPIRDY event) */
     Sleep(2); 
 
+#if 0
+    /* Read and validate device ID
+     * returns DWT_ERROR if it does not match expected else DWT_SUCCESS 
+     */
+    int err = dwt_check_dev_id();
+    if (err == DWT_SUCCESS) {
+        LOG_INF("DEV ID OK");
+    }
+    else {
+        LOG_ERR("DEV ID FAILED");
+    }
+#endif
+
     /* Need to make sure DW IC is in IDLE_RC before proceeding */
-    while (!dwt_checkidlerc()) { };
+    while (!dwt_checkidlerc()) { /* spin */ };
 
     if (dwt_initialise(DWT_DW_INIT) == DWT_ERROR) {
         LOG_ERR("INIT FAILED");
@@ -111,8 +124,8 @@ int app_main(void)
     dwt_configuretxrf(&txconfig_options);
 
     /* Loop forever sending frames periodically. */
-    while(1)
-    {
+    while (1) {
+
         /* Write frame data to DW IC and prepare transmission. See NOTE 3 below.*/
         dwt_writetxdata(FRAME_LENGTH-FCS_LEN, tx_msg, 0); /* Zero offset in TX buffer. */
 
@@ -130,7 +143,7 @@ int app_main(void)
          * is in the first byte of the register, we can use this simplest API
          * function to access it.*/
         while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS_BIT_MASK))
-        { };
+        { /* spin */ };
 
         /* Clear TX frame sent event. */
         dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS_BIT_MASK);
