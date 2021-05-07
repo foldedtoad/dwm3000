@@ -19,14 +19,14 @@ The PCA100xx boards are part of the Nordic nRF52-series DevKit products. The PCA
 * This project assumes some familiarity with the Zephyr RTOS.  
 Zephyr is relativey easy to install and learn, and there are good tutorials available which explain how to establish a working version of Zephyr on your development system.
 
-* The example projects have been developed using the PCA10040 and the DWS3000 Arduino-shield board.
+* The example projects have been developed using the DWS3000 Arduino-shield plugged into either the PCA10040 or PCA10056 board.
 
 ### Overview of Changes from Decawave's SDK code
 The major changes from the original Decawave project are:
 * Use a custom shield-board DTS definition: the "DWM3000".
 * Port SPI-bus access and GPIO access.
-* Most of the porting effort entailed changes to the "platform" directory modules.
-
+* Most of the porting effort entailed changes to the "platform" directory modules, which is where the `io` drivers (SPI & GPIO) for the DWM3000 exist.
+* Little changes were made in the `decadriver` directory, which is where the "functional" driver for the DWM3000 exists.
 * The original code had comment lines which extended well past 80 columns.  This is inconvienent for development within VMs on laptops where screen real-estate limited. So the code was reformatted to 80-column max lines.  It's just easier to read and understand: that is the point of examples, right?!
 
 ### Supported Development OSes
@@ -37,22 +37,24 @@ Windows OSes have not been part of the development process, but following Zephyr
 
 ### Hardware
 You will need two boards: 
-* Host board PCA100xx
+* Host board PCA10040
 ![pca10040](https://github.com/foldedtoad/dwm3000/blob/master/docs/pca10040.png)
-* Host board PCA100xx
+* Host board PCA10056
 ![pca10056](https://github.com/foldedtoad/dwm3000/blob/master/docs/pca10056.png)
 * DWS3000 arduino shield board.
 ![dws3000](https://github.com/foldedtoad/dwm3000/blob/master/docs/dws3000.jpg)
 
-**NOTE:** The conbination of PCA100xx board + DWS3000 shield will be the referenced platform thoughout this document.
+**NOTE:** The conbination of PCA100xx board + DWS3000 shield will be the reference configuration thoughout this document.
 
-While other Zephyr-supported boards might be used, they have not been tested. Only Zephyr API calls have been used, so the code is intended to be portable to other boards.
+While other Zephyr-supported boards might be used, they have not been tested. Only Zephyr API calls have been used, so the code is intended to be reasonably portable to other boards: mostly target board DeviceTree defines may need to be adjusted.
 
-A `micro-USB` cable will also be needed to connect the PCA100xx to your build system. This USB cable will allow both debugging and flashing of firmware onto the PCA100xx board. Use of Segger's Ozone is recommended, but not required.
+A `micro-USB` cable will also be needed to connect the PCA100xx to your build system. This USB cable will allow both debugging and flashing of firmware onto the PCA100xx board. Use of Segger's Ozone debugger is recommended, but not required.
 
 Many of the examples will require two or more PCA100xx + DWS3000 setups, such as the micro-location examples.
 
 **WARNING:** You will need to trim the pins on the PCA100xx board's P20 connector, as they extend too far upwards and will contact pads on the bottom of the DWS3000 shield, causing electical problems.
+
+**WARNING:** There are issues with the early "engineering versions" of the nRF52840. The chips are identified with QIAAAA marking on their top.  Apparently the SPI3 bus was not fully support with these early engineering releases. It is suggested to avoid using these particular PCA10056 boards. Production releases of the PCA10056 should work without issues.
 
 **NOTE:** Because the PCA100xx board incorporates a Segger JLink debugger (on-board), it is highly recommended to install the Segger JLink package on your development system: it's free, and provides support for gdb, pyocd, and Ozone (Segger's debugger).  
 
@@ -79,9 +81,9 @@ Under this project's root directory, there is a the following file tree structur
 │       └── qorvo,dwm3000
 │           └── qorvo,dwm3000.yaml
 ```
-**NOTE:** There are issues with the early "engineering versions" of the nRF52840. The chips are identified with QIAAAA marking on their top.  Apparently the SPI3 bus was not fully support with these early engineering releases. It is suggested to avoid using these particular PCA10056 boards. Production releases of the PCA10056 should work without issues.
 
-In each example sub-project, the CMakeList.txt file has been updated with the following statement. This statement merges the custom board definitions into the Zephyr board configuration process. 
+
+In each example sub-project, the CMakeList.txt file has been updated with the following statement. This statement merges the DWM3000 custom shield definitions into the Zephyr board configuration process. 
 
 ```
 set(DTS_ROOT   "${CMAKE_CURRENT_SOURCE_DIR}/../..")
@@ -93,19 +95,22 @@ set(SHIELD qorvo_dwm3000)
 * Install Zephyr (V2.5) on your build system.
 * Install Segger JLink (latest) on your build system.
 * (Optional) Install Segger Ozone (latest) on your build system.
-* (Optional) Install the Nordic [nrfjprog](https://www.nordicsemi.com/Software-and-tools/Development-Tools/nRF-Command-Line-Tools/Download) utility. After installing, make sure that your system PATH contains the path to where it is installed.
+* (Optional) Install the Nordic [nrfjprog](https://www.nordicsemi.com/Software-and-tools/Development-Tools/nRF-Command-Line-Tools/Download) utility. After installing, make sure that your system's PATH contains the path to where it is installed.
 
-**NOTE:** For MacOS build systems, you may need to install the ARM toolchain. The Zephyr install instructions can guide you though this process.
+**NOTE:** For MacOS build systems, you may need to install the ARM toolchain. The Zephyr install instructions can guide you though this process. For Linux, the toolchain is included in the Zephyr installion/setup process.
 
 #### Establishing the Build Environment
 
 Before the firmware can be built, you must establish the Zephyr-build environment.  In this document it is assumed that `~/zephyr` is the root directory for Zephyr: make the appropiate changes if your Zephyr root path is different.
+
 ```
 > cd ~/zephyr/zephyrproject/zephyr
 > source zephyr-env.sh
 ```
+
 **NOTE** These projects was developed using only `cmake`, not `west` or `ninja`, but you should be able to use them if you prefer.  
-The build examples which follow will use `cmake`.
+The build examples which follow will use `cmake`.  
+The target board and shield are hardcoded into the CMakeList.txt files. While this seems to be at odds with Zephyr examples, the target boards are set in the CMakeFile.txt files as typically developers work with only one board type for given project.
 
 #### Build All Examples
 To build all this examples at one time, use the `./examples/build_all.sh` shell script. This will build all the projects and put the `*.hex` file for each project into the `./examples/bin` directory.  You can then install this hex files individually with the `examples/install_hex.sh` shell script.
