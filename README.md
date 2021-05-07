@@ -4,7 +4,7 @@
 
 This project contains firmware examples for the Decawave DWM3000-series Ultra Wideband (UWB) modules with Zephyr RTOS. It's a port of Qorvo/Decawave's SDK found on their website. 
 
-Since this Zephyr port generally follows the the Qorvo/Decawave [DWM3000 SDK](https://www.qorvo.com/products/p/DWS3000#documents) code, it is advised to review their SDK to get a general understanding of how the examples are intended to function. 
+This port to Zephyr generally follows the Qorvo/Decawave [DWM3000 SDK Release V1.1](https://www.qorvo.com/products/p/DWS3000#documents). It is advised to review the SDK's content to get a general understanding of how the examples are intended to function. 
 
 ### Terminology
 * "Decawave" means "Qorvo/Decwave".   Decawave was recently acquiered by Qorvo.
@@ -20,9 +20,9 @@ The PCA100xx boards are part of the Nordic nRF52-series DevKit products. The PCA
 * This project assumes some familiarity with the Zephyr RTOS.  
 Zephyr is relativey easy to install and learn, and there are good tutorials available which explain how to establish a working version of Zephyr on your development system.
 
-* The example projects have been developed using the DWS3000 Arduino-shield plugged into either the PCA10040 or PCA10056 board.
+* The `example` projects have been developed using the DWS3000 Arduino-shield plugged into either the PCA10040 or PCA10056 board.
 
-### Overview of Changes from Decawave's SDK code
+### Overview of Changes from the DWM3000 SDK
 The major changes from the original Decawave project are:
 * Define and use a custom shield-board DTS definition: the "DWM3000". (ToDo: Change the shield name to "DWS3000" in future.)
 * Port SPI-bus access and GPIO access.
@@ -55,7 +55,7 @@ Many of the examples will require two or more PCA100xx + DWS3000 setups, such as
 
 **WARNING:** You will need to trim the pins on the PCA100xx board's P20 connector, as they extend too far upwards and will contact pads on the bottom of the DWS3000 shield, causing electical problems.
 
-**WARNING:** There are issues with the early "engineering versions" of the nRF52840. The chips are identified with QIAAAA marking on their top.  Apparently the SPI3 bus was not fully support with these early engineering releases. It is suggested to avoid using these particular PCA10056 boards. Production releases of the PCA10056 should work without issues.
+**WARNING:** There are issues with the early "engineering versions" of the nRF52840. The chips are identified with QIAAAA marking on their top.  Apparently the SPI3 bus was not fully support with these early engineering releases. For the PCA10056, the devicetree definition for `spi3` bus is equated with the `arduino_spi` bus. Therefore, it is suggested to avoid using these particular PCA10056 boards. Production releases of the PCA10056 should work without issues.
 
 **NOTE:** Because the PCA100xx board incorporates a Segger JLink debugger (on-board), it is highly recommended to install the Segger JLink package on your development system: it's free, and provides support for gdb, pyocd, and Ozone (Segger's debugger).  
 
