@@ -114,8 +114,8 @@ cp ./ex_05c_ds_twr_init_sts_sdc/build/zephyr/zephyr.hex      ./bin/ex_05c_ds_twr
 cp ./ex_05d_ds_twr_resp_sts_sdc/build/zephyr/zephyr.hex      ./bin/ex_05d_ds_twr_resp_sts_sdc.hex
 cp ./ex_06a_ss_twr_initiator/build/zephyr/zephyr.hex         ./bin/ex_06a_ss_twr_initiator.hex
 cp ./ex_06b_ss_twr_responder/build/zephyr/zephyr.hex         ./bin/ex_06b_ss_twr_responder.hex
-cp ./ex_06e_aes_ss_twr_initiator/build/zephyr/zephyr.hex     ./bin/ex_06e_AES_ss_twr_initiator.hex
-cp ./ex_06f_aes_ss_twr_responder/build/zephyr/zephyr.hex     ./bin/ex_06f_AES_ss_twr_responder.hex
+cp ./ex_06e_aes_ss_twr_initiator/build/zephyr/zephyr.hex     ./bin/ex_06e_aes_ss_twr_initiator.hex
+cp ./ex_06f_aes_ss_twr_responder/build/zephyr/zephyr.hex     ./bin/ex_06f_aes_ss_twr_responder.hex
 cp ./ex_07a_ack_data_tx/build/zephyr/zephyr.hex              ./bin/ex_07a_ack_data_tx.hex
 cp ./ex_07b_ack_data_rx/build/zephyr/zephyr.hex              ./bin/ex_07b_ack_data_rx.hex
 cp ./ex_07c_ack_data_rx_dbl_buff/build/zephyr/zephyr.hex     ./bin/ex_07c_ack_data_rx_dbl_buff.hex
