@@ -37,7 +37,7 @@ This project was developed in a Ubuntu 18.04 (LTS) and MacOS (Big Sur), but ther
 Windows OSes have not been part of the development process, but following Zephyr's instruction for Windows setup, it should not be a problem.
 
 ### Hardware
-You will need two boards: 
+You will need two boards: a host board and a shield board --
 * Host board PCA10040
 ![pca10040](https://github.com/foldedtoad/dwm3000/blob/master/docs/pca10040.png)
 * Host board PCA10056
