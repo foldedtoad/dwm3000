@@ -4,7 +4,8 @@ set(DTS_ROOT   "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 set(BOARD_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 set(SHIELD qorvo_dwm3000)
 
-set(BOARD nrf52840dk_nrf52840)
+set(BOARD nrf52dk_nrf52832)
+#set(BOARD nrf52840dk_nrf52840)
 
 include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
 project(Example_04b)
