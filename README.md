@@ -8,6 +8,7 @@ Since this Zephyr port generally follows the the Qorvo/Decawave [DWM3000 SDK](ht
 
 ### Terminology
 * "Decawave" means "Qorvo/Decwave".   Decawave was recently acquiered by Qorvo.
+* "DWM3000" is the Qorvo/Decawave hardware module with embedded DW3110 IC chips.
 * "DWS3000" is the Qorvo/Decawave DevKit which implements a DWM3000-series module on an Arduino form-factor board. 
 * "PCA10056" means "Nordic nRF52840DK board". 
 * "PCA10040" means "Nordic nRF52832DK board".
@@ -23,10 +24,10 @@ Zephyr is relativey easy to install and learn, and there are good tutorials avai
 
 ### Overview of Changes from Decawave's SDK code
 The major changes from the original Decawave project are:
-* Use a custom shield-board DTS definition: the "DWM3000".
+* Define and use a custom shield-board DTS definition: the "DWM3000". (ToDo: Change the shield name to "DWS3000" in future.)
 * Port SPI-bus access and GPIO access.
-* Most of the porting effort entailed changes to the "platform" directory modules, which is where the `io` drivers (SPI & GPIO) for the DWM3000 exist.
-* Little changes were made in the `decadriver` directory, which is where the "functional" driver for the DWM3000 exists.
+* Most of the porting effort entailed changes to the "platform" directory modules, which is where the `io` driver layer exists: SPI & GPIO.
+* Little changes were made in the `decadriver` directory, which is where the "functional" driver layer for the DWM3000 exists: should be target board independent code.
 * The original code had comment lines which extended well past 80 columns.  This is inconvienent for development within VMs on laptops where screen real-estate limited. So the code was reformatted to 80-column max lines.  It's just easier to read and understand: that is the point of examples, right?!
 
 ### Supported Development OSes
