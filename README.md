@@ -1,4 +1,4 @@
-# Nordic nRF52840 + Decawave DWM3000 on Zephyr v2.5
+# Nordic nRF52-series + Decawave DWM3000 on Zephyr v2.5
 
 **NOTE: This set of projects require Zephyr Version 2.5.**  
 
@@ -9,13 +9,17 @@ Since this Zephyr port generally follows the the Qorvo/Decawave [DWM3000 SDK](ht
 ### Terminology
 * "Decawave" means "Qorvo/Decwave".   Decawave was recently acquiered by Qorvo.
 * "DWS3000" is the Qorvo/Decawave DevKit which implements a DWM3000-series module on an Arduino form-factor board. 
-* "PCA10056" means "Nordic nRF52840DK board". The PCA10056 board is part of DevKit for the Nordic nRF52840 SoC product. The PCA10056 board form-factor is compliant with the Arduino form-factor layout, thus allowing the DWS3000 shield plugged on top of the PCA10056 board.
+* "PCA10056" means "Nordic nRF52840DK board". 
+* "PCA10040" means "Nordic nRF52832DK board".
+* "PCA100xx" means either the PCA10056 or PCA10040 board.
+
+The PCA100xx boards are part of the Nordic nRF52-series DevKit products. The PCA100xx board's form-factor is compliant with the Arduino form-factor layout, thus allowing the DWS3000 shield plugged on top of the PCA100xx boards.
 
 ### Assumptions 
 * This project assumes some familiarity with the Zephyr RTOS.  
 Zephyr is relativey easy to install and learn, and there are good tutorials available which explain how to establish a working version of Zephyr on your development system.
 
-* The example projects have been developed using the PCA10056 and the DWS3000 Arduino-shild board.
+* The example projects have been developed using the PCA10040 and the DWS3000 Arduino-shield board.
 
 ### Overview of Changes from Decawave's SDK code
 The major changes from the original Decawave project are:
@@ -33,24 +37,26 @@ Windows OSes have not been part of the development process, but following Zephyr
 
 ### Hardware
 You will need two boards: 
-* Host board PCA10056 
+* Host board PCA100xx
+![pca10040](https://github.com/foldedtoad/dwm3000/blob/master/docs/pca10040.png)
+* Host board PCA100xx
 ![pca10056](https://github.com/foldedtoad/dwm3000/blob/master/docs/pca10056.png)
 * DWS3000 arduino shield board.
 ![dws3000](https://github.com/foldedtoad/dwm3000/blob/master/docs/dws3000.jpg)
 
-**NOTE:** The conbination of PCA10056 board + DWS3000 shield will be the standard/default platform thoughout this document.
+**NOTE:** The conbination of PCA100xx board + DWS3000 shield will be the referenced platform thoughout this document.
 
 While other Zephyr-supported boards might be used, they have not been tested. Only Zephyr API calls have been used, so the code is intended to be portable to other boards.
 
-A `micro-USB` cable will also be needed to connect the PCA10056 to your build system. This USB cable will allow both debugging and flashing of firmware onto the PCA10056 board. Use of Segger's Ozone is recommended, but not required.
+A `micro-USB` cable will also be needed to connect the PCA100xx to your build system. This USB cable will allow both debugging and flashing of firmware onto the PCA100xx board. Use of Segger's Ozone is recommended, but not required.
 
-Many of the examples will require two or more PCA10056+DWS3000 setups, such as the micro-location examples.
+Many of the examples will require two or more PCA100xx + DWS3000 setups, such as the micro-location examples.
 
-**WARNING:** You will need to trim the pins on the PCA10056 board's P20 connector, as they extend too far upwards and will contact pads on the bottom of the DWS3000 shield, causing electical problems.
+**WARNING:** You will need to trim the pins on the PCA100xx board's P20 connector, as they extend too far upwards and will contact pads on the bottom of the DWS3000 shield, causing electical problems.
 
-**NOTE:** Because the PCA10056 board incorporates a Segger JLink debugger (on-board), it is highly recommended to install the Segger JLink package on your development system: it's free, and provides support for gdb, pyocd, and Ozone (Segger's debugger).  
+**NOTE:** Because the PCA100xx board incorporates a Segger JLink debugger (on-board), it is highly recommended to install the Segger JLink package on your development system: it's free, and provides support for gdb, pyocd, and Ozone (Segger's debugger).  
 
-**NOTE:** The PCA10056 board incorporates JLink software includes RTT-console support, which is used as a logging console.  This eliminates the need to configure and run a seperated UART-based console when developing firmware. An easy-to-use shell command (rtt.sh, see below) included, can be use to display console output.
+**NOTE:** The PCA100xx boards incorporate JLink software includes RTT-console support, which is used as a logging console.  This eliminates the need to configure and run a seperated UART-based console when developing firmware. An easy-to-use shell command (rtt.sh, see below) included, can be use to display console output.
 
 ### DWS3000 Board/Shield Support
 Under this project's root directory, there is a the following file tree structure: 
@@ -73,7 +79,7 @@ Under this project's root directory, there is a the following file tree structur
 │       └── qorvo,dwm3000
 │           └── qorvo,dwm3000.yaml
 ```
-**NOTE:** Problems have been encountered in developing the device-tree definition for the DWS3000 shield. You can see that the qorvo_dwm3000.overlay has conditional compile sections: one (default) which uses `spi1` and the second uses `arduino_spi` (see nrf52840 DTS for details). Using the `spi1` definition, SPI access works properly, but its not an arduino-spi defined bus. Using the `arduino_spi` definition, the code compiles without problems, but fails to communicate over the SPI bus. The default will be set to `spi1` until this issue is resolved, which will allow building and testing of this project.
+**NOTE:** There are issues with the early "engineering versions" of the nRF52840. The chips are identified with QIAAAA marking on their top.  Apparently the SPI3 bus was not fully support with these early engineering releases. It is suggested to avoid using these particular PCA10056 boards. Production releases of the PCA10056 should work without issues.
 
 In each example sub-project, the CMakeList.txt file has been updated with the following statement. This statement merges the custom board definitions into the Zephyr board configuration process. 
 
@@ -124,7 +130,11 @@ Using the first project (./examples/ex_00a_reading_dev_id) as a build example, d
 > cd build
 > make
 ```
-**NOTE:** If you want to change the target board to something other than the nRF52840, then edit the individual example's CMakeLists.txt and change the `set(BOARD nrf52840dk_nrf52840)` option to your target board.
+**NOTE:** If you want to change the target board to something other than the default nRF52832, then edit the individual example's CMakeLists.txt and change the `set(BOARD xxxxx)` option to your target board.
+```
+  #set(BOARD nrf52dk_nrf52832)
+  set(BOARD nrf52840dk_nrf52840)
+```
 
 #### Flashing
 There are two ways to flash one of the example project's firmware onto a PCA10056 board.
@@ -132,7 +142,7 @@ There are two ways to flash one of the example project's firmware onto a PCA1005
 * Use the Nordic-provided `nrfjprog` utility.
 
 The Segger debugger, `Ozone`, was used extensively during development, and is recommended.  
-GDB may also be use with the PCA10056 on-board JLink support in conjunction with OpenODB.
+GDB may also be use with the PCA100xx on-board JLink support in conjunction with OpenODB.
 
 ### Console Messages (JLink RTT Console)
 If you are using Ozone for debugging, the RTT console support is built into the debugger: just select `terminal` under the View menu. 
