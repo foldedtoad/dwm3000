@@ -62,15 +62,14 @@ extern "C" {
 #define DWT_C0_DEV_ID       (0xDECA0302)        //!< DW3000 MPW C0 (non PDOA) silicon device ID
 #define DWT_C0_PDOA_DEV_ID  (0xDECA0312)        //!< DW3000 MPW C0 (with PDOA) silicon device ID
 
-#define DELAY_20uUSec           (20)/*Delay of 20uSec(measured 24uSec)*/
+#define DELAY_20uUSec           (20)            /* Delay of 20uSec(measured 24uSec) */
 #define MAX_RETRIES_FOR_PLL     (6)
 #define MAX_RETRIES_FOR_PGF     (3)
 
-typedef enum
-{
-     AOA,
-     NON_AOA
-}dw3000type_e;
+typedef enum {
+    AOA,
+    NON_AOA
+} dw3000type_e;
 
 typedef enum {
     DW3000_SPI_RD_BIT    = 0x0000U,
@@ -78,7 +77,7 @@ typedef enum {
     DW3000_SPI_AND_OR_8  = 0x8001U,
     DW3000_SPI_AND_OR_16 = 0x8002U,
     DW3000_SPI_AND_OR_32 = 0x8003U,
-}spi_modes_e;
+} spi_modes_e;
 
 //! fast commands
 #define CMD_DB_TOGGLE     0x13   //!< Toggle double buffer pointer

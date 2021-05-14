@@ -30,7 +30,9 @@ LOG_MODULE_REGISTER(deca_device);
 // Module Macro definitions and enumerations
 //
 
-//#define DWT_API_ERROR_CHECK  /* API checks config input parameters */
+#if 0
+  #define DWT_API_ERROR_CHECK  /* API checks config input parameters */
+#endif
 
 /* STS Minimum Threshold (STS_MNTH) needs to be adjusted with changing STS length.
 To adjust the STS_MNTH following formula can be used: STS_MNTH = SQRT(X/Y)*default_STS_MNTH
@@ -1341,21 +1343,32 @@ int dwt_configure(dwt_config_t *config)
     assert((config->dataRate == DWT_BR_6M8) || (config->dataRate == DWT_BR_850K));
     assert(config->rxPAC <= DWT_PAC4);
     assert((chan == 5) || (chan == 9));
-    assert((config->txPreambLength == DWT_PLEN_32) || (config->txPreambLength == DWT_PLEN_64) || (config->txPreambLength == DWT_PLEN_72) || (config->txPreambLength == DWT_PLEN_128) || (config->txPreambLength == DWT_PLEN_256)
-           || (config->txPreambLength == DWT_PLEN_512) || (config->txPreambLength == DWT_PLEN_1024) || (config->txPreambLength == DWT_PLEN_1536)
-           || (config->txPreambLength == DWT_PLEN_2048) || (config->txPreambLength == DWT_PLEN_4096));
-    assert((config->phrMode == DWT_PHRMODE_STD) || (config->phrMode == DWT_PHRMODE_EXT));
-    assert((config->phrRate == DWT_PHRRATE_STD) || (config->phrRate == DWT_PHRRATE_DTA));
-    assert((config->pdoaMode == DWT_PDOA_M0) || (config->pdoaMode == DWT_PDOA_M1) || (config->pdoaMode == DWT_PDOA_M3));
-	assert(((config->stsMode & DWT_STS_CONFIG_MASK) == DWT_STS_MODE_OFF) 
-        || ((config->stsMode & DWT_STS_CONFIG_MASK) == DWT_STS_MODE_1) 
-        || ((config->stsMode & DWT_STS_CONFIG_MASK) == DWT_STS_MODE_2)
-        || ((config->stsMode & DWT_STS_CONFIG_MASK) == DWT_STS_MODE_ND)
-        || ((config->stsMode & DWT_STS_CONFIG_MASK) == DWT_STS_MODE_SDC)
-        || ((config->stsMode & DWT_STS_CONFIG_MASK) == (DWT_STS_MODE_1 | DWT_STS_MODE_SDC))
-        || ((config->stsMode & DWT_STS_CONFIG_MASK) == (DWT_STS_MODE_2 | DWT_STS_MODE_SDC))
-        || ((config->stsMode & DWT_STS_CONFIG_MASK) == (DWT_STS_MODE_ND | DWT_STS_MODE_SDC))
-        || ((config->stsMode & DWT_STS_CONFIG_MASK) == DWT_STS_CONFIG_MASK));
+    assert((config->txPreambLength == DWT_PLEN_32) 
+           || (config->txPreambLength == DWT_PLEN_64) 
+           || (config->txPreambLength == DWT_PLEN_72) 
+           || (config->txPreambLength == DWT_PLEN_128) 
+           || (config->txPreambLength == DWT_PLEN_256)
+           || (config->txPreambLength == DWT_PLEN_512) 
+           || (config->txPreambLength == DWT_PLEN_1024) 
+           || (config->txPreambLength == DWT_PLEN_1536)
+           || (config->txPreambLength == DWT_PLEN_2048) 
+           || (config->txPreambLength == DWT_PLEN_4096));
+    assert((config->phrMode == DWT_PHRMODE_STD) 
+           || (config->phrMode == DWT_PHRMODE_EXT));
+    assert((config->phrRate == DWT_PHRRATE_STD) 
+           || (config->phrRate == DWT_PHRRATE_DTA));
+    assert((config->pdoaMode == DWT_PDOA_M0) 
+           || (config->pdoaMode == DWT_PDOA_M1) 
+           || (config->pdoaMode == DWT_PDOA_M3));
+    assert(((config->stsMode & DWT_STS_CONFIG_MASK) == DWT_STS_MODE_OFF) 
+           || ((config->stsMode & DWT_STS_CONFIG_MASK) == DWT_STS_MODE_1) 
+           || ((config->stsMode & DWT_STS_CONFIG_MASK) == DWT_STS_MODE_2)
+           || ((config->stsMode & DWT_STS_CONFIG_MASK) == DWT_STS_MODE_ND)
+           || ((config->stsMode & DWT_STS_CONFIG_MASK) == DWT_STS_MODE_SDC)
+           || ((config->stsMode & DWT_STS_CONFIG_MASK) == (DWT_STS_MODE_1 | DWT_STS_MODE_SDC))
+           || ((config->stsMode & DWT_STS_CONFIG_MASK) == (DWT_STS_MODE_2 | DWT_STS_MODE_SDC))
+           || ((config->stsMode & DWT_STS_CONFIG_MASK) == (DWT_STS_MODE_ND | DWT_STS_MODE_SDC))
+           || ((config->stsMode & DWT_STS_CONFIG_MASK) == DWT_STS_CONFIG_MASK));
 #endif
     int preamble_len;
 
@@ -1388,7 +1401,11 @@ int dwt_configure(dwt_config_t *config)
     //SYS_CFG
     //clear the PHR Mode, PHR Rate, STS Protocol, SDC, PDOA Mode,
     //then set the relevant bits according to configuration of the PHR Mode, PHR Rate, STS Protocol, SDC, PDOA Mode,
-    dwt_modify32bitoffsetreg(SYS_CFG_ID, 0, ~(SYS_CFG_PHR_MODE_BIT_MASK | SYS_CFG_PHR_6M8_BIT_MASK | SYS_CFG_CP_SPC_BIT_MASK | SYS_CFG_PDOA_MODE_BIT_MASK | SYS_CFG_CP_SDC_BIT_MASK),
+    dwt_modify32bitoffsetreg(SYS_CFG_ID, 0, ~(SYS_CFG_PHR_MODE_BIT_MASK  | 
+                                              SYS_CFG_PHR_6M8_BIT_MASK   | 
+                                              SYS_CFG_CP_SPC_BIT_MASK    | 
+                                              SYS_CFG_PDOA_MODE_BIT_MASK | 
+                                              SYS_CFG_CP_SDC_BIT_MASK),
         ((uint32_t)config->pdoaMode) << SYS_CFG_PDOA_MODE_BIT_OFFSET
         | ((uint16_t)config->stsMode & DWT_STS_CONFIG_MASK) << SYS_CFG_CP_SPC_BIT_OFFSET
         | (SYS_CFG_PHR_6M8_BIT_MASK & ((uint32_t)config->phrRate << SYS_CFG_PHR_6M8_BIT_OFFSET))
@@ -1526,12 +1543,13 @@ int dwt_configure(dwt_config_t *config)
     // auto cal the PLL and change to IDLE_PLL state
     dwt_setdwstate(DWT_DW_IDLE);
 
-    for (flag=1,cnt=0;cnt<MAX_RETRIES_FOR_PLL;cnt++)
+    for (flag=1, cnt=0; cnt < MAX_RETRIES_FOR_PLL; cnt++)
     {
         deca_usleep(DELAY_20uUSec);
         if ((dwt_read8bitoffsetreg(SYS_STATUS_ID, 0) & SYS_STATUS_CP_LOCK_BIT_MASK))
-        {//PLL is locked
-            flag=0;
+        {
+            /* PLL is locked */
+            flag = 0;
             break;
         }
     }
