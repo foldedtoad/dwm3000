@@ -92,17 +92,6 @@ portGetTickCnt(void)
     return 0;
 }
 
-
-/* @fn    usleep
- * @brief precise usleep() delay
- * */
-int usleep(unsigned long usec)
-{
-    k_usleep(usec);
-    return 0;
-}
-
-
 /* @fn    Sleep
  * @brief Sleep delay in ms using SysTick timer
  * */
@@ -191,7 +180,7 @@ void reset_DWIC(void)
     // Drive the RSTn pin low
     gpio_pin_set(gpio_dev, RESET_GPIO_PIN, 0);
 
-    usleep(10);
+    deca_usleep(10);
 
     // Drive the RSTn pin high
     gpio_pin_set(gpio_dev, RESET_GPIO_PIN, 1);
