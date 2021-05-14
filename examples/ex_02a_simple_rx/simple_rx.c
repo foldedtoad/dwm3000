@@ -80,7 +80,7 @@ int app_main(void)
     Sleep(2);
 
     while (!dwt_checkidlerc()) /* Need to make sure DW IC is in IDLE_RC before proceeding */
-    { };
+    { /* spin */ };
 
     if (dwt_initialise(DWT_DW_INIT) == DWT_ERROR) {
         LOG_ERR("INIT FAILED");
@@ -98,6 +98,8 @@ int app_main(void)
         LOG_ERR("CONFIG FAILED");
         while (1) { /* spin */ };
     }
+
+    LOG_INF("Ready to Receive");
 
     /* Loop forever receiving frames. */
     while (TRUE)
