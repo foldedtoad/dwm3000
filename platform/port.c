@@ -174,6 +174,10 @@ void reset_DWIC(void)
 {
     LOG_INF("%s", __func__);
 
+#if 0
+    /* 
+     * User RSTn gpio pin to reset DWM3000.
+     */
     // Enable GPIO used for DW3000 reset as open collector output
     gpio_pin_configure(gpio_dev, RESET_GPIO_PIN, (GPIO_OUTPUT | GPIO_OPEN_DRAIN));
 
@@ -189,6 +193,19 @@ void reset_DWIC(void)
     setup_DW3000RSTnIRQ(0);
 
     Sleep(2);
+#else
+    /* 
+     *  Use Soft Reset api to reset DWM3000 
+     *  SPI bus must be <= 7MHz, e.g. slowrate
+     */
+    port_set_dw_ic_spi_slowrate();
+
+    dwt_softreset();
+
+    /* Set SPI bus to working rate: fastrate. */
+    port_set_dw_ic_spi_fastrate();
+#endif
+
 }
 
 /* @fn      setup_DW3000RSTnIRQ
@@ -205,11 +222,6 @@ void setup_DW3000RSTnIRQ(int enable)
     else {
         // Put the pin back to tri-state, as output open-drain (not active)
         gpio_pin_configure(gpio_dev, RESET_GPIO_PIN, (GPIO_OUTPUT | GPIO_OPEN_DRAIN));
-
-#if 0
-        // Drive the RSTn pin high
-        gpio_pin_set(gpio_dev, RESET_GPIO_PIN, 0);
-#endif
     }
 }
 
