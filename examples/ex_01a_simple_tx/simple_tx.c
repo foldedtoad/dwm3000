@@ -31,22 +31,19 @@ LOG_MODULE_REGISTER(simple_tx);
 
 /* Default communication configuration. We use default non-STS DW mode. */
 static dwt_config_t config = {
-    5,               /* Channel number. */
-    DWT_PLEN_128,    /* Preamble length. Used in TX only. */
-    DWT_PAC8,        /* Preamble acquisition chunk size. Used in RX only. */
-    9,               /* TX preamble code. Used in TX only. */
-    9,               /* RX preamble code. Used in RX only. */
-    1,               /* 0 to use standard 8 symbol SFD, 
-                      *   1 to use non-standard 8 symbol, 
-                      *   2 for non-standard 16 symbol SFD and 
-                      *   3 for 4z 8 symbol SDF type */
-    DWT_BR_6M8,      /* Data rate. */
-    DWT_PHRMODE_STD, /* PHY header mode. */
-    DWT_PHRRATE_STD, /* PHY header rate. */
-    (129 + 8 - 8),   /* SFD timeout (preamble length + 1 + SFD length - PAC size). Used in RX only. */
-    DWT_STS_MODE_OFF,
-    DWT_STS_LEN_64,  /* STS length, see allowed values in Enum dwt_sts_lengths_e */
-    DWT_PDOA_M0      /* PDOA mode off */
+    .chan            = 5,               /* Channel number. */
+    .txPreambLength  = DWT_PLEN_128,    /* Preamble length. Used in TX only. */
+    .rxPAC           = DWT_PAC8,        /* Preamble acquisition chunk size. Used in RX only. */
+    .txCode          = 9,               /* TX preamble code. Used in TX only. */
+    .rxCode          = 9,               /* RX preamble code. Used in RX only. */
+    .sfdType         = DWT_SFD_DW_8,    /* 0 to use standard 8 symbol SFD */
+    .dataRate        = DWT_BR_6M8,      /* Data rate. */
+    .phrMode         = DWT_PHRMODE_STD, /* PHY header mode. */
+    .phrRate         = DWT_PHRRATE_STD, /* PHY header rate. */
+    .sfdTO           = (129 + 8 - 8),   /* SFD timeout */
+    .stsMode         = DWT_STS_MODE_OFF,
+    .stsLength       = DWT_STS_LEN_64,  /* STS length, see allowed values in Enum dwt_sts_lengths_e */
+    .pdoaMode        = DWT_PDOA_M0      /* PDOA mode off */
 };
 
 /* The frame sent in this example is an 802.15.4e standard blink. It is a 12-byte frame composed of the following fields:
@@ -119,6 +116,8 @@ int app_main(void)
         LOG_ERR("CONFIG FAILED");
         while (1) { /* spin */ };
     }
+
+    //LOG_HEXDUMP_INF((char*)&config, sizeof(config), "config");
 
     /* Configure the TX spectrum parameters (power PG delay and PG Count) */
     dwt_configuretxrf(&txconfig_options);

@@ -56,3 +56,4 @@ bin
 build
 *.log
 .DS_Store
+*.patch
