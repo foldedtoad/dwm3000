@@ -32,48 +32,6 @@ LOG_MODULE_REGISTER(main);
 
 extern int app_main(void);
 
-
-#ifdef CONFIG_BT
-/*---------------------------------------------------------------------------*/
-/*                                                                           */
-/*---------------------------------------------------------------------------*/
-#include "ble_device.h"
-
-void bluetooth_thread(void * id, void * unused1, void * unused2)
-{
-    LOG_INF("%s", __func__);
-
-    k_sleep(K_MSEC(500));
-
-    ble_device_init();
-
-    while(1) { /* spin */}
-}
-
-K_THREAD_DEFINE(bluetooth_id, STACKSIZE, bluetooth_thread, 
-                NULL, NULL, NULL, PRIORITY, 0, 0);
-#endif
-
-#ifdef CONFIG_LIS2DH
-/*---------------------------------------------------------------------------*/
-/*                                                                           */
-/*---------------------------------------------------------------------------*/
-#include "ex_13a_accelerometer.h"
-
-void accel_thread(void * id, void * unused1, void * unused2)
-{
-    LOG_INF("%s", __func__);
-
-    accel_init();
-
-    while (1) { /* spin */}
-}
-
-K_THREAD_DEFINE(accel_id, STACKSIZE, accel_thread, 
-                NULL, NULL, NULL, PRIORITY, 0, 0);
-#endif
-
-
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
