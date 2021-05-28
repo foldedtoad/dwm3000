@@ -161,7 +161,50 @@ For the above build example of `ex_00a_reading_dev_id`, if you have RTT message 
 
 ![screenshot2](https://github.com/foldedtoad/dwm3000/blob/master/docs/rtt_console.png)
 
+## Sample Outputs
+Below is a matching of send and receive demos: ex_01a_simple_tx and ex_02a_simple_rx.
 
+This shows th3e output from the sending example `ex_01a_simple_tx`.
+```
+<need sending console log>
+```
+
+This shows the output from the receiving example `ex_02a_simple_rx`.
+```
+*** Booting Zephyr OS build zephyr-v2.5.0-1675-gd6567ad494a0  ***
+
+[00:00:05.902,648] <inf> main: main_thread
+[00:00:05.902,679] <inf> port: Configure WAKEUP pin
+[00:00:05.902,679] <inf> port: Configure RESET pin
+[00:00:05.902,709] <inf> port: Configure RX LED pin
+[00:00:05.902,709] <inf> port: Configure TX LED pin
+[00:00:05.902,709] <inf> deca_spi: openspi bus SPI_3
+[00:00:06.930,786] <inf> simple_rx: SIMPLE RX v1.0
+[00:00:06.930,816] <inf> port: reset_DWIC
+[00:00:06.935,516] <inf> deca_device: dev_id "deca0302"
+[00:00:06.938,598] <inf> simple_rx: Ready to Receive
+[00:00:07.352,325] <inf> simple_rx: Frame Received: len 12
+[00:00:07.352,325] <inf> simple_rx: frame
+                                    c5 38 44 45 43 41 57 41  56 45 00 00             |.8DECAWA VE..    
+[00:00:07.861,541] <inf> simple_rx: Frame Received: len 12
+[00:00:07.861,541] <inf> simple_rx: frame
+                                    c5 39 44 45 43 41 57 41  56 45 00 00             |.9DECAWA VE..    
+[00:00:08.362,091] <inf> simple_rx: Frame Received: len 12
+[00:00:08.362,121] <inf> simple_rx: frame
+                                    c5 3a 44 45 43 41 57 41  56 45 00 00             |.:DECAWA VE..    
+[00:00:08.871,368] <inf> simple_rx: Frame Received: len 12
+[00:00:08.871,368] <inf> simple_rx: frame
+                                    c5 3b 44 45 43 41 57 41  56 45 00 00             |.;DECAWA VE..    
+[00:00:09.400,634] <inf> simple_rx: Frame Received: len 12
+[00:00:09.400,665] <inf> simple_rx: frame
+                                    c5 3c 44 45 43 41 57 41  56 45 00 00             |.<DECAWA VE..    
+[00:00:09.881,134] <inf> simple_rx: Frame Received: len 12
+[00:00:09.881,164] <inf> simple_rx: frame
+                                    c5 3d 44 45 43 41 57 41  56 45 00 00             |.=DECAWA VE..    
+[00:00:10.381,744] <inf> simple_rx: Frame Received: len 12
+[00:00:10.381,744] <inf> simple_rx: frame
+                                    c5 3e 44 45 43 41 57 41  56 45 00 00             |.>DECAWA VE..  
+```
 ## Examples
 Below is the examples directory tree layout.
 ```
