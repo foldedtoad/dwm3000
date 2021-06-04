@@ -168,60 +168,75 @@ This shows th3e output from the sending example `ex_01a_simple_tx`.
 ```
 *** Booting Zephyr OS build zephyr-v2.5.0-1675-gd6567ad494a0  ***
 
-[00:00:08.232,696] <inf> main: main_thread
-[00:00:08.232,696] <inf> port: Configure WAKEUP pin
-[00:00:08.232,727] <inf> port: Configure RESET pin
-[00:00:08.232,727] <inf> port: Configure RX LED pin
-[00:00:08.232,727] <inf> port: Configure TX LED pin
-[00:00:08.232,727] <inf> deca_spi: openspi bus SPI_3
-[00:00:09.260,833] <inf> simple_tx: SIMPLE TX v1.0
-[00:00:09.260,864] <inf> port: reset_DWIC
-[00:00:09.265,502] <inf> deca_device: dev_id "deca0302"
-[00:00:09.269,012] <inf> simple_tx: TX Frame Sent
-[00:00:09.769,500] <inf> simple_tx: TX Frame Sent
-[00:00:10.284,423] <inf> simple_tx: TX Frame Sent
-[00:00:10.784,912] <inf> simple_tx: TX Frame Sent
-[00:00:11.294,158] <inf> simple_tx: TX Frame Sent
-[00:00:11.794,647] <inf> simple_tx: TX Frame Sent
-[00:00:12.303,924] <inf> simple_tx: TX Frame Sent
-[00:00:12.804,412] <inf> simple_tx: TX Frame Sent
+[00:00:03.958,068] <inf> main: main_thread
+[00:00:03.958,099] <inf> port: Configure WAKEUP pin
+[00:00:03.958,099] <inf> port: Configure RESET pin
+[00:00:03.958,099] <inf> port: Configure RX LED pin
+[00:00:03.958,129] <inf> port: Configure TX LED pin
+[00:00:03.958,129] <inf> deca_spi: openspi bus SPI_3
+[00:00:04.985,931] <inf> simple_tx: SIMPLE TX v1.0
+[00:00:04.985,961] <inf> port: reset_DWIC
+[00:00:04.990,631] <inf> deca_device: dev_id "deca0302"
+[00:00:04.993,743] <inf> simple_tx: len 10
+                                    c5 00 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:05.494,262] <inf> simple_tx: len 10
+                                    c5 01 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:06.026,947] <inf> simple_tx: len 10
+                                    c5 02 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:06.527,465] <inf> simple_tx: len 10
+                                    c5 03 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:07.054,229] <inf> simple_tx: len 10
+                                    c5 04 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:07.554,748] <inf> simple_tx: len 10
+                                    c5 05 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:08.081,512] <inf> simple_tx: len 10
+                                    c5 06 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:08.582,031] <inf> simple_tx: len 10
+                                    c5 07 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:09.108,856] <inf> simple_tx: len 10
+                                    c5 08 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:09.609,375] <inf> simple_tx: len 10
+                                    c5 09 44 45 43 41 57 41  56 45                   |..DECAWA VE
 ```
 
 This shows the output from the receiving example `ex_02a_simple_rx`.
 ```
 *** Booting Zephyr OS build zephyr-v2.5.0-1675-gd6567ad494a0  ***
 
-[00:00:05.902,648] <inf> main: main_thread
-[00:00:05.902,679] <inf> port: Configure WAKEUP pin
-[00:00:05.902,679] <inf> port: Configure RESET pin
-[00:00:05.902,709] <inf> port: Configure RX LED pin
-[00:00:05.902,709] <inf> port: Configure TX LED pin
-[00:00:05.902,709] <inf> deca_spi: openspi bus SPI_3
-[00:00:06.930,786] <inf> simple_rx: SIMPLE RX v1.0
-[00:00:06.930,816] <inf> port: reset_DWIC
-[00:00:06.935,516] <inf> deca_device: dev_id "deca0302"
-[00:00:06.938,598] <inf> simple_rx: Ready to Receive
-[00:00:07.352,325] <inf> simple_rx: Frame Received: len 12
-[00:00:07.352,325] <inf> simple_rx: frame
-                                    c5 38 44 45 43 41 57 41  56 45 00 00             |.8DECAWA VE..    
-[00:00:07.861,541] <inf> simple_rx: Frame Received: len 12
-[00:00:07.861,541] <inf> simple_rx: frame
-                                    c5 39 44 45 43 41 57 41  56 45 00 00             |.9DECAWA VE..    
-[00:00:08.362,091] <inf> simple_rx: Frame Received: len 12
-[00:00:08.362,121] <inf> simple_rx: frame
-                                    c5 3a 44 45 43 41 57 41  56 45 00 00             |.:DECAWA VE..    
-[00:00:08.871,368] <inf> simple_rx: Frame Received: len 12
-[00:00:08.871,368] <inf> simple_rx: frame
-                                    c5 3b 44 45 43 41 57 41  56 45 00 00             |.;DECAWA VE..    
-[00:00:09.400,634] <inf> simple_rx: Frame Received: len 12
-[00:00:09.400,665] <inf> simple_rx: frame
-                                    c5 3c 44 45 43 41 57 41  56 45 00 00             |.<DECAWA VE..    
-[00:00:09.881,134] <inf> simple_rx: Frame Received: len 12
-[00:00:09.881,164] <inf> simple_rx: frame
-                                    c5 3d 44 45 43 41 57 41  56 45 00 00             |.=DECAWA VE..    
-[00:00:10.381,744] <inf> simple_rx: Frame Received: len 12
-[00:00:10.381,744] <inf> simple_rx: frame
-                                    c5 3e 44 45 43 41 57 41  56 45 00 00             |.>DECAWA VE..  
+[00:00:05.493,286] <inf> main: main_thread
+[00:00:05.493,316] <inf> port: Configure WAKEUP pin
+[00:00:05.493,316] <inf> port: Configure RESET pin
+[00:00:05.493,347] <inf> port: Configure RX LED pin
+[00:00:05.493,347] <inf> port: Configure TX LED pin
+[00:00:05.493,347] <inf> deca_spi: openspi bus SPI_3
+[00:00:06.521,514] <inf> simple_rx: SIMPLE RX v1.0
+[00:00:06.521,545] <inf> port: reset_DWIC
+[00:00:06.526,214] <inf> deca_device: dev_id "deca0302"
+[00:00:06.529,235] <inf> simple_rx: Ready to Receive
+[00:00:06.893,493] <inf> simple_rx: len 10
+                                    c5 d3 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:07.394,012] <inf> simple_rx: len 10
+                                    c5 d4 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:07.920,806] <inf> simple_rx: len 10
+                                    c5 d5 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:08.421,295] <inf> simple_rx: len 10
+                                    c5 d6 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:08.948,577] <inf> simple_rx: len 10
+                                    c5 d7 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:09.448,669] <inf> simple_rx: len 10
+                                    c5 d8 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:09.976,348] <inf> simple_rx: len 10
+                                    c5 d9 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:10.475,982] <inf> simple_rx: len 10
+                                    c5 da 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:11.004,150] <inf> simple_rx: len 10
+                                    c5 db 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:11.503,295] <inf> simple_rx: len 10
+                                    c5 dc 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:12.031,982] <inf> simple_rx: len 10
+                                    c5 dd 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:12.530,670] <inf> simple_rx: len 10
+                                    c5 de 44 45 43 41 57 41  56 45                   |..DECAWA VE      
 ```
 ## Examples
 Below is the examples directory tree layout.
