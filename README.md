@@ -6,6 +6,12 @@ This project contains firmware examples for the Decawave DWM3000-series Ultra Wi
 
 This port to Zephyr generally follows the Qorvo/Decawave [DWM3000 SDK Release V1.1](https://www.qorvo.com/products/p/DWS3000#documents). It is advised to review the SDK's content to get a general understanding of how the examples are intended to function. 
 
+## State of Project
+Currently only the PCA10056 (nRF52840) + DWS3000 are fully functional...see Sample Outputs section below.  
+The goal is to have the DWS3000 also work with the PCA10040 (nRF52832) and the DWM1001 (nRF52832) boards.  
+A PCA10056 + DWS3000 indicates a framing error when receiving from a DWM1001 sender... under investigation.  
+The PCA10040 board with DWS3000 does not get pass initialization...again, under investigation.  
+
 ### Terminology
 * "Decawave" means "Qorvo/Decwave".   Decawave was recently acquiered by Qorvo.
 * "DWM3000" is the Qorvo/Decawave hardware module with embedded DW3110 UWB IC chip.
