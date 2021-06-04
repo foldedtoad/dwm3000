@@ -162,11 +162,29 @@ For the above build example of `ex_00a_reading_dev_id`, if you have RTT message 
 ![screenshot2](https://github.com/foldedtoad/dwm3000/blob/master/docs/rtt_console.png)
 
 ## Sample Outputs
-Below is a matching of send and receive demos: ex_01a_simple_tx and ex_02a_simple_rx.
+Below is a matching of send and receive demos: `ex_01a_simple_tx` and `ex_02a_simple_rx`.
 
 This shows th3e output from the sending example `ex_01a_simple_tx`.
 ```
-<need sending console log>
+*** Booting Zephyr OS build zephyr-v2.5.0-1675-gd6567ad494a0  ***
+
+[00:00:08.232,696] <inf> main: main_thread
+[00:00:08.232,696] <inf> port: Configure WAKEUP pin
+[00:00:08.232,727] <inf> port: Configure RESET pin
+[00:00:08.232,727] <inf> port: Configure RX LED pin
+[00:00:08.232,727] <inf> port: Configure TX LED pin
+[00:00:08.232,727] <inf> deca_spi: openspi bus SPI_3
+[00:00:09.260,833] <inf> simple_tx: SIMPLE TX v1.0
+[00:00:09.260,864] <inf> port: reset_DWIC
+[00:00:09.265,502] <inf> deca_device: dev_id "deca0302"
+[00:00:09.269,012] <inf> simple_tx: TX Frame Sent
+[00:00:09.769,500] <inf> simple_tx: TX Frame Sent
+[00:00:10.284,423] <inf> simple_tx: TX Frame Sent
+[00:00:10.784,912] <inf> simple_tx: TX Frame Sent
+[00:00:11.294,158] <inf> simple_tx: TX Frame Sent
+[00:00:11.794,647] <inf> simple_tx: TX Frame Sent
+[00:00:12.303,924] <inf> simple_tx: TX Frame Sent
+[00:00:12.804,412] <inf> simple_tx: TX Frame Sent
 ```
 
 This shows the output from the receiving example `ex_02a_simple_rx`.
