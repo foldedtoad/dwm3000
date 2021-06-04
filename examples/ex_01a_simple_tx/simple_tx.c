@@ -128,7 +128,7 @@ int app_main(void)
         {
             char len[5];
             sprintf(len, "len %d", FRAME_LENGTH-FCS_LEN);
-            LOG_HEXDUMP_INF((char*)&tx_msg, sizeof(tx_msg), (char*) &len);            
+            LOG_HEXDUMP_INF((char*)&tx_msg, sizeof(tx_msg), (char*) &len);
         }
 
         /* Write frame data to DW IC and prepare transmission. See NOTE 3 below.*/
