@@ -32,7 +32,7 @@
 
 #define LOG_LEVEL 3
 #include <logging/log.h>
-LOG_MODULE_REGISTER(simple_tx);
+LOG_MODULE_REGISTER(tx_wait_resp);
 
 /* Example application name */
 #define APP_NAME "TX WAITRESP v1.0"
@@ -146,6 +146,10 @@ int app_main(void)
         while (1) { /* spin */ };
     }
 
+    /* Enabling LEDs here for debug so that for each TX the D1 LED will flash
+     * on DW3000 red eval-shield boards. */
+    dwt_setleds(DWT_LEDS_ENABLE | DWT_LEDS_INIT_BLINK) ;
+
     /* Configure the TX spectrum parameters (power, PG delay and PG count) */
     dwt_configuretxrf(&txconfig_options);
 
@@ -157,6 +161,11 @@ int app_main(void)
 
     /* Loop forever sending and receiving frames periodically. */
     while (1) {
+        {
+            char len[5];
+            sprintf(len, "len %d", sizeof(tx_msg));
+            LOG_HEXDUMP_INF((char*)&tx_msg, sizeof(tx_msg), (char*) &len);            
+        }
 
         /* Write frame data to DW3000 and prepare transmission. See NOTE 7 below. */
         dwt_writetxdata(sizeof(tx_msg), tx_msg, 0); /* Zero offset in TX buffer. */
@@ -172,6 +181,8 @@ int app_main(void)
         { /* spin */ };
 
         if (status_reg & SYS_STATUS_RXFCG_BIT_MASK) {
+
+            LOG_INF("Resp OK");
 
             /* Clear local RX buffer to avoid having leftovers from previous 
              * receptions. This is not necessary but is included here to aid 

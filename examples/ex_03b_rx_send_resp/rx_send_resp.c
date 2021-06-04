@@ -170,6 +170,12 @@ int app_main(void)
             /* Clear good RX frame event in the DW IC status register. */
             dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_RXFCG_BIT_MASK);
 
+            {
+                char len[5];
+                sprintf(len, "len %d", frame_len);
+                LOG_HEXDUMP_INF((char*)&rx_buffer, frame_len, (char*) &len);
+            }
+
             /* Validate the frame is the one expected as sent by "TX then 
              * wait for a response" example. */
             if ((frame_len == 14) && 
