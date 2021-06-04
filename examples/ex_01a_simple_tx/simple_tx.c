@@ -52,6 +52,7 @@ static dwt_config_t config = {
  *     - byte 2 -> 9: device ID, see NOTE 1 below.
  */
 static uint8_t tx_msg[] = {0xC5, 0, 'D', 'E', 'C', 'A', 'W', 'A', 'V', 'E'};
+
 /* Index to access to sequence number of the blink frame in the tx_msg array. */
 #define BLINK_FRAME_SN_IDX 1
 
@@ -124,6 +125,11 @@ int app_main(void)
 
     /* Loop forever sending frames periodically. */
     while (1) {
+        {
+            char len[5];
+            sprintf(len, "len %d", FRAME_LENGTH-FCS_LEN);
+            LOG_HEXDUMP_INF((char*)&tx_msg, sizeof(tx_msg), (char*) &len);            
+        }
 
         /* Write frame data to DW IC and prepare transmission. See NOTE 3 below.*/
         dwt_writetxdata(FRAME_LENGTH-FCS_LEN, tx_msg, 0); /* Zero offset in TX buffer. */
@@ -147,7 +153,7 @@ int app_main(void)
         /* Clear TX frame sent event. */
         dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS_BIT_MASK);
 
-        LOG_INF("TX Frame Sent");
+        //LOG_INF("TX Frame Sent");
 
         /* Execute a delay between transmissions. */
         Sleep(TX_DELAY_MS);

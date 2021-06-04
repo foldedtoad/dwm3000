@@ -37,7 +37,7 @@ static dwt_config_t config = {
     DWT_PAC8,        /* Preamble acquisition chunk size. Used in RX only. */
     9,               /* TX preamble code. Used in TX only. */
     9,               /* RX preamble code. Used in RX only. */
-     1,               /* 0 to use standard 8 symbol SFD, 
+    1,               /* 0 to use standard 8 symbol SFD, 
                       *   1 to use non-standard 8 symbol, 
                       *   2 for non-standard 16 symbol SFD and 
                       *   3 for 4z 8 symbol SDF type */
@@ -126,8 +126,20 @@ int app_main(void)
         while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG_BIT_MASK | SYS_STATUS_ALL_RX_ERR )))
         { /* spin */ };
 
+        //LOG_INF("status_reg: 0x%08x %s", status_reg,
+        //        (status_reg & SYS_STATUS_RXFCG_BIT_MASK) ? "Good" : 
+        //        (status_reg & SYS_STATUS_ALL_RX_ERR) ? "Error" : "???");
+
+        if (status_reg & SYS_STATUS_RXPHE_BIT_MASK)  LOG_ERR("receive error: RXPHE");  // Phy. Header Error
+        if (status_reg & SYS_STATUS_RXFCE_BIT_MASK)  LOG_ERR("receive error: RXFCE");  // Rcvd Frame & CRC Error
+        if (status_reg & SYS_STATUS_RXFSL_BIT_MASK)  LOG_ERR("receive error: RXFSL");  // Frame Sync Loss
+        if (status_reg & SYS_STATUS_RXSTO_BIT_MASK)  LOG_ERR("receive error: RXSTO");  // Rcv Timeout
+        if (status_reg & SYS_STATUS_ARFE_BIT_MASK)   LOG_ERR("receive error: ARFE");   // Rcv Frame Error
+        if (status_reg & SYS_STATUS_CIAERR_BIT_MASK) LOG_ERR("receive error: CIAERR"); //
+
         if (status_reg & SYS_STATUS_RXFCG_BIT_MASK) {
-            /* A frame has been received, copy it to our local buffer. */
+            
+            /* A frame has been received, copy it to our local buffer. */   
             frame_len = dwt_read32bitreg(RX_FINFO_ID) & RX_FINFO_RXFLEN_BIT_MASK;
             if (frame_len <= FRAME_LEN_MAX) {
                 dwt_readrxdata(rx_buffer, frame_len-FCS_LEN, 0); /* No need to read the FCS/CRC. */
@@ -136,8 +148,11 @@ int app_main(void)
             /* Clear good RX frame event in the DW IC status register. */
             dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_RXFCG_BIT_MASK);
 
-            LOG_INF("Frame Received");
-
+            {
+                char len[5];
+                sprintf(len, "len %d", frame_len-FCS_LEN);
+                LOG_HEXDUMP_INF((char*)&rx_buffer, frame_len-FCS_LEN, (char*) &len);
+            }
         }
         else {
             /* Clear RX error events in the DW IC status register. */
