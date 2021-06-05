@@ -75,7 +75,8 @@ static uint8_t tx_msg[] = {0xC5, 0, 'D', 'E', 'C', 'A', 'W', 'A', 'V', 'E', 0x43
 #define TX_TO_RX_DELAY_UUS 60
 
 /* Receive response timeout, expressed in UWB microseconds. See NOTE 4 below. */
-#define RX_RESP_TO_UUS 5000
+//#define RX_RESP_TO_UUS 5000
+#define RX_RESP_TO_UUS 10000
 
 /* Default inter-frame delay period, in milliseconds. */
 #define DFLT_TX_DELAY_MS 1000
@@ -145,6 +146,10 @@ int app_main(void)
         while (1) { /* spin */ };
     }
 
+    /* Enabling LEDs here for debug so that for each TX the D1 LED will flash
+     * on DW3000 red eval-shield boards. */
+    dwt_setleds(DWT_LEDS_ENABLE | DWT_LEDS_INIT_BLINK) ;
+
     /* Configure the TX spectrum parameters (power, PG delay and PG count) */
     dwt_configuretxrf(&txconfig_options);
 
@@ -164,7 +169,7 @@ int app_main(void)
                      0, 
                      DWT_ENABLE_INT);
 
-    /*Clearing the SPI ready interrupt*/
+    /* Clearing the SPI ready interrupt */
     dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_RCINIT_BIT_MASK | SYS_STATUS_SPIRDY_BIT_MASK);
     
     /* Install DW IC IRQ handler. */
@@ -218,13 +223,17 @@ static void rx_ok_cb(const dwt_cb_data_t *cb_data)
     /* Clear local RX buffer to avoid having leftovers from previous receptions.
      * This is not necessary but is included here to aid reading the RX
      * buffer. */
-    for (int i = 0 ; i < FRAME_LEN_MAX; i++ ) {
+    for (int i = 0; i < FRAME_LEN_MAX; i++ ) {
         rx_buffer[i] = 0;
     }
 
     /* A frame has been received, copy it to our local buffer. */
     if (cb_data->datalength <= FRAME_LEN_MAX) {
         dwt_readrxdata(rx_buffer, cb_data->datalength, 0);
+#if 1
+        LOG_INF("OK: len: %d", cb_data->datalength);
+        LOG_HEXDUMP_INF((char*)&rx_buffer, cb_data->datalength, "rx resp");
+#endif
     }
 
     /* Set corresponding inter-frame delay. */
@@ -246,6 +255,8 @@ static void rx_to_cb(const dwt_cb_data_t *cb_data)
 {
     (void) cb_data;
 
+    LOG_INF("%s: timeout", __func__);
+
     /* Set corresponding inter-frame delay. */
     tx_delay_ms = RX_TO_TX_DELAY_MS;
 
@@ -265,6 +276,8 @@ static void rx_err_cb(const dwt_cb_data_t *cb_data)
 {
     (void) cb_data;
 
+    LOG_INF("%s: error", __func__);
+
     /* Set corresponding inter-frame delay. */
     tx_delay_ms = RX_ERR_TX_DELAY_MS;
 
@@ -283,6 +296,8 @@ static void rx_err_cb(const dwt_cb_data_t *cb_data)
 static void tx_conf_cb(const dwt_cb_data_t *cb_data)
 {
     (void) cb_data;
+
+    //LOG_INF("%s: config", __func__);
 
     /* This callback has been defined so that a breakpoint can be put here to 
      * check it is correctly called but there is actually nothing specific to

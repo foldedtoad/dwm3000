@@ -136,7 +136,7 @@ int app_main(void)
 
     /* Optionally enabling LEDs here for debug so that for each TX the D1 LED 
      * will flash on DW3000 red eval-shield boards. See Note 10 below.*/
-    //dwt_setleds(DWT_LEDS_ENABLE | DWT_LEDS_INIT_BLINK) ;
+    dwt_setleds(DWT_LEDS_ENABLE | DWT_LEDS_INIT_BLINK) ;
 
     /* Configure DW IC. See NOTE 2 below. */
     /* If the dwt_configure returns DWT_ERROR either the PLL or RX calibration 
@@ -145,10 +145,6 @@ int app_main(void)
         LOG_INF("CONFIG FAILED");
         while (1) { /* spin */ };
     }
-
-    /* Enabling LEDs here for debug so that for each TX the D1 LED will flash
-     * on DW3000 red eval-shield boards. */
-    dwt_setleds(DWT_LEDS_ENABLE | DWT_LEDS_INIT_BLINK) ;
 
     /* Configure the TX spectrum parameters (power, PG delay and PG count) */
     dwt_configuretxrf(&txconfig_options);
@@ -161,11 +157,10 @@ int app_main(void)
 
     /* Loop forever sending and receiving frames periodically. */
     while (1) {
-        {
-            char len[5];
-            sprintf(len, "len %d", sizeof(tx_msg));
-            LOG_HEXDUMP_INF((char*)&tx_msg, sizeof(tx_msg), (char*) &len);            
-        }
+        
+        char len1[15];
+        sprintf(len1, "msg len %d", sizeof(tx_msg));
+        LOG_HEXDUMP_INF((char*)&tx_msg, sizeof(tx_msg), (char*) &len1);
 
         /* Write frame data to DW3000 and prepare transmission. See NOTE 7 below. */
         dwt_writetxdata(sizeof(tx_msg), tx_msg, 0); /* Zero offset in TX buffer. */
@@ -181,9 +176,6 @@ int app_main(void)
         { /* spin */ };
 
         if (status_reg & SYS_STATUS_RXFCG_BIT_MASK) {
-
-            LOG_INF("Resp OK");
-
             /* Clear local RX buffer to avoid having leftovers from previous 
              * receptions. This is not necessary but is included here to aid 
              * reading the RX buffer. */
@@ -196,6 +188,10 @@ int app_main(void)
             if (frame_len <= FRAME_LEN_MAX) {
                 dwt_readrxdata(rx_buffer, frame_len, 0);
             }
+
+            char len2[15];
+            sprintf(len2, "resp len %d", frame_len);
+            LOG_HEXDUMP_INF((char*)&rx_buffer, frame_len, (char*) &len2);
 
             /* TESTING BREAKPOINT LOCATION #1 */
 

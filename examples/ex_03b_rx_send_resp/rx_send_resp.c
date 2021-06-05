@@ -169,13 +169,11 @@ int app_main(void)
 
             /* Clear good RX frame event in the DW IC status register. */
             dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_RXFCG_BIT_MASK);
-
-            {
-                char len[5];
-                sprintf(len, "len %d", frame_len);
-                LOG_HEXDUMP_INF((char*)&rx_buffer, frame_len, (char*) &len);
-            }
-
+#if 1
+            char len1[15];
+            sprintf(len1, "msg len %d", frame_len);
+            LOG_HEXDUMP_INF((char*)&rx_buffer, frame_len, (char*) &len1);
+#endif
             /* Validate the frame is the one expected as sent by "TX then 
              * wait for a response" example. */
             if ((frame_len == 14) && 
@@ -202,7 +200,11 @@ int app_main(void)
 
                 /* Clear TX frame sent event. */
                 dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS_BIT_MASK);
-
+#if 1
+                char len2[15];
+                sprintf(len2, "resp len %d", sizeof(tx_msg));
+                LOG_HEXDUMP_INF((char*)&tx_msg, sizeof(tx_msg), (char*) &len2);
+#endif
                 /* Increment the data frame sequence number (modulo 256). */
                 tx_msg[DATA_FRAME_SN_IDX]++;
             }
