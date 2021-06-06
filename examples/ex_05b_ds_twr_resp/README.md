@@ -2,7 +2,7 @@
 Measure the distance between two host+DWS3000 boards.
 
 ## Overview
-This sub-project is paied with `ex_05b_ds_twr_init`
+This sub-project is paired with `ex_05b_ds_twr_init`
 
 ## Requirements
 Two complete host+DWS3000 boards are needed: one Init side, and one Resp side.
