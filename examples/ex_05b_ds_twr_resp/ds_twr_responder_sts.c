@@ -2,35 +2,35 @@
  *  @file    ds_twr_responder_sts.c
  *  @brief   Double-sided two-way ranging (DS TWR) responder example code
  *
- *           This is a simple code example which acts as the responder in a 
- *           DS TWR distance measurement exchange. This application waits 
- *           for a "poll" message (recording the RX time-stamp of the poll) 
+ *           This is a simple code example which acts as the responder in a
+ *           DS TWR distance measurement exchange. This application waits
+ *           for a "poll" message (recording the RX time-stamp of the poll)
  *           expected from the "ds_twr_initiator_v2" example code (companion
- *           to this application), and then sends a "response" message to 
- *           complete the exchange. The response message contains all the 
- *           time-stamps recorded by this application, including the 
+ *           to this application), and then sends a "response" message to
+ *           complete the exchange. The response message contains all the
+ *           time-stamps recorded by this application, including the
  *           calculated/predicted TX time-stamp for the response message itself.
- *           The companion "DS TWR initiator" example application works out 
- *           the time-of-flight over-the-air and, thus, the estimated distance 
+ *           The companion "DS TWR initiator" example application works out
+ *           the time-of-flight over-the-air and, thus, the estimated distance
  *           between the two devices.
  *
- *           This example utilises the 802.15.4z STS to accomplish secure 
- *           timestamps between the initiator and responder. A 32-bit STS 
- *           counter is part of the STS IV used to generate the scrambled 
- *           timestamp sequence (STS) in the transmitted packet and to cross 
- *           correlate in the receiver. This count normally advances by 1 for 
+ *           This example utilises the 802.15.4z STS to accomplish secure
+ *           timestamps between the initiator and responder. A 32-bit STS
+ *           counter is part of the STS IV used to generate the scrambled
+ *           timestamp sequence (STS) in the transmitted packet and to cross
+ *           correlate in the receiver. This count normally advances by 1 for
  *           every 1024 chips (~2µs) of STS in BPRF mode, and by 1 for every
  *           5124 chips (~1µs) of STS in HPRF mode. If both devices (initiator
- *           and responder) have count values that are synced, then the 
- *           communication between devices should result in secure timestamps 
+ *           and responder) have count values that are synced, then the
+ *           communication between devices should result in secure timestamps
  *           which can be used to calculate distance. If not, then the devices
  *           need to re-sync their STS counter values.
- *           In this example, the initiator will send a plain-text value of 
- *           it's 32-bit STS counter inside the "poll" frame. The receiver 
- *           first checks the quality of the STS of the received frame. 
- *           If the received frame has bad STS quality, it can then use the 
+ *           In this example, the initiator will send a plain-text value of
+ *           it's 32-bit STS counter inside the "poll" frame. The receiver
+ *           first checks the quality of the STS of the received frame.
+ *           If the received frame has bad STS quality, it can then use the
  *           plain-text counter value received to adjust it's own STS counter
- *           value to match. This means that the next message in the sequence 
+ *           value to match. This means that the next message in the sequence
  *           should be in sync again.
  *
  * @attention
@@ -89,7 +89,7 @@ static uint8_t frame_seq_nb = 0;
 #define RX_BUF_LEN 24//Must be less than FRAME_LEN_MAX_EX
 static uint8_t rx_buffer[RX_BUF_LEN];
 
-/* Hold copy of status register state here for reference so that 
+/* Hold copy of status register state here for reference so that
  * it can be examined at a debug breakpoint. */
 static uint32_t status_reg = 0;
 
@@ -200,9 +200,10 @@ int app_main(void)
         while (1) { /* spin */ };
     }
 
-    /* Enabling LEDs here for debug so that for each TX the D1 LED 
+    /* Enabling LEDs here for debug so that for each TX the D1 LED
      * will flash on DW3000 red eval-shield boards.
-     * Note, in real low power applications the LEDs should not be used. */
+     * Note, in real low power applications the LEDs should not be used.
+     */
     dwt_setleds(DWT_LEDS_ENABLE | DWT_LEDS_INIT_BLINK) ;
 
     /* Configure DW IC. See NOTE 14 below. */
@@ -223,7 +224,7 @@ int app_main(void)
     dwt_setrxantennadelay(RX_ANT_DLY);
     dwt_settxantennadelay(TX_ANT_DLY);
 
-    /* Next can enable TX/RX states output on GPIOs 5 and 6 to help 
+    /* Next can enable TX/RX states output on GPIOs 5 and 6 to help
      * diagnostics, and also TX/RX LEDs */
     dwt_setlnapamode(DWT_LNA_ENABLE | DWT_PA_ENABLE);
 
@@ -255,7 +256,7 @@ int app_main(void)
         }
 
         /* Responder will enable the receive when waiting for Poll message,
-         * the receiver will be automatically enabled (DWT_RESPONSE_EXPECTED) 
+         * the receiver will be automatically enabled (DWT_RESPONSE_EXPECTED)
          * when waiting for Final message */
         if (!messageFlag) {
             /* Increment the loop count only when starting ranging exchange */
@@ -277,7 +278,7 @@ int app_main(void)
         /*
          * Check for a good frame and STS count.
          */
-        if ((status_reg & SYS_STATUS_RXFCG_BIT_MASK) && (goodSts >= 0)) { 
+        if ((status_reg & SYS_STATUS_RXFCG_BIT_MASK) && (goodSts >= 0)) {
 
             /* Clear good RX frame event in the DW IC status register. */
             dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_RXFCG_BIT_MASK);
@@ -289,7 +290,7 @@ int app_main(void)
                 dwt_readrxdata(rx_buffer, frame_len, 0);
 
                 /* Check that the frame is a poll sent by "SS TWR initiator STS" example.
-                 * As the sequence number field of the frame is not relevant, 
+                 * As the sequence number field of the frame is not relevant,
                  * it is cleared to simplify the validation of the frame. */
                 rx_buffer[ALL_MSG_SN_IDX] = 0;
                 if (memcmp(rx_buffer, rx_poll_msg, ALL_MSG_COMMON_LEN) == 0) {
@@ -308,7 +309,7 @@ int app_main(void)
 
                     dwt_setdelayedtrxtime(resp_tx_time);
 
-                    /* Response TX timestamp is the transmission time we 
+                    /* Response TX timestamp is the transmission time we
                      * programmed plus the antenna delay. */
                     resp_tx_ts = (((uint64_t)(resp_tx_time & 0xFFFFFFFEUL)) << 8) + TX_ANT_DLY;
 
@@ -328,7 +329,7 @@ int app_main(void)
 
                     int ret = dwt_starttx(DWT_START_TX_DELAYED | DWT_RESPONSE_EXPECTED);
 
-                    /* If dwt_starttx() returns an error, abandon this ranging 
+                    /* If dwt_starttx() returns an error, abandon this ranging
                      * exchange and proceed to the next one. See NOTE 10 below. */
                     if (ret == DWT_SUCCESS) {
                         /* Poll DW IC until TX frame sent event set. See NOTE 6 below. */
@@ -338,14 +339,14 @@ int app_main(void)
                         /* Clear TXFRS event. */
                         dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS_BIT_MASK);
 
-                        /* Increment frame sequence number after transmission 
+                        /* Increment frame sequence number after transmission
                          * of the poll message (modulo 256). */
                         frame_seq_nb++;
 
                         /*
-                         * This flag is set high here so that we do not reset 
-                         * the STS count before receiving the final message 
-                         * from the initiator. Otherwise, the STS count would 
+                         * This flag is set high here so that we do not reset
+                         * the STS count before receiving the final message
+                         * from the initiator. Otherwise, the STS count would
                          * be bad and we would be unable to receive it.
                          */
                         messageFlag = 1;
@@ -386,11 +387,13 @@ int app_main(void)
 
                     distance_array_index++;
 
-                    /* Display computed distance on UART. */
-                    LOG_INF("DIST: %3.2f m", distance);
+                    /* Display computed distance. */
+                    char dist[20] = {0};
+                    sprintf(dist, "dist %3.2f m", distance);
+                    LOG_INF("%s", log_strdup(dist));
 
-                    /* As DS-TWR initiator is waiting for RNG_DELAY_MS before 
-                     * next poll transmission we can add a delay here before 
+                    /* As DS-TWR initiator is waiting for RNG_DELAY_MS before
+                     * next poll transmission we can add a delay here before
                      * RX is re-enabled again.
                      */
 
@@ -405,7 +408,7 @@ int app_main(void)
                 else {
                     errors[BAD_FRAME_ERR_IDX] += 1;
                     /*
-                     * If any error occurs, we can reset the STS count back 
+                     * If any error occurs, we can reset the STS count back
                      * to default value.
                      */
                     messageFlag = 0;
@@ -414,7 +417,7 @@ int app_main(void)
             else {
                 errors[RTO_ERR_IDX] += 1;
                 /*
-                 * If any error occurs, we can reset the STS count back 
+                 * If any error occurs, we can reset the STS count back
                  * to default value.
                  */
                 messageFlag = 0;
@@ -437,7 +440,7 @@ int app_main(void)
             dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
 
             /*
-             * If any error occurs, we can reset the STS count back 
+             * If any error occurs, we can reset the STS count back
              * to default value.
              */
             messageFlag = 0;

@@ -253,6 +253,8 @@ int app_main(void)
      * diagnostics, and also TX/RX LEDs */
     dwt_setlnapamode(DWT_LNA_ENABLE | DWT_PA_ENABLE);
 
+    LOG_INF("Initiator ready");
+
     /* Loop for user defined number of ranges. */
     while (1) {
         /*
