@@ -37,9 +37,9 @@ static dwt_config_t config = {
     DWT_PAC8,        /* Preamble acquisition chunk size. Used in RX only. */
     9,               /* TX preamble code. Used in TX only. */
     9,               /* RX preamble code. Used in RX only. */
-    1,               /* 0 to use standard 8 symbol SFD, 
-                      *   1 to use non-standard 8 symbol, 
-                      *   2 for non-standard 16 symbol SFD and 
+    1,               /* 0 to use standard 8 symbol SFD,
+                      *   1 to use non-standard 8 symbol,
+                      *   2 for non-standard 16 symbol SFD and
                       *   3 for 4z 8 symbol SDF type */
     DWT_BR_6M8,      /* Data rate. */
     DWT_PHRMODE_STD, /* PHY header mode. */
@@ -58,11 +58,11 @@ static uint8_t rx_buffer[FRAME_LEN_MAX];
  */
 int app_main(void)
 {
-    /* Hold copy of status register state here for reference so that it can 
+    /* Hold copy of status register state here for reference so that it can
      * be examined at a debug breakpoint. */
     uint32_t status_reg;
 
-    /* Hold copy of frame length of frame received (if good) so that it can 
+    /* Hold copy of frame length of frame received (if good) so that it can
      * be examined at a debug breakpoint. */
     uint16_t frame_len;
 
@@ -87,7 +87,7 @@ int app_main(void)
         while (1) { /* spin */ };
     }
 
-    /* Enabling LEDs here for debug so that for each RX-enable the D2 LED will 
+    /* Enabling LEDs here for debug so that for each RX-enable the D2 LED will
      * flash on DW3000 red eval-shield boards. */
     dwt_setleds(DWT_LEDS_ENABLE | DWT_LEDS_INIT_BLINK) ;
 
@@ -109,9 +109,9 @@ int app_main(void)
         /* Clear local RX buffer to avoid having leftovers from previous receptions.
          * This is not necessary but is included here to aid reading
          * the RX buffer.
-         * This is a good place to put a breakpoint. Here (after first time 
+         * This is a good place to put a breakpoint. Here (after first time
          * through the loop) the local status register will be set for last event
-         * and if a good receive has happened the data buffer will have the 
+         * and if a good receive has happened the data buffer will have the
          * data in it, and frame_len will be set to the length of the RX frame. */
         memset(rx_buffer, 0, sizeof(rx_buffer));
 
@@ -126,20 +126,18 @@ int app_main(void)
         while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG_BIT_MASK | SYS_STATUS_ALL_RX_ERR )))
         { /* spin */ };
 
-        //LOG_INF("status_reg: 0x%08x %s", status_reg,
-        //        (status_reg & SYS_STATUS_RXFCG_BIT_MASK) ? "Good" : 
-        //        (status_reg & SYS_STATUS_ALL_RX_ERR) ? "Error" : "???");
-
-        if (status_reg & SYS_STATUS_RXPHE_BIT_MASK)  LOG_ERR("receive error: RXPHE");  // Phy. Header Error
-        if (status_reg & SYS_STATUS_RXFCE_BIT_MASK)  LOG_ERR("receive error: RXFCE");  // Rcvd Frame & CRC Error
-        if (status_reg & SYS_STATUS_RXFSL_BIT_MASK)  LOG_ERR("receive error: RXFSL");  // Frame Sync Loss
-        if (status_reg & SYS_STATUS_RXSTO_BIT_MASK)  LOG_ERR("receive error: RXSTO");  // Rcv Timeout
-        if (status_reg & SYS_STATUS_ARFE_BIT_MASK)   LOG_ERR("receive error: ARFE");   // Rcv Frame Error
-        if (status_reg & SYS_STATUS_CIAERR_BIT_MASK) LOG_ERR("receive error: CIAERR"); //
+        if (status_reg & SYS_STATUS_ALL_RX_ERR) {
+            if (status_reg & SYS_STATUS_RXPHE_BIT_MASK)  LOG_ERR("receive error: RXPHE");  // Phy. Header Error
+            if (status_reg & SYS_STATUS_RXFCE_BIT_MASK)  LOG_ERR("receive error: RXFCE");  // Rcvd Frame & CRC Error
+            if (status_reg & SYS_STATUS_RXFSL_BIT_MASK)  LOG_ERR("receive error: RXFSL");  // Frame Sync Loss
+            if (status_reg & SYS_STATUS_RXSTO_BIT_MASK)  LOG_ERR("receive error: RXSTO");  // Rcv Timeout
+            if (status_reg & SYS_STATUS_ARFE_BIT_MASK)   LOG_ERR("receive error: ARFE");   // Rcv Frame Error
+            if (status_reg & SYS_STATUS_CIAERR_BIT_MASK) LOG_ERR("receive error: CIAERR"); //
+        }
 
         if (status_reg & SYS_STATUS_RXFCG_BIT_MASK) {
-            
-            /* A frame has been received, copy it to our local buffer. */   
+
+            /* A frame has been received, copy it to our local buffer. */
             frame_len = dwt_read32bitreg(RX_FINFO_ID) & RX_FINFO_RXFLEN_BIT_MASK;
             if (frame_len <= FRAME_LEN_MAX) {
                 dwt_readrxdata(rx_buffer, frame_len-FCS_LEN, 0); /* No need to read the FCS/CRC. */
