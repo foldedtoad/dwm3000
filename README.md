@@ -170,7 +170,7 @@ For the above build example of `ex_00a_reading_dev_id`, if you have RTT message 
 ## Sample Outputs
 Below is a matching of send and receive demos: `ex_01a_simple_tx` and `ex_02a_simple_rx`.
 
-This shows th3e output from the sending example `ex_01a_simple_tx`.
+This shows the output from the sending example `ex_01a_simple_tx`.
 ```
 *** Booting Zephyr OS build zephyr-v2.5.0-1675-gd6567ad494a0  ***
 
