@@ -7,7 +7,7 @@
 ## Building and Running
 
 ## Sample Output
-=============
+```
 *** Booting Zephyr OS build zephyr-v2.5.0-1675-gd6567ad494a0  ***
 
 [00:00:03.958,068] <inf> main: main_thread
