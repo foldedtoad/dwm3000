@@ -1,17 +1,15 @@
-DWM3000 - ex_05a_ds_twr_init
-#########################
+# DWM3000 - ex_05a_ds_twr_init
+Measure the distance between two host+DWS3000 boards.
 
-Overview
-********
+## Overview
+This sub-project is paied with `ex_05b_ds_twr_resp`
 
-Requirements
-************
+## Requirements
+Two complete host+DWS3000 boards are needed: one Init side, and one Resp side.
 
-Building and Running
-********************
+## Building and Running
 
-Sample Output
-=============
+## Sample Output
 ```
     *** Booting Zephyr OS build zephyr-v2.5.0-1675-gd6567ad494a0  ***
 
