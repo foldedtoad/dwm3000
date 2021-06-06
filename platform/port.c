@@ -132,6 +132,7 @@ int peripherals_init (void)
     /* Reset */
     LOG_INF("Configure RESET pin");
     gpio_pin_configure(gpio_dev, RESET_GPIO_PIN, GPIO_OUTPUT);
+    gpio_pin_set(gpio_dev, RESET_GPIO_PIN, 1);  // insure pin not held in reset
 
     /* RX LED */
     LOG_INF("Configure RX LED pin");
