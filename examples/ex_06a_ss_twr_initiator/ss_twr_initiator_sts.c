@@ -2,30 +2,30 @@
  *  @file    ss_twr_initiator_sts.c
  *  @brief   Single-sided two-way ranging (SS TWR) initiator example code
  *
- *           This is a simple code example which acts as the initiator in a 
- *           SS TWR distance measurement exchange. This application sends a 
+ *           This is a simple code example which acts as the initiator in a
+ *           SS TWR distance measurement exchange. This application sends a
  *           "poll" frame (recording the TX time-stamp of the poll), after which
  *           it waits for a "response" message from the "ss_twr_responder_sts"
- *           example code (companion to this application) to complete the 
+ *           example code (companion to this application) to complete the
  *           exchange.
  *
- *           This example utilises the 802.15.4z STS to accomplish secure 
- *           timestamps between the initiator and responder. A 32-bit STS 
- *           counter is part of the STS IV used to generate the scrambled 
- *           timestamp sequence (STS) in the transmitted packet and to cross 
- *           correlate in the receiver. This count normally advances by 1 for 
- *           every 1024 chips (~2탎) of STS in BPRF mode, and by 1 for every 
- *           512 chips (~1탎) of STS in HPRF mode. If both devices (initiator 
- *           and responder) have count values that are synced, then the 
- *           communication between devices should result in secure timestamps 
+ *           This example utilises the 802.15.4z STS to accomplish secure
+ *           timestamps between the initiator and responder. A 32-bit STS
+ *           counter is part of the STS IV used to generate the scrambled
+ *           timestamp sequence (STS) in the transmitted packet and to cross
+ *           correlate in the receiver. This count normally advances by 1 for
+ *           every 1024 chips (~2탎) of STS in BPRF mode, and by 1 for every
+ *           512 chips (~1탎) of STS in HPRF mode. If both devices (initiator
+ *           and responder) have count values that are synced, then the
+ *           communication between devices should result in secure timestamps
  *           which can be used to calculate distance. If not, then the devices
  *           need to re-sync their STS counter values.
- *           In this example, the initiator will send a plain-text value of 
+ *           In this example, the initiator will send a plain-text value of
  *           it's 32-bit STS counter inside the "poll" frame. The receiver first
- *           checks the quality of the STS of the received frame. If the 
+ *           checks the quality of the STS of the received frame. If the
  *           received frame has bad STS quality, it can then use the plain-text
- *           counter value received to adjust it's own STS counter value to 
- *           match. This means that the next message in the sequence should 
+ *           counter value received to adjust it's own STS counter value to
+ *           match. This means that the next message in the sequence should
  *           be in sync again.
  *
  * @attention
@@ -183,7 +183,7 @@ int app_main(void)
     /* Reset DW IC */
     reset_DWIC();
 
-    Sleep(2); 
+    Sleep(2);
 
     /* Need to make sure DW IC is in IDLE_RC before proceeding */
     while (!dwt_checkidlerc()) { /* spin */ };
@@ -193,7 +193,7 @@ int app_main(void)
         while (1) { /* spin */ };
     }
 
-    /* Enabling LEDs here for debug so that for each TX the D1 LED will 
+    /* Enabling LEDs here for debug so that for each TX the D1 LED will
      * flash on DW3000 red eval-shield boards.
      * Note, in real low power applications the LEDs should not be used. */
     dwt_setleds(DWT_LEDS_ENABLE | DWT_LEDS_INIT_BLINK) ;
@@ -217,11 +217,11 @@ int app_main(void)
     dwt_settxantennadelay(TX_ANT_DLY);
 
     /* Set expected response's timeout. See NOTE 1 and 5 below.
-     * As this example only handles one incoming frame with always the same 
+     * As this example only handles one incoming frame with always the same
      * delay, this value can be set here once for all. */
     set_resp_rx_timeout(RESP_RX_TIMEOUT_UUS, &config_options);
 
-    /* Next can enable TX/RX states output on GPIOs 5 and 6 to help diagnostics, 
+    /* Next can enable TX/RX states output on GPIOs 5 and 6 to help diagnostics,
      * and also TX/RX LEDs */
     dwt_setlnapamode(DWT_LNA_ENABLE | DWT_PA_ENABLE);
 
@@ -262,10 +262,10 @@ int app_main(void)
         /* Activate reception a set time period after the TX timestamp for the POLL message. */
         dwt_rxenable(DWT_START_RX_DLY_TS);
 
-        /* We assume that the transmission is achieved correctly, poll for 
+        /* We assume that the transmission is achieved correctly, poll for
          * reception of a frame or error/timeout. See NOTE 8 below. */
-        while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG_BIT_MASK | 
-                                                                   SYS_STATUS_ALL_RX_TO | 
+        while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG_BIT_MASK |
+                                                                   SYS_STATUS_ALL_RX_TO |
                                                                    SYS_STATUS_ALL_RX_ERR)))
         { /* spin */ };
 
@@ -293,9 +293,9 @@ int app_main(void)
 
                 dwt_readrxdata(rx_buffer, frame_len, 0);
 
-                /* Check that the frame is the expected response from the 
+                /* Check that the frame is the expected response from the
                  * companion "SS TWR responder" example.
-                 * As the sequence number field of the frame is not relevant, 
+                 * As the sequence number field of the frame is not relevant,
                  * it is cleared to simplify the validation of the frame. */
                 rx_buffer[ALL_MSG_SN_IDX] = 0;
                 if (memcmp(rx_buffer, rx_resp_msg, ALL_MSG_COMMON_LEN) == 0) {
@@ -304,12 +304,12 @@ int app_main(void)
                     int32_t rtd_init, rtd_resp;
                     float clockOffsetRatio ;
 
-                    /* Retrieve poll transmission and response reception timestamps. 
+                    /* Retrieve poll transmission and response reception timestamps.
                      * See NOTE 9 below. */
                     poll_tx_ts = dwt_readtxtimestamplo32();
                     resp_rx_ts = dwt_readrxtimestamplo32();
 
-                    /* Read carrier integrator value and calculate clock offset ratio. 
+                    /* Read carrier integrator value and calculate clock offset ratio.
                      * See NOTE 11 below. */
                     clockOffsetRatio = ((float)dwt_readclockoffset()) / (uint32_t)(1<<26);
 
@@ -317,7 +317,7 @@ int app_main(void)
                     resp_msg_get_ts(&rx_buffer[RESP_MSG_POLL_RX_TS_IDX], &poll_rx_ts);
                     resp_msg_get_ts(&rx_buffer[RESP_MSG_RESP_TX_TS_IDX], &resp_tx_ts);
 
-                    /* Compute time of flight and distance, using clock offset 
+                    /* Compute time of flight and distance, using clock offset
                      * ratio to correct for differing local and remote clock rates */
                     rtd_init = resp_rx_ts - poll_tx_ts;
                     rtd_resp = resp_tx_ts - poll_rx_ts;
@@ -325,8 +325,10 @@ int app_main(void)
                     tof = ((rtd_init - rtd_resp * (1 - clockOffsetRatio)) / 2.0) * DWT_TIME_UNITS;
                     distance = tof * SPEED_OF_LIGHT;
 
-                    /* Display computed distance on LCD. */
-                    LOG_INF("DIST: %3.2f m", distance);
+                    /* Display computed distance. */
+                    char dist[20] = {0};
+                    sprintf(dist, "dist %3.2f m", distance);
+                    LOG_INF("%s", log_strdup(dist));
                 }
                 else {
                     errors[BAD_FRAME_ERR_IDX] += 1;
@@ -352,8 +354,8 @@ int app_main(void)
         }
 
         /* Clear RX error/timeout events in the DW IC status register. */
-        dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_GOOD | 
-                                         SYS_STATUS_ALL_RX_TO   | 
+        dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_GOOD |
+                                         SYS_STATUS_ALL_RX_TO   |
                                          SYS_STATUS_ALL_RX_ERR);
 
         /* Execute a delay between ranging exchanges. */

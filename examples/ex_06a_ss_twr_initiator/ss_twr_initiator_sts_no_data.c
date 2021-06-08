@@ -200,7 +200,7 @@ int app_main(void)
         while (1) { /* spin */ };
     }
 
-    /* Enabling LEDs here for debug so that for each TX the D1 LED 
+    /* Enabling LEDs here for debug so that for each TX the D1 LED
      * will flash on DW3000 red eval-shield boards.
      * Note, in real low power applications the LEDs should not be used. */
     dwt_setleds(DWT_LEDS_ENABLE | DWT_LEDS_INIT_BLINK) ;
@@ -209,7 +209,7 @@ int app_main(void)
     dwt_setrxantennadelay(RX_ANT_DLY);
     dwt_settxantennadelay(TX_ANT_DLY);
 
-    /* Next can enable TX/RX states output on GPIOs 5 and 6 to help 
+    /* Next can enable TX/RX states output on GPIOs 5 and 6 to help
      * diagnostics, and also TX/RX LEDs */
     dwt_setlnapamode(DWT_LNA_ENABLE | DWT_PA_ENABLE);
 
@@ -267,11 +267,11 @@ int app_main(void)
          */
         set_delayed_rx_time(POLL_TX_TO_RESP_RX_DLY_UUS, &config_option_sp3);
 
-        /* Activate reception a set time period after the TX timestamp 
+        /* Activate reception a set time period after the TX timestamp
          * for the POLL packet. */
         dwt_rxenable(DWT_START_RX_DLY_TS);
 
-        /* We assume that the transmission is achieved correctly, poll 
+        /* We assume that the transmission is achieved correctly, poll
          * for reception of a packet or error/timeout. See NOTE 7 below. */
         /* STS Mode 3 packets are polled for differently than STS Mode 0 frames */
         while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFR_BIT_MASK | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_ND_RX_ERR)))
@@ -303,9 +303,9 @@ int app_main(void)
                 /*
                  * Set a reference time for the RX to start after TX timestamp.
                  * See NOTE 10 below.
-                 * Also, since this is the second receiver enable delay that is 
+                 * Also, since this is the second receiver enable delay that is
                  * set with reference to the last received TX timestamp,
-                 * we add ~1000us to the delay to account for the time taken 
+                 * we add ~1000us to the delay to account for the time taken
                  * turning on the receiver for the RESP message and
                  * reconfiguring the device before receiving the STS Mode 3 packet.
                  */
@@ -316,8 +316,8 @@ int app_main(void)
                 /*
                  * Now wait for REPORT frame
                  */
-                /* We assume that the transmission is achieved correctly, 
-                 * poll for reception of a frame or error/timeout. 
+                /* We assume that the transmission is achieved correctly,
+                 * poll for reception of a frame or error/timeout.
                  * See NOTE 7 below. */
                 while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG_BIT_MASK | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)))
                 { /* spin */ };
@@ -335,14 +335,14 @@ int app_main(void)
 
                         dwt_readrxdata(rx_buffer, frame_len, 0);
 
-                        /* Check that the frame is the expected response from the 
+                        /* Check that the frame is the expected response from the
                          * companion "SS TWR responder" example.
-                         * As the sequence number field of the frame is not relevant, 
+                         * As the sequence number field of the frame is not relevant,
                          * it is cleared to simplify the validation of the frame. */
                         rx_buffer[ALL_MSG_SN_IDX] = 0;
                         if (memcmp(rx_buffer, rx_report_msg, ALL_MSG_COMMON_LEN) == 0) {
 
-                            /* Read carrier integrator value and calculate clock offset ratio. 
+                            /* Read carrier integrator value and calculate clock offset ratio.
                              * See NOTE 9 below. */
                             clockOffsetRatio = ((float)dwt_readclockoffset()) / (uint32_t)(1<<26);
 
@@ -350,7 +350,7 @@ int app_main(void)
                             resp_msg_get_ts(&rx_buffer[REPORT_MSG_POLL_RX_TS_IDX], &poll_rx_ts);
                             resp_msg_get_ts(&rx_buffer[REPORT_MSG_RESP_TX_TS_IDX], &resp_tx_ts);
 
-                            /* Compute time of flight and distance, using clock offset 
+                            /* Compute time of flight and distance, using clock offset
                              * ratio to correct for differing local and remote clock rates */
                             rtd_init = resp_rx_ts - poll_tx_ts;
                             rtd_resp = resp_tx_ts - poll_rx_ts;
@@ -358,8 +358,10 @@ int app_main(void)
                             tof = ((rtd_init - rtd_resp * (1 - clockOffsetRatio)) / 2.0) * DWT_TIME_UNITS;
                             distance = tof * SPEED_OF_LIGHT;
 
-                            /* Display computed distance on LCD. */
-                            LOG_INF("DIST: %3.2f m", distance);
+                            /* Display computed distance. */
+                            char dist[20] = {0};
+                            sprintf(dist, "dist %3.2f m", distance);
+                            LOG_INF("%s", log_strdup(dist));
                         }
                         else {
                             errors[BAD_FRAME_ERR_IDX] += 1;
@@ -389,8 +391,8 @@ int app_main(void)
         }
 
         /* Clear RX error/timeout events in the DW IC status register. */
-        dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_GOOD | 
-                                         SYS_STATUS_ALL_RX_TO   | 
+        dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_GOOD |
+                                         SYS_STATUS_ALL_RX_TO   |
                                          SYS_STATUS_ALL_RX_ERR);
 
         /* Execute a delay between ranging exchanges. */
