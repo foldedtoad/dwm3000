@@ -2,7 +2,7 @@
  *  @file    ex_04a_main.c
  *  @brief   Continuous wave mode example code
  *
- *           This example code activates continuous wave mode on channel 5 for 
+ *           This example code activates continuous wave mode on channel 5 for
  *           2 minutes before stopping operation.
  *
  * @attention
@@ -27,7 +27,7 @@
 #include <logging/log.h>
 LOG_MODULE_REGISTER(cont_wave);
 
-/* Example application name and version to display on LCD screen. */
+/* Example application name and version to display. */
 #define APP_NAME "CONT WAVE v1.0"
 
 /* Continuous wave duration, in milliseconds. */
@@ -41,9 +41,9 @@ static dwt_config_t config = {
     DWT_PAC32,       /* Preamble acquisition chunk size. Used in RX only. */
     9,               /* TX preamble code. Used in TX only. */
     9,               /* RX preamble code. Used in RX only. */
-    1,               /* 0 to use standard 8 symbol SFD, 
-                      *   1 to use non-standard 8 symbol, 
-                      *   2 for non-standard 16 symbol SFD and 
+    1,               /* 0 to use standard 8 symbol SFD,
+                      *   1 to use non-standard 8 symbol,
+                      *   2 for non-standard 16 symbol SFD and
                       *   3 for 4z 8 symbol SDF type */
     DWT_BR_850K,      /* Data rate. */
     DWT_PHRMODE_STD,  /* PHY header mode. */
@@ -54,9 +54,9 @@ static dwt_config_t config = {
     DWT_PDOA_M0       /* PDOA mode off */
 };
 
-/* Recommended TX power and Pulse Generator delay values for the 
+/* Recommended TX power and Pulse Generator delay values for the
  * mode defined above. */
-/* Power configuration has been specifically set for DW3000 B0 
+/* Power configuration has been specifically set for DW3000 B0
  * rev devices. */
 extern dwt_txconfig_t txconfig_options;
 
@@ -76,25 +76,27 @@ int app_main(void)
     reset_DWIC();
 
     /* Time needed for DW3000 to start up (transition from INIT_RC to IDLE_RC */
-    Sleep(2); 
+    Sleep(2);
 
     /* Need to make sure DW IC is in IDLE_RC before proceeding */
     while (!dwt_checkidlerc()) { };
 
     if (dwt_initialise(DWT_DW_INIT) == DWT_ERROR) {
         LOG_ERR("INIT FAILED");
-        while (1) { };
+        while (1) { /* spin */ };
     }
 
     /* Configure DW IC. */
-    /* If the dwt_configure returns DWT_ERROR either the PLL or RX calibration 
+    /* If the dwt_configure returns DWT_ERROR either the PLL or RX calibration
      * has failed the host should reset the device */
     if (dwt_configure(&config)) {
         LOG_ERR("CONFIG FAILED");
-        while (1) { };
+        while (1) { /* spin */ };
     }
 
     dwt_configuretxrf(&txconfig_options);
+
+    LOG_INF("Continuous wave output for %dms", CONT_WAVE_DURATION_MS);
 
     /* Activate continuous wave mode. */
     dwt_configcwmode(config.chan);
@@ -102,13 +104,14 @@ int app_main(void)
     /* Wait for the wanted duration of the continuous wave transmission. */
     Sleep(CONT_WAVE_DURATION_MS);
 
-    /* Software reset of the DW IC to deactivate continuous wave mode and 
-     * go back to default state. Initialisation and configuration should be 
+    /* Software reset of the DW IC to deactivate continuous wave mode and
+     * go back to default state. Initialisation and configuration should be
      * run again if one wants to get the DW IC back to normal operation. */
     dwt_softreset();
 
-    /* End here. */
-    while (1) { };
+    LOG_INF("done");
+
+    return 0;
 }
 
 /*****************************************************************************************************************************************************
