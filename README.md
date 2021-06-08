@@ -147,7 +147,7 @@ set(SHIELD qorvo_dwm3000)
 * (Optional) Install Segger Ozone (latest) on your build system.
 * (Optional) Install the Nordic [nrfjprog](https://www.nordicsemi.com/Software-and-tools/Development-Tools/nRF-Command-Line-Tools/Download) utility. After installing, make sure that your system's PATH contains the path to where it is installed.
 
-**NOTE:** For MacOS build systems, you may need to install the ARM toolchain. The Zephyr install instructions can guide you though this process. For Linux, the toolchain is included in the Zephyr installion/setup process.
+**NOTE:** For MacOS build systems, you may need to install the ARM toolchain. The Zephyr install instructions can guide you though this process. For Linux, the toolchain is included in the Zephyr installation/setup process.
 
 #### Establishing the Build Environment
 
