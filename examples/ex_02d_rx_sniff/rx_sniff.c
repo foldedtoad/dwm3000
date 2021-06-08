@@ -36,9 +36,9 @@ static dwt_config_t config = {
     DWT_PAC8,        /* Preamble acquisition chunk size. Used in RX only. */
     9,               /* TX preamble code. Used in TX only. */
     9,               /* RX preamble code. Used in RX only. */
-    1,               /* 0 to use standard 8 symbol SFD, 
-                      *   1 to use non-standard 8 symbol, 
-                      *   2 for non-standard 16 symbol SFD and 
+    1,               /* 0 to use standard 8 symbol SFD,
+                      *   1 to use non-standard 8 symbol,
+                      *   2 for non-standard 16 symbol SFD and
                       *   3 for 4z 8 symbol SDF type */
     DWT_BR_6M8,      /* Data rate. */
     DWT_PHRMODE_STD, /* PHY header mode. */
@@ -80,11 +80,11 @@ int app_main(void)
 
     /* Reset DW IC */
     /* Target specific drive of RSTn line into DW IC low for a period. */
-    reset_DWIC(); 
+    reset_DWIC();
 
-    /* Time needed for DW3000 to start up (transition from INIT_RC to 
+    /* Time needed for DW3000 to start up (transition from INIT_RC to
      * IDLE_RC, or could wait for SPIRDY event) */
-    Sleep(2); 
+    Sleep(2);
 
     /* Need to make sure DW IC is in IDLE_RC before proceeding */
     while (!dwt_checkidlerc()) { /* spin */ };
@@ -94,12 +94,12 @@ int app_main(void)
         while (1) { /* spin */ };
     }
 
-    /* This is put here for testing, so that we can see the receiver ON/OFF 
+    /* This is put here for testing, so that we can see the receiver ON/OFF
      * pattern using an oscilloscope. */
     dwt_setlnapamode(DWT_LNA_ENABLE | DWT_PA_ENABLE);
 
     /* Configure DW IC. */
-    /* If the dwt_configure returns DWT_ERROR either the PLL or RX calibration 
+    /* If the dwt_configure returns DWT_ERROR either the PLL or RX calibration
      * has failed the host should reset the device */
     if (dwt_configure(&config)) {
         LOG_INF("CONFIG FAILED");
@@ -114,13 +114,13 @@ int app_main(void)
     {
         /* TESTING BREAKPOINT LOCATION #1 */
 
-        /* Clear local RX buffer to avoid having leftovers from previous 
-         * receptions. This is not necessary but is included here to aid 
+        /* Clear local RX buffer to avoid having leftovers from previous
+         * receptions. This is not necessary but is included here to aid
          * reading the RX buffer.
-         * This is a good place to put a breakpoint. Here (after first time 
-         * through the loop) the local status register will be set for last 
+         * This is a good place to put a breakpoint. Here (after first time
+         * through the loop) the local status register will be set for last
          * event and if a good receive has happened the data buffer will have
-         * the data in it, and frame_len will be set to the length of the 
+         * the data in it, and frame_len will be set to the length of the
          * RX frame. */
         for (int i = 0; i < FRAME_LEN_MAX; i++ ) {
             rx_buffer[i] = 0;
@@ -129,10 +129,10 @@ int app_main(void)
         /* Activate reception immediately. See NOTE 3 below. */
         dwt_rxenable(DWT_START_RX_IMMEDIATE);
 
-        /* Poll until a frame is properly received or an RX error occurs. 
+        /* Poll until a frame is properly received or an RX error occurs.
          * See NOTE 4 below.
-         * STATUS register is 5 bytes long but we are not interested in the 
-         * high byte here, so we read a more manageable 32-bits with this 
+         * STATUS register is 5 bytes long but we are not interested in the
+         * high byte here, so we read a more manageable 32-bits with this
          * API call. */
         while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG_BIT_MASK | SYS_STATUS_ALL_RX_ERR)))
         { /* spin */ };
@@ -145,6 +145,8 @@ int app_main(void)
             frame_len = dwt_read32bitreg(RX_FINFO_ID) & RX_FINFO_RXFLEN_BIT_MASK;
             if (frame_len <= FRAME_LEN_MAX) {
                 dwt_readrxdata(rx_buffer, frame_len, 0);
+
+                LOG_HEXDUMP_INF(rx_buffer, frame_len, "Frame");
             }
         }
         else {
