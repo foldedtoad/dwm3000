@@ -2,16 +2,16 @@
  *  @file    ss_twr_initiator.c
  *  @brief   Single-sided two-way ranging (SS TWR) initiator example code
  *
- *           This is a simple code example which acts as the initiator in a 
- *           SS TWR distance measurement exchange. This application sends 
- *           a "poll" frame (recording the TX time-stamp of the poll), after 
- *           which it waits for a "response" message from the "DS TWR responder" 
- *           example code (companion to this application) to complete the 
- *           exchange.  The response message contains the remote responder's 
- *           time-stamps of poll RX, and response TX. With this data and the 
- *           local time-stamps, (of poll TX and response RX), this example 
- *           application works out a value for the time-of-flight over-the-air 
- *           and, thus, the estimated distance between the two devices, which 
+ *           This is a simple code example which acts as the initiator in a
+ *           SS TWR distance measurement exchange. This application sends
+ *           a "poll" frame (recording the TX time-stamp of the poll), after
+ *           which it waits for a "response" message from the "DS TWR responder"
+ *           example code (companion to this application) to complete the
+ *           exchange.  The response message contains the remote responder's
+ *           time-stamps of poll RX, and response TX. With this data and the
+ *           local time-stamps, (of poll TX and response RX), this example
+ *           application works out a value for the time-of-flight over-the-air
+ *           and, thus, the estimated distance between the two devices, which
  *           it writes to the console.
  *
  * @attention
@@ -50,9 +50,9 @@ static dwt_config_t config = {
     DWT_PAC8,        /* Preamble acquisition chunk size. Used in RX only. */
     9,               /* TX preamble code. Used in TX only. */
     9,               /* RX preamble code. Used in RX only. */
-    1,               /* 0 to use standard 8 symbol SFD, 
-                      *   1 to use non-standard 8 symbol, 
-                      *   2 for non-standard 16 symbol SFD and 
+    1,               /* 0 to use standard 8 symbol SFD,
+                      *   1 to use non-standard 8 symbol,
+                      *   2 for non-standard 16 symbol SFD and
                       *   3 for 4z 8 symbol SDF type */
     DWT_BR_6M8,      /* Data rate. */
     DWT_PHRMODE_STD, /* PHY header mode. */
@@ -97,7 +97,7 @@ static uint32_t status_reg = 0;
 /* Receive response timeout. See NOTE 5 below. */
 #define RESP_RX_TIMEOUT_UUS 400
 
-/* Hold copies of computed time of flight and distance here for reference 
+/* Hold copies of computed time of flight and distance here for reference
  * so that it can be examined at a debug breakpoint. */
 static double tof;
 static double distance;
@@ -126,7 +126,7 @@ int app_main(void)
     /* Reset and initialize DW chip. */
     reset_DWIC();
 
-    Sleep(2); 
+    Sleep(2);
 
     /* Need to make sure DW IC is in IDLE_RC before proceeding */
     while (!dwt_checkidlerc()) { };
@@ -136,7 +136,7 @@ int app_main(void)
         while (1) { /* spin */ };
     }
 
-    /* Enabling LEDs here for debug so that for each TX the D1 LED will 
+    /* Enabling LEDs here for debug so that for each TX the D1 LED will
      * flash on DW3000 red eval-shield boards. */
     dwt_setleds(DWT_LEDS_ENABLE | DWT_LEDS_INIT_BLINK) ;
 
@@ -154,7 +154,7 @@ int app_main(void)
     dwt_settxantennadelay(TX_ANT_DLY);
 
     /* Set expected response's delay and timeout. See NOTE 1 and 5 below.
-     * As this example only handles one incoming frame with always the same 
+     * As this example only handles one incoming frame with always the same
      * delay and timeout, those values can be set here once for all. */
     dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
     dwt_setrxtimeout(RESP_RX_TIMEOUT_UUS);
@@ -162,6 +162,8 @@ int app_main(void)
     /* Next can enable TX/RX states output on GPIOs 5 and 6 to help debug, and also TX/RX LEDs
      * Note, in real low power applications the LEDs should not be used. */
     dwt_setlnapamode(DWT_LNA_ENABLE | DWT_PA_ENABLE);
+
+    LOG_INF("Initiator ready");
 
     /* Loop forever initiating ranging exchanges. */
     while (1) {
@@ -172,15 +174,15 @@ int app_main(void)
         dwt_writetxdata(sizeof(tx_poll_msg), tx_poll_msg, 0); /* Zero offset in TX buffer. */
         dwt_writetxfctrl(sizeof(tx_poll_msg), 0, 1); /* Zero offset in TX buffer, ranging. */
 
-        /* Start transmission, indicating that a response is expected so that 
+        /* Start transmission, indicating that a response is expected so that
          * reception is enabled automatically after the frame is sent and the delay
          * set by dwt_setrxaftertxdelay() has elapsed. */
         dwt_starttx(DWT_START_TX_IMMEDIATE | DWT_RESPONSE_EXPECTED);
 
-        /* We assume that the transmission is achieved correctly, poll for 
+        /* We assume that the transmission is achieved correctly, poll for
          * reception of a frame or error/timeout. See NOTE 8 below. */
         while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG_BIT_MASK |
-                                                                   SYS_STATUS_ALL_RX_TO | 
+                                                                   SYS_STATUS_ALL_RX_TO |
                                                                    SYS_STATUS_ALL_RX_ERR)))
         { /* spin */ };
 
@@ -199,9 +201,9 @@ int app_main(void)
             if (frame_len <= sizeof(rx_buffer)) {
                 dwt_readrxdata(rx_buffer, frame_len, 0);
 
-                /* Check that the frame is the expected response from the 
+                /* Check that the frame is the expected response from the
                  * companion "SS TWR responder" example.
-                 * As the sequence number field of the frame is not relevant, 
+                 * As the sequence number field of the frame is not relevant,
                  * it is cleared to simplify the validation of the frame. */
                 rx_buffer[ALL_MSG_SN_IDX] = 0;
                 if (memcmp(rx_buffer, rx_resp_msg, ALL_MSG_COMMON_LEN) == 0) {
@@ -221,8 +223,8 @@ int app_main(void)
                     resp_msg_get_ts(&rx_buffer[RESP_MSG_POLL_RX_TS_IDX], &poll_rx_ts);
                     resp_msg_get_ts(&rx_buffer[RESP_MSG_RESP_TX_TS_IDX], &resp_tx_ts);
 
-                    /* Compute time of flight and distance, using clock offset 
-                     * ratio to correct for differing local and remote 
+                    /* Compute time of flight and distance, using clock offset
+                     * ratio to correct for differing local and remote
                      * clock rates. */
                     rtd_init = resp_rx_ts - poll_tx_ts;
                     rtd_resp = resp_tx_ts - poll_rx_ts;
@@ -231,7 +233,9 @@ int app_main(void)
                     distance = tof * SPEED_OF_LIGHT;
 
                     /* Display computed distance. */
-                    LOG_INF("DIST: %3.2f m", distance);
+                    char dist[20] = {0};
+                    sprintf(dist, "dist %3.2f m", distance);
+                    LOG_INF("%s", log_strdup(dist));
                 }
             }
         }
