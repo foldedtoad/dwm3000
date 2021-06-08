@@ -5,7 +5,7 @@
  * @attention
  *
  * Copyright 2016 (c) DecaWave Ltd, Dublin, Ireland.
- * Copyright 2019 (c) Frederic Mes, RTLOC. 
+ * Copyright 2019 (c) Frederic Mes, RTLOC.
  * Copyright 2021 (c) Callender-Consulting, LLC
  *
  * All rights reserved.
@@ -23,7 +23,7 @@
 #include <sys/printk.h>
 #include <device.h>
 #include <soc.h>
-#include <hal/nrf_gpiote.h>
+
 #include <drivers/gpio.h>
 
 #define LOG_LEVEL 3
@@ -176,7 +176,7 @@ void reset_DWIC(void)
     LOG_INF("%s", __func__);
 
 #if 0
-    /* 
+    /*
      * User RSTn gpio pin to reset DWM3000.
      */
     // Enable GPIO used for DW3000 reset as open collector output
@@ -195,8 +195,8 @@ void reset_DWIC(void)
 
     Sleep(2);
 #else
-    /* 
-     *  Use Soft Reset api to reset DWM3000 
+    /*
+     *  Use Soft Reset api to reset DWM3000
      *  SPI bus must be <= 7MHz, e.g. slowrate
      */
     port_set_dw_ic_spi_slowrate();
@@ -216,7 +216,7 @@ void reset_DWIC(void)
  * */
 void setup_DW3000RSTnIRQ(int enable)
 {
-    if (enable) {        
+    if (enable) {
         // Enable GPIO used as DECA RESET for interrupt
         gpio_pin_configure(gpio_dev, RESET_GPIO_PIN, (GPIO_OUTPUT | GPIO_OPEN_DRAIN | GPIO_INT_EDGE_RISING));
     }
