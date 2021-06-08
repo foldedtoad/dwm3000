@@ -18,10 +18,6 @@
 extern "C" {
 #endif
 
-//#ifdef STM32F429xx
-//#include <main.h>
-//#endif //STM32F429xx
-
 #define SPEED_OF_LIGHT (299702547)
 #define FRAME_LEN_MAX      (127)
 #define FRAME_LEN_MAX_EX   (1023)
