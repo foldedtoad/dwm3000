@@ -34,7 +34,7 @@ LOG_MODULE_REGISTER(ack_data_rx);
 
 /* Enable all GPIOs (See MFIO_MODE register) */
 /* Configure all GPIOs as inputs */
-#define ENABLE_ALL_GPIOS_MASK 0x200000   
+#define ENABLE_ALL_GPIOS_MASK 0x200000
 
 /* Set GPIOs 2 & 3 as outputs (See GPIO_DIR register) */
 #define SET_OUTPUT_GPIO2_GPIO3 0xFFF3
@@ -102,14 +102,14 @@ int app_main(void)
 
         /* Set GPIO2 and GPIO3 high */
         /* This will turn D1 (Green LED) and D2 (Red LED) on */
-        dwt_or16bitoffsetreg(GPIO_OUT_ID, 0, (GPIO_OUT_GOP3_BIT_MASK | 
+        dwt_or16bitoffsetreg(GPIO_OUT_ID, 0, (GPIO_OUT_GOP3_BIT_MASK |
                                               GPIO_OUT_GOP2_BIT_MASK));
-        
+
         Sleep(blink_delay);
-        
+
         /* set GPIO2 & GPIO3 low (LEDs will be turned off) */
         /* Clear bits 2,3 */
-        dwt_and16bitoffsetreg(GPIO_OUT_ID, 0, (uint16_t)(~(GPIO_OUT_GOP3_BIT_MASK | 
+        dwt_and16bitoffsetreg(GPIO_OUT_ID, 0, (uint16_t)(~(GPIO_OUT_GOP3_BIT_MASK |
                                                            GPIO_OUT_GOP2_BIT_MASK)));
         Sleep(blink_delay);
     }
