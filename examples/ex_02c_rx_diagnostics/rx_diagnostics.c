@@ -2,15 +2,15 @@
  *  @file    rx_diagnostics.c
  *  @brief   Simple RX with diagnostics example code
  *
- *           This application waits for reception of a frame. After each frame 
+ *           This application waits for reception of a frame. After each frame
  *           received with a good CRC it reads some data provided by DW IC:
  *               - Diagnostics data (e.g. first path index, first path amplitude,
- *                 channel impulse response, etc.). See dwt_rxdiag_t structure 
+ *                 channel impulse response, etc.). See dwt_rxdiag_t structure
  *                 for more details on the data read.
  *               - Accumulator values around the first path.
- *           It also reads event counters (e.g. CRC good, CRC error, PHY header 
+ *           It also reads event counters (e.g. CRC good, CRC error, PHY header
  *           error, etc.) after any event, be it a good frame or an RX error.
- *           See dwt_deviceentcnts_t structure for more details on the counters 
+ *           See dwt_deviceentcnts_t structure for more details on the counters
  *           read.
  *
  * @attention
@@ -47,9 +47,9 @@ static dwt_config_t config = {
     DWT_PAC8,        /* Preamble acquisition chunk size. Used in RX only. */
     9,               /* TX preamble code. Used in TX only. */
     9,               /* RX preamble code. Used in RX only. */
-    1,               /* 0 to use standard 8 symbol SFD, 
-                      *   1 to use non-standard 8 symbol, 
-                      *   2 for non-standard 16 symbol SFD and 
+    1,               /* 0 to use standard 8 symbol SFD,
+                      *   1 to use non-standard 8 symbol,
+                      *   2 for non-standard 16 symbol SFD and
                       *   3 for 4z 8 symbol SDF type */
     DWT_BR_6M8,      /* Data rate. */
     DWT_PHRMODE_STD, /* PHY header mode. */
@@ -92,11 +92,11 @@ int app_main(void)
 
     /* Reset DW IC */
     /* Target specific drive of RSTn line into DW IC low for a period. */
-    reset_DWIC(); 
+    reset_DWIC();
 
-    /* Time needed for DW3000 to start up (transition from INIT_RC to IDLE_RC, 
+    /* Time needed for DW3000 to start up (transition from INIT_RC to IDLE_RC,
      * or could wait for SPIRDY event) */
-    Sleep(2); 
+    Sleep(2);
 
     /* Need to make sure DW IC is in IDLE_RC before proceeding */
     while (!dwt_checkidlerc()) { };
@@ -107,7 +107,7 @@ int app_main(void)
     }
 
     /* Configure DW IC. */
-    /* If the dwt_configure returns DWT_ERROR either the PLL or RX calibration 
+    /* If the dwt_configure returns DWT_ERROR either the PLL or RX calibration
      * has failed the host should reset the device */
     if (dwt_configure(&config)) {
         LOG_ERR("CONFIG FAILED");
@@ -120,6 +120,8 @@ int app_main(void)
     /* Enable IC diagnostic calculation and logging */
     dwt_configciadiag(1);
 
+    LOG_INF("Diagnostics ready");
+
     /* Loop forever receiving frames. */
     while (1)
     {
@@ -128,7 +130,7 @@ int app_main(void)
         /* Clear local RX buffer, rx_diag structure and accumulator values to
          * avoid having leftovers from previous receptions  This is not necessary
          * but is included here to aid reading the data for each new frame.
-         * This is a good place to put a breakpoint. Here (after first time 
+         * This is a good place to put a breakpoint. Here (after first time
          * through the loop) the local status register will be set for last event
          * and if a good receive has happened the data buffer will have the data
          * in it, and frame_len will be set to the length of the RX frame. All
@@ -145,9 +147,9 @@ int app_main(void)
         /* Activate reception immediately. See NOTE 4 below. */
         dwt_rxenable(DWT_START_RX_IMMEDIATE);
 
-        /* Poll until a frame is properly received or an error/timeout occurs. 
+        /* Poll until a frame is properly received or an error/timeout occurs.
          * See NOTE 5 below.
-         * STATUS register is 5 bytes long but, as the event we are looking 
+         * STATUS register is 5 bytes long but, as the event we are looking
          * at is in the first byte of the register, we can use this simplest API
          * function to access it. */
         while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG_BIT_MASK | SYS_STATUS_ALL_RX_ERR)))
