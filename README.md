@@ -142,10 +142,10 @@ Using the first project (./examples/ex_00a_reading_dev_id) as a build example, d
 > cd build
 > make
 ```
-**NOTE:** If you want to change the target board to something other than the default nRF52832, then edit the individual example's CMakeLists.txt and change the `set(BOARD xxxxx)` option to your target board.
+**NOTE:** If you want to change the target board to something other than the default nRF52840, then edit the individual example's CMakeLists.txt and change the `set(BOARD xxxxx)` option to your target board.  Below shows switching to nRF52832 target.
 ```
-  #set(BOARD nrf52dk_nrf52832)
-  set(BOARD nrf52840dk_nrf52840)
+  set(BOARD nrf52dk_nrf52832)
+  #set(BOARD nrf52840dk_nrf52840)
 ```
 
 #### Flashing
@@ -170,7 +170,7 @@ For the above build example of `ex_00a_reading_dev_id`, if you have RTT message 
 ## Sample Outputs
 Below is a matching of send and receive demos: `ex_01a_simple_tx` and `ex_02a_simple_rx`.
 
-This shows th3e output from the sending example `ex_01a_simple_tx`.
+This shows the output from the sending example `ex_01a_simple_tx`.
 ```
 *** Booting Zephyr OS build zephyr-v2.5.0-1675-gd6567ad494a0  ***
 
