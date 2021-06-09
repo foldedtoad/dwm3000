@@ -149,6 +149,26 @@ set(SHIELD qorvo_dwm3000)
 
 **NOTE:** For MacOS build systems, you may need to install the ARM toolchain. The Zephyr install instructions can guide you though this process. For Linux, the toolchain is included in the Zephyr installation/setup process.
 
+**NOTE:** The JLink suite by default will create a USB MSD (Mass Storage Device: flash drive) on the host development system whenever one of the JLink utilities are started.  In Linux and MacOS this can be annoying.  To disable this "feature", do the following.
+
+```
+host:user$ JLinkExe
+SEGGER J-Link Commander V6.60e (Compiled Jan 17 2020 17:38:55)
+DLL version V6.60e, compiled Jan 17 2020 17:38:41
+
+Connecting to J-Link via USB...O.K.
+Firmware: J-Link OB-SAM3U128-V2-NordicSemi compiled Mar 17 2020 14:43:00
+Hardware version: V1.00
+S/N: xxxxxxxxxx
+License(s): RDI, FlashBP, FlashDL, JFlash, GDB
+VTref=3.300V
+
+Type "connect" to establish a target connection, '?' for help
+J-Link> MSDDisable
+Probe configured successfully.
+J-Link>q
+```
+
 #### Establishing the Build Environment
 
 Before the firmware can be built, you must establish the Zephyr-build environment.  In this document it is assumed that `~/zephyr` is the root directory for Zephyr: make the appropiate changes if your Zephyr root path is different.
