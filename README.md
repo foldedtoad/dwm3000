@@ -92,7 +92,7 @@ You will need two boards: a host board and a shield board --
 * Host board PCA10056 (nRF52840)
 ![pca10056](https://github.com/foldedtoad/dwm3000/blob/master/docs/pca10056.png)
 * Host board Nucleo-F429ZI (STM32F49ZI)
-![nucleo](https://github.com/foldedtoad/dwm3000/blob/nucleo/docs/nucleo_f429zi.jpg)
+![nucleo](https://github.com/foldedtoad/dwm3000/blob/master/docs/nucleo_f429zi.jpg)
 * DWS3000 arduino shield board.
 ![dws3000](https://github.com/foldedtoad/dwm3000/blob/master/docs/dws3000.jpg)
 
