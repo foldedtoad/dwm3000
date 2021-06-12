@@ -54,7 +54,7 @@ LOG_MODULE_REGISTER(port);
 #define RX_LED_GPIO_PIN    DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_rx_led_gpios, pin)
 #define RX_LED_GPIO_FLAGS  DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_rx_led_gpios, flags)
 
-#define TX_LED_GPIO_PORT   DT_LABEL(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_rx_led_gpios, 0))
+#define TX_LED_GPIO_PORT   DT_LABEL(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_tx_led_gpios, 0))
 #define TX_LED_GPIO_PIN    DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_tx_led_gpios, pin)
 #define TX_LED_GPIO_FLAGS  DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_tx_led_gpios, flags)
 
