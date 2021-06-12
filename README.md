@@ -1,29 +1,29 @@
 # Nordic nRF52-series + Decawave DWM3000 on Zephyr v2.5
 
-**NOTE: This set of projects require Zephyr Version 2.5.**  
+**NOTE: This set of projects require Zephyr Version 2.5.**
 
-This project contains firmware examples for the Decawave DWM3000-series Ultra Wideband (UWB) modules with Zephyr RTOS. It's a port of Qorvo/Decawave's SDK found on their website. 
+This project contains firmware examples for the Decawave DWM3000-series Ultra Wideband (UWB) modules with Zephyr RTOS. It's a port of Qorvo/Decawave's SDK found on their website.
 
-This port to Zephyr generally follows the Qorvo/Decawave [DWM3000 SDK Release V1.1](https://www.qorvo.com/products/p/DWS3000#documents). It is advised to review the SDK's content to get a general understanding of how the examples are intended to function. 
+This port to Zephyr generally follows the Qorvo/Decawave [DWM3000 SDK Release V1.1](https://www.qorvo.com/products/p/DWS3000#documents). It is advised to review the SDK's content to get a general understanding of how the examples are intended to function.
 
 ## State of Project
 * The combination of PCA10056 (nRF52840) + DWS3000 are fully functional: see Sample Outputs section below.
 * The combination of PCA10040 (nRF52832) + DWS3000 are fully functional.
-* The combination of Nucleo-F429ZI + DWS3000 is in development: board ordered.
-* Interaction with DWM1001 boards does not interact correctly with PCA100xx + DWS3000: framing errors. 
+* The combination of Nucleo-F429ZI + DWS3000 are functional.  Not all sub-projects have been test yet.
+* Interaction with DWM1001 boards does not interact correctly with PCA100xx + DWS3000: framing errors.
 
 ### Terminology
 * "Decawave" means "Qorvo/Decwave".   Decawave was recently acquiered by Qorvo.
 * "DWM3000" is the Qorvo/Decawave hardware module with embedded DW3110 UWB IC chip.
-* "DWS3000" is the Qorvo/Decawave DevKit which implements a DWM3000-series module on an Arduino form-factor board. 
-* "PCA10056" means "Nordic nRF52840DK board". 
+* "DWS3000" is the Qorvo/Decawave DevKit which implements a DWM3000-series module on an Arduino form-factor board.
+* "PCA10056" means "Nordic nRF52840DK board".
 * "PCA10040" means "Nordic nRF52832DK board".
 * "PCA100xx" means either the PCA10056 or PCA10040 board.
 
 The PCA100xx boards are part of the Nordic nRF52-series DevKit products. The PCA100xx board's form-factor is compliant with the Arduino form-factor layout, thus allowing the DWS3000 shield plugged on top of the PCA100xx boards.
 
-### Assumptions 
-* This project assumes some familiarity with the Zephyr RTOS.  
+### Assumptions
+* This project assumes some familiarity with the Zephyr RTOS.
 Zephyr is relativey easy to install and learn, and there are good tutorials available which explain how to establish a working version of Zephyr on your development system.
 
 * The `example` projects have been developed using the DWS3000 Arduino-shield plugged into either the PCA10040 or PCA10056 board.
@@ -43,7 +43,7 @@ This project was developed in a Ubuntu 18.04 (LTS) and MacOS (Big Sur), but ther
 Windows OSes have not been part of the development process, but following Zephyr's instruction for Windows setup, it should not be a problem.
 
 ### Examples
-Below is a listing of the sub-projects in the `example` directory.  
+Below is a listing of the sub-projects in the `example` directory.
 Most sub-projects have a `README` file which contains relavant information about that sub-project.
 ```
     ex_00a_reading_dev_id
@@ -106,12 +106,12 @@ Many of the examples will require two or more PCA100xx + DWS3000 setups, such as
 
 **WARNING:** There are issues with the early "engineering versions" of the nRF52840. The chips are identified with QIAAAA marking on their top.  Apparently the SPI3 bus was not fully support with these early engineering releases. For the PCA10056, the devicetree definition for `spi3` bus is equated with the `arduino_spi` bus. Therefore, it is suggested to avoid using these particular PCA10056 boards. Production releases of the PCA10056 should work without issues.
 
-**NOTE:** Because the PCA100xx board incorporates a Segger JLink debugger (on-board), it is highly recommended to install the Segger JLink package on your development system: it's free, and provides support for gdb, pyocd, and Ozone (Segger's debugger).  
+**NOTE:** Because the PCA100xx board incorporates a Segger JLink debugger (on-board), it is highly recommended to install the Segger JLink package on your development system: it's free, and provides support for gdb, pyocd, and Ozone (Segger's debugger).
 
 **NOTE:** The PCA100xx boards incorporate JLink software includes RTT-console support, which is used as a logging console.  This eliminates the need to configure and run a seperated UART-based console when developing firmware. An easy-to-use shell command (rtt.sh, see below) included, can be use to display console output.
 
 ### DWS3000 Board/Shield Support
-Under this project's root directory, there is a the following file tree structure: 
+Under this project's root directory, there is a the following file tree structure:
 
 ```
 ├── boards
@@ -133,7 +133,7 @@ Under this project's root directory, there is a the following file tree structur
 ```
 
 
-In each example sub-project, the CMakeList.txt file has been updated with the following statement. This statement merges the DWM3000 custom shield definitions into the Zephyr board configuration process. 
+In each example sub-project, the CMakeList.txt file has been updated with the following statement. This statement merges the DWM3000 custom shield definitions into the Zephyr board configuration process.
 
 ```
 set(DTS_ROOT   "${CMAKE_CURRENT_SOURCE_DIR}/../..")
@@ -158,8 +158,8 @@ Before the firmware can be built, you must establish the Zephyr-build environmen
 > source zephyr-env.sh
 ```
 
-**NOTE** These projects was developed using only `cmake`, not `west` or `ninja`, but you should be able to use them if you prefer.  
-The build examples which follow will use `cmake`.  
+**NOTE** These projects was developed using only `cmake`, not `west` or `ninja`, but you should be able to use them if you prefer.
+The build examples which follow will use `cmake`.
 The target board and shield are hardcoded into the CMakeList.txt files. While this seems to be at odds with Zephyr examples, the target boards are set in the CMakeFile.txt files as typically developers work with only one board type for given project.
 
 #### Build All Examples
@@ -196,12 +196,12 @@ There are two ways to flash one of the example project's firmware onto a PCA100x
 * Use the debugger (gdb, Ozone, etc) to flash.
 * Use the Nordic-provided `nrfjprog` utility.
 
-The Segger debugger, `Ozone`, was used extensively during development, and is recommended.  
+The Segger debugger, `Ozone`, was used extensively during development, and is recommended.
 GDB may also be use with the PCA100xx on-board JLink support in conjunction with OpenODB.
 
 ### Console Messages (JLink RTT Console)
-If you are using Ozone for debugging, the RTT console support is built into the debugger: just select `terminal` under the View menu. 
-Below is a screenshot of Ozone staging the ex_00a_reading_dev_id example. 
+If you are using Ozone for debugging, the RTT console support is built into the debugger: just select `terminal` under the View menu.
+Below is a screenshot of Ozone staging the ex_00a_reading_dev_id example.
 ![screenshot1](https://github.com/foldedtoad/dwm3000/blob/master/docs/ozone_debugger.png)
 
 If you are developing on a Linux or MacOS system and have installled the JLink package, then you can use the `rtt.sh` script (in the root directory) to start console instance.  Something like the `rtt.sh` script may be possible on Windows, but it has not be tried.  Be sure to follow the directions displayed when `rtt.sh` starts: `h`, `r`, `g` in the JLinkExe shell.
@@ -211,79 +211,76 @@ For the above build example of `ex_00a_reading_dev_id`, if you have RTT message 
 ![screenshot2](https://github.com/foldedtoad/dwm3000/blob/master/docs/rtt_console.png)
 
 ## Sample Outputs
-Below is a matching of send and receive demos: `ex_01a_simple_tx` and `ex_02a_simple_rx`.
+Below is a matching of send and receive demos using a pair of nRF52840 (PCA10056) boards: `ex_01a_simple_tx` and `ex_02a_simple_rx`.
 
 This shows the output from the sending example `ex_01a_simple_tx`.
 ```
 *** Booting Zephyr OS build zephyr-v2.5.0-1675-gd6567ad494a0  ***
 
-[00:00:03.958,068] <inf> main: main_thread
-[00:00:03.958,099] <inf> port: Configure WAKEUP pin
-[00:00:03.958,099] <inf> port: Configure RESET pin
-[00:00:03.958,099] <inf> port: Configure RX LED pin
-[00:00:03.958,129] <inf> port: Configure TX LED pin
-[00:00:03.958,129] <inf> deca_spi: openspi bus SPI_3
-[00:00:04.985,931] <inf> simple_tx: SIMPLE TX v1.0
-[00:00:04.985,961] <inf> port: reset_DWIC
-[00:00:04.990,631] <inf> deca_device: dev_id "deca0302"
-[00:00:04.993,743] <inf> simple_tx: len 10
-                                    c5 00 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:05.494,262] <inf> simple_tx: len 10
-                                    c5 01 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:06.026,947] <inf> simple_tx: len 10
-                                    c5 02 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:06.527,465] <inf> simple_tx: len 10
-                                    c5 03 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:07.054,229] <inf> simple_tx: len 10
-                                    c5 04 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:07.554,748] <inf> simple_tx: len 10
-                                    c5 05 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:08.081,512] <inf> simple_tx: len 10
-                                    c5 06 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:08.582,031] <inf> simple_tx: len 10
-                                    c5 07 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:09.108,856] <inf> simple_tx: len 10
-                                    c5 08 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:09.609,375] <inf> simple_tx: len 10
-                                    c5 09 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:04.104,003] <inf> main: main_thread
+[00:00:04.104,034] <inf> port: Configure WAKEUP pin on port "GPIO_1" pin 11
+[00:00:04.104,034] <inf> port: Configure RESET pin on port "GPIO_1" pin 8
+[00:00:04.104,064] <inf> port: Configure RX LED pin on port "GPIO_1" pin 5
+[00:00:04.104,064] <inf> port: Configure TX LED pin on port "GPIO_1" pin 4
+[00:00:04.104,095] <inf> port: Configure SPI Phase pin on port "GPIO_1" pin 1
+[00:00:04.104,095] <inf> port: Configure SPI Polarity pin on port "GPIO_1" pin 2
+[00:00:04.104,095] <inf> deca_spi: openspi bus SPI_3
+[00:00:05.155,212] <inf> simple_tx: SIMPLE TX v1.0
+[00:00:05.155,273] <inf> port: reset_DWIC
+[00:00:05.159,942] <inf> deca_device: dev_id "deca0302"
+[00:00:05.163,085] <inf> simple_tx: Sending started
+[00:00:05.163,116] <inf> simple_tx: len 10
+                                    c5 00 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:05.663,604] <inf> simple_tx: len 10
+                                    c5 01 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:06.201,507] <inf> simple_tx: len 10
+                                    c5 02 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:06.702,026] <inf> simple_tx: len 10
+                                    c5 03 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:07.229,156] <inf> simple_tx: len 10
+                                    c5 04 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:07.729,644] <inf> simple_tx: len 10
+                                    c5 05 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:08.256,744] <inf> simple_tx: len 10
+                                    c5 06 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:08.757,263] <inf> simple_tx: len 10
+                                    c5 07 44 45 43 41 57 41  56 45                   |..DECAWA VE
 ```
 
 This shows the output from the receiving example `ex_02a_simple_rx`.
 ```
 *** Booting Zephyr OS build zephyr-v2.5.0-1675-gd6567ad494a0  ***
 
-[00:00:05.493,286] <inf> main: main_thread
-[00:00:05.493,316] <inf> port: Configure WAKEUP pin
-[00:00:05.493,316] <inf> port: Configure RESET pin
-[00:00:05.493,347] <inf> port: Configure RX LED pin
-[00:00:05.493,347] <inf> port: Configure TX LED pin
-[00:00:05.493,347] <inf> deca_spi: openspi bus SPI_3
-[00:00:06.521,514] <inf> simple_rx: SIMPLE RX v1.0
-[00:00:06.521,545] <inf> port: reset_DWIC
-[00:00:06.526,214] <inf> deca_device: dev_id "deca0302"
-[00:00:06.529,235] <inf> simple_rx: Ready to Receive
-[00:00:06.893,493] <inf> simple_rx: len 10
-                                    c5 d3 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:07.394,012] <inf> simple_rx: len 10
-                                    c5 d4 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:07.920,806] <inf> simple_rx: len 10
-                                    c5 d5 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:08.421,295] <inf> simple_rx: len 10
-                                    c5 d6 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:08.948,577] <inf> simple_rx: len 10
-                                    c5 d7 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:09.448,669] <inf> simple_rx: len 10
-                                    c5 d8 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:09.976,348] <inf> simple_rx: len 10
-                                    c5 d9 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:10.475,982] <inf> simple_rx: len 10
-                                    c5 da 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:11.004,150] <inf> simple_rx: len 10
-                                    c5 db 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:11.503,295] <inf> simple_rx: len 10
-                                    c5 dc 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:12.031,982] <inf> simple_rx: len 10
-                                    c5 dd 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:12.530,670] <inf> simple_rx: len 10
-                                    c5 de 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:07.322,723] <inf> main: main_thread
+[00:00:07.322,753] <inf> port: Configure WAKEUP pin on port "GPIO_1" pin 11
+[00:00:07.322,753] <inf> port: Configure RESET pin on port "GPIO_1" pin 8
+[00:00:07.322,784] <inf> port: Configure RX LED pin on port "GPIO_1" pin 5
+[00:00:07.322,784] <inf> port: Configure TX LED pin on port "GPIO_1" pin 4
+[00:00:07.322,784] <inf> port: Configure SPI Phase pin on port "GPIO_1" pin 1
+[00:00:07.322,814] <inf> port: Configure SPI Polarity pin on port "GPIO_1" pin 2
+[00:00:07.322,814] <inf> deca_spi: openspi bus SPI_3
+[00:00:08.373,382] <inf> simple_rx: SIMPLE RX v1.0
+[00:00:08.373,413] <inf> port: reset_DWIC
+[00:00:08.378,082] <inf> deca_device: dev_id "deca0302"
+[00:00:08.381,103] <inf> simple_rx: Ready to Receive
+[00:00:15.248,413] <inf> simple_rx: len 10
+                                    c5 00 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:15.748,931] <inf> simple_rx: len 10
+                                    c5 01 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:16.282,104] <inf> simple_rx: len 10
+                                    c5 02 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:16.782,653] <inf> simple_rx: len 10
+                                    c5 03 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:17.309,600] <inf> simple_rx: len 10
+                                    c5 04 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:17.809,814] <inf> simple_rx: len 10
+                                    c5 05 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:18.337,097] <inf> simple_rx: len 10
+                                    c5 06 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:18.837,463] <inf> simple_rx: len 10
+                                    c5 07 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:19.364,562] <inf> simple_rx: len 10
+                                    c5 08 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:19.865,112] <inf> simple_rx: len 10
+                                    c5 09 44 45 43 41 57 41  56 45                   |..DECAWA VE
 ```
