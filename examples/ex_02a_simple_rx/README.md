@@ -10,42 +10,43 @@
 
 
 ## Sample Output
+Below is output from PCA10056 (nRF52840) + DWS3000.
+
 ```
 *** Booting Zephyr OS build zephyr-v2.5.0-1675-gd6567ad494a0  ***
 
-[00:00:05.493,286] <inf> main: main_thread
-[00:00:05.493,316] <inf> port: Configure WAKEUP pin
-[00:00:05.493,316] <inf> port: Configure RESET pin
-[00:00:05.493,347] <inf> port: Configure RX LED pin
-[00:00:05.493,347] <inf> port: Configure TX LED pin
-[00:00:05.493,347] <inf> deca_spi: openspi bus SPI_3
-[00:00:06.521,514] <inf> simple_rx: SIMPLE RX v1.0
-[00:00:06.521,545] <inf> port: reset_DWIC
-[00:00:06.526,214] <inf> deca_device: dev_id "deca0302"
-[00:00:06.529,235] <inf> simple_rx: Ready to Receive
-[00:00:06.893,493] <inf> simple_rx: len 10
-                                    c5 d3 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:07.394,012] <inf> simple_rx: len 10
-                                    c5 d4 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:07.920,806] <inf> simple_rx: len 10
-                                    c5 d5 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:08.421,295] <inf> simple_rx: len 10
-                                    c5 d6 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:08.948,577] <inf> simple_rx: len 10
-                                    c5 d7 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:09.448,669] <inf> simple_rx: len 10
-                                    c5 d8 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:09.976,348] <inf> simple_rx: len 10
-                                    c5 d9 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:10.475,982] <inf> simple_rx: len 10
-                                    c5 da 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:11.004,150] <inf> simple_rx: len 10
-                                    c5 db 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:11.503,295] <inf> simple_rx: len 10
-                                    c5 dc 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:12.031,982] <inf> simple_rx: len 10
-                                    c5 dd 44 45 43 41 57 41  56 45                   |..DECAWA VE      
-[00:00:12.530,670] <inf> simple_rx: len 10
-                                    c5 de 44 45 43 41 57 41  56 45                   |..DECAWA VE      
+[00:00:07.322,723] <inf> main: main_thread
+[00:00:07.322,753] <inf> port: Configure WAKEUP pin on port "GPIO_1" pin 11
+[00:00:07.322,753] <inf> port: Configure RESET pin on port "GPIO_1" pin 8
+[00:00:07.322,784] <inf> port: Configure RX LED pin on port "GPIO_1" pin 5
+[00:00:07.322,784] <inf> port: Configure TX LED pin on port "GPIO_1" pin 4
+[00:00:07.322,784] <inf> port: Configure SPI Phase pin on port "GPIO_1" pin 1
+[00:00:07.322,814] <inf> port: Configure SPI Polarity pin on port "GPIO_1" pin 2
+[00:00:07.322,814] <inf> deca_spi: openspi bus SPI_3
+[00:00:08.373,382] <inf> simple_rx: SIMPLE RX v1.0
+[00:00:08.373,413] <inf> port: reset_DWIC
+[00:00:08.378,082] <inf> deca_device: dev_id "deca0302"
+[00:00:08.381,103] <inf> simple_rx: Ready to Receive
+[00:00:15.248,413] <inf> simple_rx: len 10
+                                    c5 00 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:15.748,931] <inf> simple_rx: len 10
+                                    c5 01 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:16.282,104] <inf> simple_rx: len 10
+                                    c5 02 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:16.782,653] <inf> simple_rx: len 10
+                                    c5 03 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:17.309,600] <inf> simple_rx: len 10
+                                    c5 04 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:17.809,814] <inf> simple_rx: len 10
+                                    c5 05 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:18.337,097] <inf> simple_rx: len 10
+                                    c5 06 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:18.837,463] <inf> simple_rx: len 10
+                                    c5 07 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:19.364,562] <inf> simple_rx: len 10
+                                    c5 08 44 45 43 41 57 41  56 45                   |..DECAWA VE
+[00:00:19.865,112] <inf> simple_rx: len 10
+                                    c5 09 44 45 43 41 57 41  56 45                   |..DECAWA VE
+
 
 ```
