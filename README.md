@@ -9,7 +9,7 @@ This port to Zephyr generally follows the Qorvo/Decawave [DWM3000 SDK Release V1
 ## State of Project
 * The combination of PCA10056 (nRF52840) + DWS3000 are fully functional: see Sample Outputs section below.
 * The combination of PCA10040 (nRF52832) + DWS3000 are fully functional.
-* The combination of Nucleo-F429ZI + DWS3000 are functional.  Not all sub-projects have been test yet.
+* The combination of Nucleo-F429ZI + DWS3000 are functional. Not all sub-projects have been tested yet.
 * Interaction with DWM1001 boards does not interact correctly with PCA100xx + DWS3000: framing errors.
 
 ### Terminology
@@ -87,10 +87,12 @@ Most sub-projects have a `README` file which contains relavant information about
 
 ### Hardware
 You will need two boards: a host board and a shield board --
-* Host board PCA10040
+* Host board PCA10040 (nRF52832)
 ![pca10040](https://github.com/foldedtoad/dwm3000/blob/master/docs/pca10040.png)
-* Host board PCA10056
+* Host board PCA10056 (nRF52840)
 ![pca10056](https://github.com/foldedtoad/dwm3000/blob/master/docs/pca10056.png)
+* Host board Nucleo-F429ZI (STM32F49ZI)
+![nucleo](https://github.com/foldedtoad/dwm3000/blob/nucleo/docs/nucleo_f429zi.jpg)
 * DWS3000 arduino shield board.
 ![dws3000](https://github.com/foldedtoad/dwm3000/blob/master/docs/dws3000.jpg)
 
@@ -109,6 +111,11 @@ Many of the examples will require two or more PCA100xx + DWS3000 setups, such as
 **NOTE:** Because the PCA100xx board incorporates a Segger JLink debugger (on-board), it is highly recommended to install the Segger JLink package on your development system: it's free, and provides support for gdb, pyocd, and Ozone (Segger's debugger).
 
 **NOTE:** The PCA100xx boards incorporate JLink software includes RTT-console support, which is used as a logging console.  This eliminates the need to configure and run a seperated UART-based console when developing firmware. An easy-to-use shell command (rtt.sh, see below) included, can be use to display console output.
+
+**NOTE:** The Nucleo board may need to be modified per Decawave's recommendations: see DWS3000 Quick Start Guide for details.
+
+**NOTE:** If you are using a ST-Link adapter, then no debugger firmware conversion should be necessary.
+If you wish to use a Segger JLink adapter for development, then you will need to update the on-board debugger firmare for the Nucleo board: conversion details [here](https://www.segger.com/products/debug-probes/j-link/models/other-j-links/st-link-on-board).
 
 ### DWS3000 Board/Shield Support
 Under this project's root directory, there is a the following file tree structure:
@@ -148,6 +155,26 @@ set(SHIELD qorvo_dwm3000)
 * (Optional) Install the Nordic [nrfjprog](https://www.nordicsemi.com/Software-and-tools/Development-Tools/nRF-Command-Line-Tools/Download) utility. After installing, make sure that your system's PATH contains the path to where it is installed.
 
 **NOTE:** For MacOS build systems, you may need to install the ARM toolchain. The Zephyr install instructions can guide you though this process. For Linux, the toolchain is included in the Zephyr installation/setup process.
+
+**NOTE:** The JLink suite by default will create a USB MSD (Mass Storage Device: flash drive) on the host development system whenever one of the JLink utilities are started.  In Linux and MacOS this can be annoying.  To disable this "feature", do the following.
+
+```
+host:user$ JLinkExe
+SEGGER J-Link Commander V6.60e (Compiled Jan 17 2020 17:38:55)
+DLL version V6.60e, compiled Jan 17 2020 17:38:41
+
+Connecting to J-Link via USB...O.K.
+Firmware: J-Link OB-SAM3U128-V2-NordicSemi compiled Mar 17 2020 14:43:00
+Hardware version: V1.00
+S/N: xxxxxxxxxx
+License(s): RDI, FlashBP, FlashDL, JFlash, GDB
+VTref=3.300V
+
+Type "connect" to establish a target connection, '?' for help
+J-Link> MSDDisable
+Probe configured successfully.
+J-Link>q
+```
 
 #### Establishing the Build Environment
 
