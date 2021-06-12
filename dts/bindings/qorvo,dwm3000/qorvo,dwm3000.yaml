@@ -44,3 +44,17 @@ properties:
       description: TX-LED pin.
 
         The TX LED pin is active low.
+
+    dwm-spi-pol_gpios:
+      type: phandle-array
+      required: true
+      description: SPI Polarity pin.
+
+        Set SPI Polarity
+
+    dwm-spi-pha_gpios:
+      type: phandle-array
+      required: true
+      description: SPI Phase pin.
+
+        Set SPI Phase
