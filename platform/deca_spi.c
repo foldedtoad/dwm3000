@@ -39,7 +39,7 @@ uint8_t rx_buf [255];
 
 struct spi_buf bufs [2];
 
-struct spi_buf_set tx; 
+struct spi_buf_set tx;
 struct spi_buf_set rx;
 
 static struct spi_cs_control cs_ctrl;
@@ -158,7 +158,7 @@ int writetospiwithcrc(uint16_t           headerLength,
                       uint8_t            crc8)
 {
     decaIrqStatus_t  stat;
- 
+
     uint16_t len =  headerLength + bodyLength + sizeof(crc8);
 
     if (len > sizeof(tx_buf))
@@ -220,7 +220,7 @@ int writetospi(uint16_t           headerLength,
  *
  * Low level abstract function to read from the SPI
  * Takes two separate byte buffers for write header and read data
- * returns the offset into read buffer where first byte of read data 
+ * returns the offset into read buffer where first byte of read data
  * may be found, or returns 0
  */
 int readfromspi(uint16_t        headerLength,

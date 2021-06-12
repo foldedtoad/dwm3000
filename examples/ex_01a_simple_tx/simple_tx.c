@@ -61,9 +61,9 @@ static uint8_t tx_msg[] = {0xC5, 0, 'D', 'E', 'C', 'A', 'W', 'A', 'V', 'E'};
 /* Inter-frame delay period, in milliseconds. */
 #define TX_DELAY_MS 500
 
-/* Values for the PG_DELAY and TX_POWER registers reflect the bandwidth and 
+/* Values for the PG_DELAY and TX_POWER registers reflect the bandwidth and
  * power of the spectrum at the current temperature. These values can be
- * calibrated prior to taking reference measurements. 
+ * calibrated prior to taking reference measurements.
  * See NOTE 2 below. */
 extern dwt_txconfig_t txconfig_options;
 
@@ -83,20 +83,7 @@ int app_main(void)
 
     /* Time needed for DW3000 to start up (transition from INIT_RC to IDLE_RC,
      *( or could wait for SPIRDY event) */
-    Sleep(2); 
-
-#if 0
-    /* Read and validate device ID
-     * returns DWT_ERROR if it does not match expected else DWT_SUCCESS 
-     */
-    int err = dwt_check_dev_id();
-    if (err == DWT_SUCCESS) {
-        LOG_INF("DEV ID OK");
-    }
-    else {
-        LOG_ERR("DEV ID FAILED");
-    }
-#endif
+    Sleep(2);
 
     /* Need to make sure DW IC is in IDLE_RC before proceeding */
     while (!dwt_checkidlerc()) { /* spin */ };
@@ -106,7 +93,7 @@ int app_main(void)
         while (1) { /* spin */ };
     }
 
-    /* Enabling LEDs here for debug so that for each TX the D1 LED will flash 
+    /* Enabling LEDs here for debug so that for each TX the D1 LED will flash
      * on DW3000 red eval-shield boards. */
     dwt_setleds(DWT_LEDS_ENABLE | DWT_LEDS_INIT_BLINK) ;
 
@@ -118,10 +105,10 @@ int app_main(void)
         while (1) { /* spin */ };
     }
 
-    //LOG_HEXDUMP_INF((char*)&config, sizeof(config), "config");
-
     /* Configure the TX spectrum parameters (power PG delay and PG Count) */
     dwt_configuretxrf(&txconfig_options);
+
+    LOG_INF("Sending started");
 
     /* Loop forever sending frames periodically. */
     while (1) {
