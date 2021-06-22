@@ -240,6 +240,16 @@ int readfromspi(uint16_t        headerLength,
 
     spi_transceive(spi, spi_cfg, &tx, &rx);
 
+#if (CONFIG_SOC_NRF52840_QIAA)
+    /*
+     *  This is a hack to handle the corrupted response frame through the nRF52840's SPI3.
+     *  See this project's issue-log (https://github.com/foldedtoad/dwm3000/issues/2)
+     *  for details.
+     *  The delay value is set in the CMakeList.txt file for this subproject.
+     */
+    for (volatile int i=0; i < TX_WAIT_RESP_NRF52840_DELAY; i++) { /* spin */ }
+#endif
+
     memcpy(readBuffer, rx_buf + headerLength, readLength);
 
     decamutexoff(stat);
