@@ -78,27 +78,6 @@ typedef enum
  *
  *******************************************************************************/
 
-//TODO
-#define DW1000_RSTn                 
-#define DW1000_RSTn_GPIO            
-
-
-#define DECAIRQ                     
-#define DECAIRQ_GPIO                
-
-#define TA_BOOT1                    
-#define TA_BOOT1_GPIO               
-
-#define TA_RESP_DLY                 
-#define TA_RESP_DLY_GPIO            
-
-#define TA_SW1_3                      
-#define TA_SW1_4                      
-#define TA_SW1_5                     
-#define TA_SW1_6                    
-#define TA_SW1_7                   
-#define TA_SW1_8                  
-#define TA_SW1_GPIO               
 
 /****************************************************************************//**
  *
@@ -107,18 +86,18 @@ typedef enum
  *******************************************************************************/
 
 //TODO
-#define GPIO_ResetBits(x,y)             
-#define GPIO_SetBits(x,y)               
-#define GPIO_ReadInputDataBit(x,y)      
+#define GPIO_ResetBits(x,y)
+#define GPIO_SetBits(x,y)
+#define GPIO_ReadInputDataBit(x,y)
 
 
 /* NSS pin is SW controllable */
-#define port_SPIx_set_chip_select()    
-#define port_SPIx_clear_chip_select()  
+#define port_SPIx_set_chip_select()
+#define port_SPIx_clear_chip_select()
 
 /* NSS pin is SW controllable */
-#define port_SPIy_set_chip_select()     
-#define port_SPIy_clear_chip_select()   
+#define port_SPIy_set_chip_select()
+#define port_SPIy_clear_chip_select()
 
 /****************************************************************************//**
  *

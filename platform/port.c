@@ -37,10 +37,9 @@ LOG_MODULE_REGISTER(port);
  *
  *******************************************************************************/
 
-#define DWM_GPIO_NAME     DT_LABEL(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_irq_gpios, 0))
-
-#define IRQ_GPIO_PIN      DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_irq_gpios, pin)
-#define IRQ_GPIO_FLAGS    DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_irq_gpios, flags)
+#define IRQ_GPIO_PORT      DT_LABEL(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_irq_gpios, 0))
+#define IRQ_GPIO_PIN       DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_irq_gpios, pin)
+#define IRQ_GPIO_FLAGS     DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_irq_gpios, flags)
 
 #define WAKEUP_GPIO_PORT   DT_LABEL(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_wakeup_gpios, 0))
 #define WAKEUP_GPIO_PIN    DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_wakeup_gpios, pin)
@@ -298,7 +297,6 @@ void setup_DW3000RSTnIRQ(int enable)
     gpio_pin_set(wakeup_dev, WAKEUP_GPIO_PIN, 1);
     deca_usleep(500);
     gpio_pin_set(wakeup_dev, WAKEUP_GPIO_PIN, 0);
-
 }
 
 /*
@@ -376,8 +374,6 @@ void port_wakeup_dw3000_fast(void)
     //TODO
 }
 
-
-
 /* @fn      port_set_dw_ic_spi_slowrate
  * @brief   set 2MHz
  * */
@@ -410,26 +406,15 @@ void port_set_dw_ic_spi_fastrate(void)
  *
  *******************************************************************************/
 
-
-/* @fn      process_deca_irq
- * @brief   main call-back for processing of DW1000 IRQ
- *          it re-enters the IRQ routing and processes all events.
- *          After processing of all events, DW1000 will clear the IRQ line.
- * */
-void process_deca_irq(void)
-{
-    //TODO
-}
-
-
 /* @fn      port_DisableEXT_IRQ
  * @brief   wrapper to disable DW_IRQ pin IRQ
  *          in current implementation it disables all IRQ from lines 5:9
  * */
 void port_DisableEXT_IRQ(void)
 {
-    //TODO
+    // TBD
 }
+
 
 /* @fn      port_EnableEXT_IRQ
  * @brief   wrapper to enable DW_IRQ pin IRQ
@@ -437,7 +422,7 @@ void port_DisableEXT_IRQ(void)
  * */
 void port_EnableEXT_IRQ(void)
 {
-    //TODO
+    // TBD
 }
 
 
@@ -446,17 +431,16 @@ void port_EnableEXT_IRQ(void)
  * */
 uint32_t port_GetEXT_IRQStatus(void)
 {
-    //TODO
+    // TBD
     return 0;
 }
-
 
 /* @fn      port_CheckEXT_IRQ
  * @brief   wrapper to read DW_IRQ input pin state
  * */
 uint32_t port_CheckEXT_IRQ(void)
 {
-    //TODO
+    // TBD
     return 0;
 }
 
@@ -506,3 +490,6 @@ void port_set_dwic_isr(port_deca_isr_t deca_isr)
 /****************************************************************************//**
  *
  *******************************************************************************/
+
+
+
