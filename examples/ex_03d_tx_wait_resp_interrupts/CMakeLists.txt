@@ -12,7 +12,6 @@ include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
 project(Example_03d)
 
 add_definitions(-DTX_WAIT_RESP_INT)
-add_definitions(-DTX_WAIT_RESP_NRF52840_DELAY=30)
 
 target_sources(app PRIVATE ../../main.c)
 target_sources(app PRIVATE ../../config_options.c)
