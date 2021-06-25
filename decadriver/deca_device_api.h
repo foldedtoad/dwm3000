@@ -23,6 +23,7 @@ extern "C" {
 #define DWT_NUM_DW_DEV (1)
 #endif
 
+#define X_WAIT_RESP_NRF52840_DELAY 30
 
 #define DWT_BIT_MASK(bit_num)   (((uint32_t)1)<<(bit_num))
 
@@ -463,7 +464,7 @@ typedef struct
     uint32_t      ipatovF1 ;          // F1 for Ipatov sequence
     uint32_t      ipatovF2 ;          // F2 for Ipatov sequence
     uint32_t      ipatovF3 ;          // F3 for Ipatov sequence
-    uint16_t      ipatovFpIndex ;     // First path index for Ipatov sequence 
+    uint16_t      ipatovFpIndex ;     // First path index for Ipatov sequence
     uint16_t      ipatovAccumCount ;  // Number accumulated symbols for Ipatov sequence
 
     uint32_t      stsPeak ;        // index and amplitude of peak sample in STS CIR
@@ -1142,12 +1143,12 @@ int16_t dwt_readpdoa(void);
  * register is 41-bits in length. However, 6 bytes (or 48 bits) are read from the register. The remaining 7 bits at
  * the 'top' of the 6 bytes that are not part of the TDOA value should be set to zero and should not interfere with
  * rest of the 41-bit value. However, there is no harm in masking the returned value.
- * 
+ *
  * input parameters
- * 
+ *
  * output parameters
  * @param tdoa: time difference on arrival - buffer of 6 bytes that will be filled with TDOA value by calling this function
- * 
+ *
  * no return value
  */
 void dwt_readtdoa(uint8_t * tdoa);
