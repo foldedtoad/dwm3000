@@ -321,7 +321,7 @@ void make_very_short_wakeup_io(void)
 /* @fn      led_off
  * @brief   switch off the led from led_t enumeration
  * */
-void led_off (led_t led)
+void led_off (uint32_t led)
 {
     switch (led) {
         case 0:
@@ -339,7 +339,7 @@ void led_off (led_t led)
 /* @fn      led_on
  * @brief   switch on the led from led_t enumeration
  * */
-void led_on (led_t led)
+void led_on (uint32_t led)
 {
     switch (led) {
         case 0:
@@ -399,55 +399,9 @@ void port_set_dw_ic_spi_fastrate(void)
  *******************************************************************************/
 
 
-
 /****************************************************************************//**
  *
  *                              IRQ section
- *
- *******************************************************************************/
-
-/* @fn      port_DisableEXT_IRQ
- * @brief   wrapper to disable DW_IRQ pin IRQ
- *          in current implementation it disables all IRQ from lines 5:9
- * */
-void port_DisableEXT_IRQ(void)
-{
-    // TBD
-}
-
-
-/* @fn      port_EnableEXT_IRQ
- * @brief   wrapper to enable DW_IRQ pin IRQ
- *          in current implementation it enables all IRQ from lines 5:9
- * */
-void port_EnableEXT_IRQ(void)
-{
-    // TBD
-}
-
-
-/* @fn      port_GetEXT_IRQStatus
- * @brief   wrapper to read a DW_IRQ pin IRQ status
- * */
-uint32_t port_GetEXT_IRQStatus(void)
-{
-    // TBD
-    return 0;
-}
-
-/* @fn      port_CheckEXT_IRQ
- * @brief   wrapper to read DW_IRQ input pin state
- * */
-uint32_t port_CheckEXT_IRQ(void)
-{
-    // TBD
-    return 0;
-}
-
-
-/****************************************************************************//**
- *
- *                              END OF IRQ section
  *
  *******************************************************************************/
 
@@ -490,6 +444,3 @@ void port_set_dwic_isr(port_deca_isr_t deca_isr)
 /****************************************************************************//**
  *
  *******************************************************************************/
-
-
-

@@ -6,7 +6,7 @@
  *
  * Copyright 2015 (c) DecaWave Ltd, Dublin, Ireland.
  * Copyright 2019 (c) Frederic Mes, RTLOC.
- * Copyright 2019 (c) Callender-Consulting LLC.
+ * Copyright 2021 (c) Callender-Consulting LLC.
  *
  * All rights reserved.
  *
@@ -157,14 +157,10 @@ int writetospiwithcrc(uint16_t           headerLength,
                       const    uint8_t * bodyBuffer,
                       uint8_t            crc8)
 {
-    decaIrqStatus_t  stat;
-
     uint16_t len =  headerLength + bodyLength + sizeof(crc8);
 
     if (len > sizeof(tx_buf))
         return -1;
-
-    stat = decamutexon();
 
     memcpy(&tx_buf[0],            headerBuffer, headerLength);
     memcpy(&tx_buf[headerLength], bodyBuffer,   bodyLength);
@@ -175,8 +171,6 @@ int writetospiwithcrc(uint16_t           headerLength,
     bufs[1].len = len;
 
     spi_transceive(spi, spi_cfg, &tx, &rx);
-
-    decamutexoff(stat);
 
     return 0;
 }
@@ -193,14 +187,10 @@ int writetospi(uint16_t           headerLength,
                uint16_t           bodyLength,
                const    uint8_t * bodyBuffer)
 {
-    decaIrqStatus_t  stat;
-
 #if 0
     LOG_HEXDUMP_INF(headerBuffer, headerLength, "writetospi: Header");
     LOG_HEXDUMP_INF(bodyBuffer, bodyLength, "writetospi: Body");
 #endif
-
-    stat = decamutexon();
 
     memcpy(&tx_buf[0], headerBuffer, headerLength);
     memcpy(&tx_buf[headerLength], bodyBuffer, bodyLength);
@@ -209,8 +199,6 @@ int writetospi(uint16_t           headerLength,
     bufs[1].len = headerLength + bodyLength;
 
     spi_transceive(spi, spi_cfg, &tx, &rx);
-
-    decamutexoff(stat);
 
     return 0;
 }
@@ -228,10 +216,6 @@ int readfromspi(uint16_t        headerLength,
                 uint16_t        readLength,
                 uint8_t       * readBuffer)
 {
-    decaIrqStatus_t  stat;
-
-    stat = decamutexon();
-
     memset(&tx_buf[0], 0, headerLength + readLength);
     memcpy(&tx_buf[0], headerBuffer, headerLength);
 
@@ -251,8 +235,6 @@ int readfromspi(uint16_t        headerLength,
 #endif
 
     memcpy(readBuffer, rx_buf + headerLength, readLength);
-
-    decamutexoff(stat);
 
 #if 0
     LOG_HEXDUMP_INF(headerBuffer, headerLength, "readfromspi: Header");

@@ -3809,17 +3809,8 @@ int dwt_starttx(uint8_t mode)
  */
 void dwt_forcetrxoff(void)
 {
-    decaIrqStatus_t stat ;
-    // Need to beware of interrupts occurring in the middle of following command cycle
-    // We can disable the radio, but before the status is cleared an interrupt can be set (e.g. the
-    // event has just happened before the radio was disabled)
-    // thus we need to disable interrupt during this operation
-    stat = decamutexon();
-
     dwt_writefastCMD(CMD_TXRXOFF);
 
-    // Enable/restore interrupts again...
-    decamutexoff(stat);
 } // end deviceforcetrxoff()
 
 /*! ------------------------------------------------------------------------------------------------------------------
@@ -3980,19 +3971,14 @@ void dwt_setpreambledetecttimeout(uint16_t timeout)
  */
 void dwt_setinterrupt(uint32_t bitmask_lo, uint32_t bitmask_hi, dwt_INT_options_e INT_options)
 {
-    decaIrqStatus_t stat ;
-
-    // Need to beware of interrupts occurring in the middle of following read modify write cycle
-    stat = decamutexon();
-
-    if(INT_options == DWT_ENABLE_INT_ONLY)
+    if (INT_options == DWT_ENABLE_INT_ONLY)
     {
         dwt_write32bitreg(SYS_ENABLE_LO_ID, bitmask_lo); // New value
         dwt_write32bitreg(SYS_ENABLE_HI_ID, bitmask_hi); // New value
     }
     else
     {
-        if(INT_options == DWT_ENABLE_INT)
+        if (INT_options == DWT_ENABLE_INT)
         {
             dwt_or32bitoffsetreg(SYS_ENABLE_LO_ID, 0, bitmask_lo); //Set the bits
             dwt_or32bitoffsetreg(SYS_ENABLE_HI_ID, 0, bitmask_hi); //Set the bits
@@ -4003,8 +3989,6 @@ void dwt_setinterrupt(uint32_t bitmask_lo, uint32_t bitmask_hi, dwt_INT_options_
             dwt_and32bitoffsetreg(SYS_ENABLE_HI_ID, 0, (uint32_t)(~bitmask_hi)); // Clear the bits
         }
     }
-
-    decamutexoff(stat);
 }
 
 /*! ------------------------------------------------------------------------------------------------------------------
