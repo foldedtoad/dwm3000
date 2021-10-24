@@ -1,15 +1,17 @@
-# Nordic nRF52-series + Decawave DWM3000 on Zephyr v2.5
+# Nordic nRF52-series + Decawave DWM3000 on Zephyr v2.7
 
-**NOTE: This set of projects require Zephyr Version 2.5.**
+**NOTE: This set of projects require Zephyr Version 2.7.**  
+
+**NOTE: All examples build successfully with Zephyr 2.7, but the nrf52840 board is exibiting a problem with SPI3. The nrf52832 and nucleo boards should be working without problems.**
 
 This project contains firmware examples for the Decawave DWM3000-series Ultra Wideband (UWB) modules with Zephyr RTOS. It's a port of Qorvo/Decawave's SDK found on their website.
 
 This port to Zephyr generally follows the Qorvo/Decawave [DWM3000 SDK Release V1.1](https://www.qorvo.com/products/p/DWS3000#documents). It is advised to review the SDK's content to get a general understanding of how the examples are intended to function.
 
 ## State of Project
-* The combination of PCA10056 (nRF52840) + DWS3000 are fully functional: see Sample Outputs section below.
+* The combination of PCA10056 (nRF52840) + DWS3000 are not completely functional at this time.  
 * The combination of PCA10040 (nRF52832) + DWS3000 are fully functional.
-* The combination of Nucleo-F429ZI + DWS3000 are functional. Not all sub-projects have been tested yet.
+* The combination of Nucleo-F429ZI + DWS3000 are functional.
 * Interaction with DWM1001 boards does not interact correctly with PCA100xx + DWS3000: framing errors.
 
 ### Terminology
