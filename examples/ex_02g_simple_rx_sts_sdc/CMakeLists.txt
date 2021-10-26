@@ -20,7 +20,6 @@ target_sources(app PRIVATE simple_rx_sts_sdc.c)
 target_sources(app PRIVATE ../../decadriver/deca_device.c)
 
 target_sources(app PRIVATE ../../platform/port.c)
-target_sources(app PRIVATE ../../platform/deca_mutex.c)
 target_sources(app PRIVATE ../../platform/deca_sleep.c)
 target_sources(app PRIVATE ../../platform/deca_spi.c)
 target_sources(app PRIVATE ../../platform/port.c)

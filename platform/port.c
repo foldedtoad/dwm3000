@@ -61,13 +61,13 @@ LOG_MODULE_REGISTER(port);
 #define IRQ_GPIO_PIN       DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_irq_gpios, pin)
 #define IRQ_GPIO_FLAGS     DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_irq_gpios, flags)
 
-#define PHA_GPIO_PORT      DT_LABEL(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_spi_pha_gpios, 0))
-#define PHA_GPIO_PIN       DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_spi_pha_gpios, pin)
-#define PHA_GPIO_FLAGS     DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_spi_pha_gpios, flags)
-
 #define POL_GPIO_PORT      DT_LABEL(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_spi_pol_gpios, 0))
 #define POL_GPIO_PIN       DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_spi_pol_gpios, pin)
 #define POL_GPIO_FLAGS     DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_spi_pol_gpios, flags)
+
+#define PHA_GPIO_PORT      DT_LABEL(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_spi_pha_gpios, 0))
+#define PHA_GPIO_PIN       DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_spi_pha_gpios, pin)
+#define PHA_GPIO_FLAGS     DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_spi_pha_gpios, flags)
 
 /****************************************************************************//**
  *
@@ -178,16 +178,6 @@ int peripherals_init (void)
     gpio_pin_configure(tx_led_dev, TX_LED_GPIO_PIN, GPIO_OUTPUT);
     gpio_pin_set(tx_led_dev, TX_LED_GPIO_PIN, 1);
 
-    /* SPI PHASE */
-    LOG_INF("Configure SPI Phase pin on port \"%s\" pin %d", PHA_GPIO_PORT, PHA_GPIO_PIN);
-    pha_dev = device_get_binding(PHA_GPIO_PORT);
-    if (!pha_dev) {
-        LOG_ERR("error: \"%s\" not found", PHA_GPIO_PORT);
-        return -1;
-    }
-    gpio_pin_configure(pha_dev, PHA_GPIO_PIN, GPIO_OUTPUT);
-    gpio_pin_set(pha_dev, PHA_GPIO_PIN, 0);
-
     /* SPI POLARITY */
     LOG_INF("Configure SPI Polarity pin on port \"%s\" pin %d", POL_GPIO_PORT, POL_GPIO_PIN);
     pol_dev = device_get_binding(POL_GPIO_PORT);
@@ -195,8 +185,16 @@ int peripherals_init (void)
         LOG_ERR("error: \"%s\" not found", POL_GPIO_PORT);
         return -1;
     }
-    gpio_pin_configure(pol_dev, POL_GPIO_PIN, GPIO_OUTPUT);
-    gpio_pin_set(pol_dev, POL_GPIO_PIN, 0);
+    gpio_pin_configure(pol_dev, POL_GPIO_PIN, GPIO_OUTPUT_INACTIVE);
+
+    /* SPI PHASE */
+    LOG_INF("Configure SPI Phase pin on port \"%s\" pin %d", PHA_GPIO_PORT, PHA_GPIO_PIN);
+    pha_dev = device_get_binding(PHA_GPIO_PORT);
+    if (!pha_dev) {
+        LOG_ERR("error: \"%s\" not found", PHA_GPIO_PORT);
+        return -1;
+    }
+    gpio_pin_configure(pha_dev, PHA_GPIO_PIN, GPIO_OUTPUT_INACTIVE);
 
     return 0;
 }
@@ -321,7 +319,7 @@ void make_very_short_wakeup_io(void)
 /* @fn      led_off
  * @brief   switch off the led from led_t enumeration
  * */
-void led_off (led_t led)
+void led_off (uint32_t led)
 {
     switch (led) {
         case 0:
@@ -339,7 +337,7 @@ void led_off (led_t led)
 /* @fn      led_on
  * @brief   switch on the led from led_t enumeration
  * */
-void led_on (led_t led)
+void led_on (uint32_t led)
 {
     switch (led) {
         case 0:
@@ -399,55 +397,9 @@ void port_set_dw_ic_spi_fastrate(void)
  *******************************************************************************/
 
 
-
 /****************************************************************************//**
  *
  *                              IRQ section
- *
- *******************************************************************************/
-
-/* @fn      port_DisableEXT_IRQ
- * @brief   wrapper to disable DW_IRQ pin IRQ
- *          in current implementation it disables all IRQ from lines 5:9
- * */
-void port_DisableEXT_IRQ(void)
-{
-    // TBD
-}
-
-
-/* @fn      port_EnableEXT_IRQ
- * @brief   wrapper to enable DW_IRQ pin IRQ
- *          in current implementation it enables all IRQ from lines 5:9
- * */
-void port_EnableEXT_IRQ(void)
-{
-    // TBD
-}
-
-
-/* @fn      port_GetEXT_IRQStatus
- * @brief   wrapper to read a DW_IRQ pin IRQ status
- * */
-uint32_t port_GetEXT_IRQStatus(void)
-{
-    // TBD
-    return 0;
-}
-
-/* @fn      port_CheckEXT_IRQ
- * @brief   wrapper to read DW_IRQ input pin state
- * */
-uint32_t port_CheckEXT_IRQ(void)
-{
-    // TBD
-    return 0;
-}
-
-
-/****************************************************************************//**
- *
- *                              END OF IRQ section
  *
  *******************************************************************************/
 
@@ -490,6 +442,3 @@ void port_set_dwic_isr(port_deca_isr_t deca_isr)
 /****************************************************************************//**
  *
  *******************************************************************************/
-
-
-

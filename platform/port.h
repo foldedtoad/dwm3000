@@ -49,10 +49,8 @@ void port_set_dwic_isr(port_deca_isr_t deca_isr);
   *                                 Types definitions
   *
   *******************************************************************************/
-typedef uint64_t        uint64 ;
-
-typedef int64_t         int64 ;
-
+typedef uint64_t        uint64;
+typedef int64_t         int64;
 
 #ifndef FALSE
 #define FALSE               0
@@ -61,16 +59,6 @@ typedef int64_t         int64 ;
 #ifndef TRUE
 #define TRUE                1
 #endif
-
-typedef enum
-{
-    LED_PC6, //LED_P0.x
-    LED_PC7, //LED_P0.x
-    LED_PC8, //LED_P0.x
-    LED_PC9, //LED_P0.x
-    LED_ALL,
-    LEDn
-} led_t;
 
 /****************************************************************************//**
  *
@@ -110,6 +98,7 @@ unsigned long portGetTickCnt(void);
 
 #define S1_SWITCH_ON  (1)
 #define S1_SWITCH_OFF (0)
+
 //when switch (S1) is 'on' the pin is low
 int port_is_switch_on(uint16_t GPIOpin);
 int port_is_boot1_low(void);
@@ -123,8 +112,8 @@ void port_set_dw_ic_spi_fastrate(void);
 void process_dwRSTn_irq(void);
 void process_deca_irq(void);
 
-void led_on(led_t led);
-void led_off(led_t led);
+void led_on(uint32_t led);
+void led_off(uint32_t led);
 
 int  peripherals_init(void);
 void spi_peripheral_init(void);
@@ -133,10 +122,6 @@ void setup_DW3000RSTnIRQ(int enable);
 
 void reset_DWIC(void);
 
-uint32_t port_GetEXT_IRQStatus(void);
-uint32_t port_CheckEXT_IRQ(void);
-void port_DisableEXT_IRQ(void);
-void port_EnableEXT_IRQ(void);
 extern uint32_t HAL_GetTick(void);
 
 #ifdef __cplusplus
@@ -144,42 +129,3 @@ extern uint32_t HAL_GetTick(void);
 #endif
 
 #endif /* PORT_H_ */
-
-/*
- * Taken from the Linux Kernel
- *
- */
-
-#ifndef _LINUX_CIRC_BUF_H
-#define _LINUX_CIRC_BUF_H 1
-
-struct circ_buf {
-    char *buf;
-    int head;
-    int tail;
-};
-
-/* Return count in buffer.  */
-#define CIRC_CNT(head,tail,size) (((head) - (tail)) & ((size)-1))
-
-/* Return space available, 0..size-1.  We always leave one free char
-   as a completely full buffer has head == tail, which is the same as
-   empty.  */
-#define CIRC_SPACE(head,tail,size) CIRC_CNT((tail),((head)+1),(size))
-
-/* Return count up to the end of the buffer.  Carefully avoid
-   accessing head and tail more than once, so they can change
-   underneath us without returning inconsistent results.  */
-#define CIRC_CNT_TO_END(head,tail,size) \
-    ({int end = (size) - (tail); \
-      int n = ((head) + end) & ((size)-1); \
-      n < end ? n : end;})
-
-/* Return space available up to the end of the buffer.  */
-#define CIRC_SPACE_TO_END(head,tail,size) \
-    ({int end = (size) - 1 - (head); \
-      int n = (end + (tail)) & ((size)-1); \
-      n <= end ? n : end+1;})
-
-#endif /* _LINUX_CIRC_BUF_H  */
-

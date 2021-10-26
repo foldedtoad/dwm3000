@@ -2394,52 +2394,6 @@ extern int writetospi(uint16_t headerLength, const uint8_t *headerBuffer, uint16
  */
 extern int readfromspi(uint16_t headerLength, const uint8_t *headerBuffer, uint16_t readlength, uint8_t *readBuffer);
 
-// ---------------------------------------------------------------------------
-//
-// NB: The purpose of the deca_mutex.c file is to provide for microprocessor interrupt enable/disable, this is used for
-//     controlling mutual exclusion from critical sections in the code where interrupts and background
-//     processing may interact.  The code using this is kept to a minimum and the disabling time is also
-//     kept to a minimum, so blanket interrupt disable may be the easiest way to provide this.  But at a
-//     minimum those interrupts coming from the Decawave device should be disabled/re-enabled by this activity.
-//
-//     In porting this to a particular microprocessor, the implementer may choose to use #defines here
-//     to map these calls transparently to the target system.  Alternatively the appropriate code may
-//     be embedded in the functions provided in the deca_irq.c file.
-//
-// ---------------------------------------------------------------------------
-
-typedef int decaIrqStatus_t ; // Type for remembering IRQ status
-
-
-/*! ------------------------------------------------------------------------------------------------------------------
- * @brief This function should disable interrupts. This is called at the start of a critical section
- * It returns the IRQ state before disable, this value is used to re-enable in decamutexoff call
- *
- * Note: The body of this function is defined in deca_mutex.c and is platform specific
- *
- * input parameters:
- *
- * output parameters
- *
- * returns the state of the DW3000 interrupt
- */
-decaIrqStatus_t decamutexon(void);
-
-/*! ------------------------------------------------------------------------------------------------------------------
- * @brief This function should re-enable interrupts, or at least restore their state as returned(&saved) by decamutexon
- * This is called at the end of a critical section
- *
- * Note: The body of this function is defined in deca_mutex.c and is platform specific
- *
- * input parameters:
- * @param s - the state of the DW3000 interrupt as returned by decamutexon
- *
- * output parameters
- *
- * returns the state of the DW3000 interrupt
- */
-void decamutexoff(decaIrqStatus_t s);
-
 /*! ------------------------------------------------------------------------------------------------------------------
  * @brief Wait for a given amount of time.
  * NB: The body of this function is defined in deca_sleep.c and is platform specific
