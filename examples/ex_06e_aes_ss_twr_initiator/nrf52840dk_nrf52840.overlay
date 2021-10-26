@@ -1,0 +1,7 @@
+/*
+ *   By default config Zephyr will P1.01 and P1.02 for UART1.
+ *   Disable UART1 so that DWM3000 can use them for SPI3 Polarity and Phase pins.
+ */
+arduino_serial: &uart1 {
+	status = "disabled";
+};
