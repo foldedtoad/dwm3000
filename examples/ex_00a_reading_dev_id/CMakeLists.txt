@@ -9,9 +9,9 @@ set(BOARD nrf52840dk_nrf52840)
 #set(BOARD nucleo_f429zi)
 
 include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
-project(Example_01A)
+project(Example_00A)
 
-add_definitions(-DSIMPLE_TX)
+add_definitions(-DREAD_DEVID)
 
 target_sources(app PRIVATE ../../main.c)
 target_sources(app PRIVATE ../../config_options.c)
