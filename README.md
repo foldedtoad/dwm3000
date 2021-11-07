@@ -116,7 +116,7 @@ Many of the examples will require two or more PCA100xx + DWS3000 setups, such as
 If you wish to use a Segger JLink adapter for development, then you will need to update the on-board debugger firmare for the Nucleo board: conversion details [here](https://www.segger.com/products/debug-probes/j-link/models/other-j-links/st-link-on-board).  
 
 **NOTE:** The Nucleo board may need to be modified per Decawave's recommendations: see DWS3000 Quick Start Guide for details.  
-In particular there is a conflict between the ethernet controller and the arduino use of pin D11, which is used by SPI1 as the MOSI line. The Nucleo-F429ZI board's solder-bridges, SB121 and SB122, must be changed. Remove the solder from SP122 (open) and solder-bridge SB121 (close).  Without this change, the SPI MOSI line will always be pulled low and SPI transactions to the DWM3000 will fail.
+In particular there is a conflict between the ethernet controller and the arduino use of pin D11, which is used by SPI1 as the MOSI line. The Nucleo-F429ZI board's solder-bridges, SB121 and SB122, must be changed. Remove the solder from SB122 (open) and solder-bridge SB121 (close).  Without this change, the SPI MOSI line will always be pulled low and SPI transactions to the DWM3000 will fail.
 See photo below for modified board's solder-bridge configuation.
 ![dws3000](https://github.com/foldedtoad/dwm3000/blob/master/docs/Nucleo_F429ZI_solder_bridge_config.JPG)
 
