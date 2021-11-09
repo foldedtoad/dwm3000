@@ -26,7 +26,7 @@ The PCA100xx boards are part of the Nordic nRF52-series DevKit products. The PCA
 * This project assumes some familiarity with the Zephyr RTOS.
 Zephyr is relativey easy to install and learn, and there are good tutorials available which explain how to establish a working version of Zephyr on your development system.
 
-* The `example` projects have been developed using the DWS3000 Arduino-shield plugged into either the PCA10040 or PCA10056 board.
+* The `example` projects have been developed using the DWS3000 Arduino-shield plugged into the PCA10040, PCA10056 or Nucleo_F429ZI boards.
 
 ### Overview of Changes from the DWM3000 SDK
 The major changes from the original Decawave project are:
@@ -39,7 +39,7 @@ The major changes from the original Decawave project are:
 ### Supported Development OSes
 Linux, Mac or Windows
 
-This project was developed in a Ubuntu 18.04 (LTS) and MacOS (Big Sur), but there is no reason these changes should work with the other OSes.
+This project was developed in a Ubuntu 20.04 (LTS) and MacOS (Big Sur), but there is no reason these changes should work with the other OSes.
 Windows OSes have not been part of the development process, but following Zephyr's instruction for Windows setup, it should not be a problem.
 
 ### Examples
@@ -91,7 +91,7 @@ You will need two boards: a host board and a shield board --
 ![pca10040](https://github.com/foldedtoad/dwm3000/blob/master/docs/pca10040.png)
 * Host board PCA10056 (nRF52840)
 ![pca10056](https://github.com/foldedtoad/dwm3000/blob/master/docs/pca10056.png)
-* Host board Nucleo-F429ZI (STM32F49ZI)
+* Host board Nucleo-F429ZI (STM32F429ZI)
 ![nucleo](https://github.com/foldedtoad/dwm3000/blob/master/docs/nucleo_f429zi.jpg)
 * DWS3000 arduino shield board.
 ![dws3000](https://github.com/foldedtoad/dwm3000/blob/master/docs/dws3000.jpg)
@@ -108,6 +108,8 @@ Many of the examples will require two or more PCA100xx + DWS3000 setups, such as
 
 **WARNING:** There are issues with the early "engineering versions" of the nRF52840. The chips are identified with QIAAAA marking on their top.  Apparently the SPI3 bus was not fully support with these early engineering releases. For the PCA10056, the devicetree definition for `spi3` bus is equated with the `arduino_spi` bus. Therefore, it is suggested to avoid using these particular PCA10056 boards. Production releases of the PCA10056 should work without issues.
 
+**WARNING:** The PCA10056 board has a conflict between uart1 and the arduino-spi devicetree definitions.  This is fixed by `nrf52840dk_nrf52840.overlay`, which disables uart1's definitions, thereby allowing the arduino shield to acquire controll over the D1 and D0 lines.  These lines are used to configure DWM3000's SPI Polarity and Phase options.
+
 **NOTE:** Because the PCA100xx board incorporates a Segger JLink debugger (on-board), it is highly recommended to install the Segger JLink package on your development system: it's free, and provides support for gdb, pyocd, and Ozone (Segger's debugger).
 
 **NOTE:** The PCA100xx boards incorporate JLink software includes RTT-console support, which is used as a logging console.  This eliminates the need to configure and run a seperated UART-based console when developing firmware. An easy-to-use shell command (rtt.sh, see below) included, can be use to display console output.
@@ -115,11 +117,12 @@ Many of the examples will require two or more PCA100xx + DWS3000 setups, such as
 **NOTE:** If you are using a ST-Link adapter, then no debugger firmware conversion should be necessary.
 If you wish to use a Segger JLink adapter for development, then you will need to update the on-board debugger firmare for the Nucleo board: conversion details [here](https://www.segger.com/products/debug-probes/j-link/models/other-j-links/st-link-on-board).  
 
-**NOTE:** The Nucleo board may need to be modified per Decawave's recommendations: see DWS3000 Quick Start Guide for details.  
-In particular there is a conflict between the ethernet controller and the arduino use of pin D11, which is used by SPI1 as the MOSI line. The Nucleo-F429ZI board's solder-bridges, SB121 and SB122, must be changed. Remove the solder from SB122 (open) and solder-bridge SB121 (close).  Without this change, the SPI MOSI line will always be pulled low and SPI transactions to the DWM3000 will fail.
+**WARNING:** The Nucleo board needs to be modified per Decawave's recommendations: see DWS3000 Quick Start Guide for details.  
+In particular there is a conflict between the on-board ethernet controller and the arduino-shield layout use of pin D11, which is used by SPI1 as the MOSI line. The Nucleo-F429ZI board's solder-bridges, SB121 and SB122, must be changed. Remove the solder from SB122 (open) and solder-bridge SB121 (close).  Without this change, the SPI MOSI line will always be pulled low and SPI transactions to the DWM3000 will fail.
 See photo below for modified board's solder-bridge configuation.
 ![dws3000](https://github.com/foldedtoad/dwm3000/blob/master/docs/Nucleo_F429ZI_solder_bridge_config.JPG)
-
+  
+  
 ### DWS3000 Board/Shield Support
 Under this project's root directory, there is a the following file tree structure:
 
@@ -152,7 +155,7 @@ set(SHIELD qorvo_dwm3000)
 ```
 
 ### Software
-* Install Zephyr (V2.5) on your build system.
+* Install Zephyr (V2.7) on your build system.
 * Install Segger JLink (latest) on your build system.
 * (Optional) Install Segger Ozone (latest) on your build system.
 * (Optional) Install the Nordic [nrfjprog](https://www.nordicsemi.com/Software-and-tools/Development-Tools/nRF-Command-Line-Tools/Download) utility. After installing, make sure that your system's PATH contains the path to where it is installed.
@@ -226,7 +229,7 @@ There are two ways to flash one of the example project's firmware onto a PCA100x
 * Use the debugger (gdb, Ozone, etc) to flash.
 * Use the Nordic-provided `nrfjprog` utility.
 
-The Segger debugger, `Ozone`, was used extensively during development, and is recommended.
+The Segger debugger, `Ozone`, was used extensively during development, and is recommended.  
 GDB may also be use with the PCA100xx on-board JLink support in conjunction with OpenODB.
 
 ### Console Messages (JLink RTT Console)
