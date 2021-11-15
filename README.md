@@ -44,7 +44,7 @@ Windows OSes have not been part of the development process, but following Zephyr
 
 ### Interoperability Between the DWM3000 Project and the DWM1001 Project.
 The [DWM1001 Project](https://github.com/foldedtoad/dwm1001) supports the original DecaWave UWB board, the DWM1001.  
-If you have a DWM1001 board and wish to interact with a DWM3000 board (DWS3000 shield) then the operating parameters must be coordinated to provide a coherent send/receive interoperations.  
+If you have a DWM1001 board and wish to interact with a DWM3000 board (DWS3000 shield) then the operating parameters must be coordinated to provide coherent send/receive interoperations.  
 Currently the only know issue is the coordination of the Physical Header Mode.  
 * The DWM3000 project examples default to Standard Frame mode (`DWT_PHYMODE_STD`, IEEE802.15.4 defined).  
 * The DWM1001 project examples default to Long Frame mode (`DWT_PHYMODE_EXT`, IEEE802.15.8 defined).
