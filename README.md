@@ -10,7 +10,7 @@ This port to Zephyr generally follows the Qorvo/Decawave [DWM3000 SDK Release V1
 * The combination of PCA10056 (nRF52840) + DWS3000 are not completely functional at this time.  
 * The combination of PCA10040 (nRF52832) + DWS3000 are fully functional.
 * The combination of Nucleo-F429ZI + DWS3000 are functional.
-* Interaction with DWM1001 boards does not interact correctly with PCA100xx + DWS3000: framing errors.
+* Interoperation with DWM1001 boards are functional, but see the `Interoperability Between the DWM3000 Project and the DWM1001 Project` below.
 
 ### Terminology
 * "Decawave" means "Qorvo/Decwave".   Decawave was recently acquiered by Qorvo.
@@ -41,6 +41,16 @@ Linux, Mac or Windows
 
 This project was developed in a Ubuntu 20.04 (LTS) and MacOS (Big Sur), but there is no reason these changes should work with the other OSes.
 Windows OSes have not been part of the development process, but following Zephyr's instruction for Windows setup, it should not be a problem.
+
+### Interoperability Between the DWM3000 Project and the DWM1001 Project.
+The [DWM1001 Project](https://github.com/foldedtoad/dwm1001) supports the original DecaWave UWB board, the DWM1001.  
+If you have a DWM1001 board and wish to interact with a DWM3000 board (DWS3000 shield) then the operating parameters must be coordinated to provide coherent send/receive interoperations.  
+Currently the only know issue is the coordination of the Physical Header Mode.  
+* The DWM3000 project examples default to Standard Frame mode (`DWT_PHYMODE_STD`, IEEE802.15.4 defined).  
+* The DWM1001 project examples default to Long Frame mode (`DWT_PHYMODE_EXT`, IEEE802.15.8 defined).
+
+To interoperate you must change either the DWM3000 or DWM1001 side code to match the other side.
+The parameter to modify is in the `examples` subproject c source file within the `config` data definition.
 
 ### Examples
 Below is a listing of the sub-projects in the `example` directory.
@@ -121,8 +131,7 @@ If you wish to use a Segger JLink adapter for development, then you will need to
 In particular there is a conflict between the on-board ethernet controller and the arduino-shield layout use of pin D11, which is used by SPI1 as the MOSI line. The Nucleo-F429ZI board's solder-bridges, SB121 and SB122, must be changed. Remove the solder from SB122 (open) and solder-bridge SB121 (close).  Without this change, the SPI MOSI line will always be pulled low and SPI transactions to the DWM3000 will fail.
 See photo below for modified board's solder-bridge configuation.
 ![dws3000](https://github.com/foldedtoad/dwm3000/blob/master/docs/Nucleo_F429ZI_solder_bridge_config.JPG)
-  
-  
+
 ### DWS3000 Board/Shield Support
 Under this project's root directory, there is a the following file tree structure:
 
@@ -134,7 +143,7 @@ Under this project's root directory, there is a the following file tree structur
 │           ├── Kconfig.shield
 │           ├── doc
 │           │   ├── DWS3000\ Schematics.pdf
-│           │   └── index.rst
+│           │   └── index
 │           └── qorvo_dwm3000.overlay
 ```
 
@@ -144,7 +153,6 @@ Under this project's root directory, there is a the following file tree structur
 │       └── qorvo,dwm3000
 │           └── qorvo,dwm3000.yaml
 ```
-
 
 In each example sub-project, the CMakeList.txt file has been updated with the following statement. This statement merges the DWM3000 custom shield definitions into the Zephyr board configuration process.
 
