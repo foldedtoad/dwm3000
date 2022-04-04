@@ -8,7 +8,7 @@ set(BOARD nrf52840dk_nrf52840)
 #set(BOARD nrf52dk_nrf52832)
 #set(BOARD nucleo_f429zi)
 
-include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
+find_package(Zephyr)
 project(Example_13a)
 
 add_definitions(-DGPIO)
