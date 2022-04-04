@@ -10,7 +10,7 @@ set(BOARD nrf52840dk_nrf52840)
 #set(BOARD nucleo_f429zi)
 #set(BOARD nucleo_l476rg)
 
-include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
+find_package(Zephyr)
 project(Example_00A)
 
 add_definitions(-DREAD_DEVID)
