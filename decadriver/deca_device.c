@@ -14,8 +14,10 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stdint.h>
+
 #include <zephyr/kernel.h>
 #include <zephyr/sys/printk.h>
+
 
 #include "deca_types.h"
 #include "deca_regs.h"
@@ -1727,8 +1729,8 @@ void dwt_settxantennadelay(uint16_t txDelay)
  *                         The extended PHR mode allows to transmit frames of up to 1023 bytes (including 2 byte CRC)
  *                         if > 127 is programmed, DWT_PHRMODE_EXT needs to be set in the phrMode configuration
  *                         see dwt_configure function
- * @param txDataBytes    - Pointer to the user’s buffer containing the data to send.
- * @param txBufferOffset - This specifies an offset in the DW IC’s TX Buffer at which to start writing data.
+ * @param txDataBytes    - Pointer to the user's buffer containing the data to send.
+ * @param txBufferOffset - This specifies an offset in the DW IC's TX Buffer at which to start writing data.
  *
  * output parameters
  *
@@ -3824,7 +3826,7 @@ void dwt_forcetrxoff(void)
  * @param enable - 1 to enable SNIFF mode, 0 to disable. When 0, all other parameters are not taken into account.
  * @param timeOn - duration of receiver ON phase, expressed in multiples of PAC size. The counter automatically adds 1 PAC
  *                 size to the value set. Min value that can be set is 1 (i.e. an ON time of 2 PAC size), max value is 15.
- * @param timeOff - duration of receiver OFF phase, expressed in multiples of 128/125 µs (~1 µs). Max value is 255.
+ * @param timeOff - duration of receiver OFF phase, expressed in multiples of 128/125 Âµs (~1 Âµs). Max value is 255.
  *
  * output parameters
  *
@@ -4394,7 +4396,7 @@ float dwt_convertrawtemperature(uint8_t raw_temp)
 {
     float realtemp;
 
-    // the User Manual formula is: Temperature (°C) = ( (SAR_LTEMP – OTP_READ(Vtemp @ 20°C) ) x 1.05)        // Vtemp @ 20°C
+    // the User Manual formula is: Temperature (Â°C) = ( (SAR_LTEMP - OTP_READ(Vtemp @ 20Â°C) ) x 1.05)        // Vtemp @ 20Â°C
     realtemp = (float)((raw_temp - pdw3000local->tempP) * 1.05f) + 20.0f;
     return realtemp;
 }
