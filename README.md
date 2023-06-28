@@ -163,8 +163,8 @@ set(SHIELD qorvo_dwm3000)
 ```
 
 ### Software
-* Install Zephyr (V3.0) on your build system.
-* Install Zephyr SDK -- zephyr-sdk-0.14.0.
+* Install Zephyr (V3.4) on your build system.
+* Install Zephyr SDK -- zephyr-sdk-0.16.1.
 * Install Segger JLink (latest) on your build system.
 * (Optional) Install Segger Ozone (latest) on your build system.
 * (Optional) Install the Nordic [nrfjprog](https://www.nordicsemi.com/Software-and-tools/Development-Tools/nRF-Command-Line-Tools/Download) utility. After installing, make sure that your system's PATH contains the path to where it is installed.
