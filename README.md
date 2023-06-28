@@ -1,6 +1,6 @@
-# Nordic nRF52-series + Decawave DWM3000 on Zephyr v3.0
+# Nordic nRF52-series + Decawave DWM3000 on Zephyr v3.4
 
-**NOTE: This set of projects require Zephyr Version 3.0.**  
+**NOTE: This set of projects require Zephyr Version 3.4.**  
 
 This project contains firmware examples for the Decawave DWM3000-series Ultra Wideband (UWB) modules with Zephyr RTOS. It's a port of Qorvo/Decawave's SDK found on their website.
 
