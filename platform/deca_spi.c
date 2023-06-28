@@ -18,14 +18,14 @@
 #include "port.h"
 
 #include <errno.h>
-#include <zephyr.h>
-#include <sys/printk.h>
-#include <device.h>
-#include <drivers/spi.h>
-#include <drivers/gpio.h>
+#include <zephyr/kernel.h>
+#include <zephyr/sys/printk.h>
+#include <zephyr/device.h>
+#include <zephyr/drivers/spi.h>
+#include <zephyr/drivers/gpio.h>
 
 #define LOG_LEVEL 3
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(deca_spi);
 
 const struct device * spi;
@@ -73,28 +73,28 @@ static struct spi_cs_control cs_ctrl;
  */
 int openspi(void)
 {
-    LOG_INF("%s bus %s", __func__, DT_LABEL(DWM_SPI));
+    LOG_INF("%s bus %s", __func__, DT_NODE_FULL_NAME(DWM_SPI));
 
     /* Propagate CS config into all spi_cfgs[] elements */
-    cs_ctrl.gpio.port = device_get_binding(DT_LABEL(DWM_CS_GPIO));
+    cs_ctrl.gpio.port = device_get_binding(DT_NODE_FULL_NAME(DWM_CS_GPIO));
     if (!cs_ctrl.gpio.port) {
-        LOG_ERR("%s: GPIO binding failed.\n", __func__);
+        LOG_ERR("%s: GPIO binding failed.", __func__)
         return -1;
     }
     cs_ctrl.gpio.pin = DWM_CS_PIN;
     cs_ctrl.delay = 0U;
     cs_ctrl.gpio.dt_flags = DWM_CS_FLAGS;
     for (int i=0; i < SPI_CFGS_COUNT; i++) {
-        spi_cfgs[i].cs = &cs_ctrl;
+        spi_cfgs[i].cs = cs_ctrl;
     }
 
     gpio_pin_set(cs_ctrl.gpio.port, DWM_CS_PIN, 1);
 
     spi_cfg = &spi_cfgs[0];
 
-    spi = device_get_binding(DT_LABEL(DWM_SPI));
+    spi = device_get_binding(DT_NODE_FULL_NAME(DWM_SPI));
     if (!spi) {
-        LOG_ERR("%s: SPI binding failed.\n", __func__);
+        LOG_ERR("%s: SPI binding failed.", __func__);
         return -1;
     }
     spi_cfg->operation = SPI_WORD_SET(8);

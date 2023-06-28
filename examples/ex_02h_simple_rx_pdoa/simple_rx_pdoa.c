@@ -23,11 +23,11 @@
 #include <shared_functions.h>
 
 //zephyr includes
-#include <zephyr.h>
-#include <sys/printk.h>
+#include <zephyr/kernel.h>
+#include <zephyr/sys/printk.h>
 
 #define LOG_LEVEL 3
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(simple_rx_pdoa);
 
 static void rx_ok_cb(const dwt_cb_data_t *cb_data);

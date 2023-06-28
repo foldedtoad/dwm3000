@@ -19,15 +19,15 @@
 
 // zephyr includes
 #include <errno.h>
-#include <zephyr.h>
-#include <sys/printk.h>
-#include <device.h>
+#include <zephyr/kernel.h>
+#include <zephyr/sys/printk.h>
+#include <zephyr/device.h>
 #include <soc.h>
 
-#include <drivers/gpio.h>
+#include <zephyr/drivers/gpio.h>
 
 #define LOG_LEVEL 3
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(port);
 
 
@@ -37,35 +37,35 @@ LOG_MODULE_REGISTER(port);
  *
  *******************************************************************************/
 
-#define IRQ_GPIO_PORT      DT_LABEL(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_irq_gpios, 0))
+#define IRQ_GPIO_PORT      DT_NODE_FULL_NAME(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_irq_gpios, 0))
 #define IRQ_GPIO_PIN       DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_irq_gpios, pin)
 #define IRQ_GPIO_FLAGS     DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_irq_gpios, flags)
 
-#define WAKEUP_GPIO_PORT   DT_LABEL(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_wakeup_gpios, 0))
+#define WAKEUP_GPIO_PORT   DT_NODE_FULL_NAME(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_wakeup_gpios, 0))
 #define WAKEUP_GPIO_PIN    DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_wakeup_gpios, pin)
 #define WAKEUP_GPIO_FLAGS  DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_wakeup_gpios, flags)
 
-#define RESET_GPIO_PORT    DT_LABEL(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_reset_gpios, 0))
+#define RESET_GPIO_PORT    DT_NODE_FULL_NAME(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_reset_gpios, 0))
 #define RESET_GPIO_PIN     DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_reset_gpios, pin)
 #define RESET_GPIO_FLAGS   DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_reset_gpios, flags)
 
-#define RX_LED_GPIO_PORT   DT_LABEL(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_rx_led_gpios, 0))
+#define RX_LED_GPIO_PORT   DT_NODE_FULL_NAME(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_rx_led_gpios, 0))
 #define RX_LED_GPIO_PIN    DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_rx_led_gpios, pin)
 #define RX_LED_GPIO_FLAGS  DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_rx_led_gpios, flags)
 
-#define TX_LED_GPIO_PORT   DT_LABEL(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_tx_led_gpios, 0))
+#define TX_LED_GPIO_PORT   DT_NODE_FULL_NAME(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_tx_led_gpios, 0))
 #define TX_LED_GPIO_PIN    DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_tx_led_gpios, pin)
 #define TX_LED_GPIO_FLAGS  DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_tx_led_gpios, flags)
 
-#define IRQ_GPIO_PORT      DT_LABEL(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_irq_gpios, 0))
+#define IRQ_GPIO_PORT      DT_NODE_FULL_NAME(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_irq_gpios, 0))
 #define IRQ_GPIO_PIN       DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_irq_gpios, pin)
 #define IRQ_GPIO_FLAGS     DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_irq_gpios, flags)
 
-#define POL_GPIO_PORT      DT_LABEL(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_spi_pol_gpios, 0))
+#define POL_GPIO_PORT      DT_NODE_FULL_NAME(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_spi_pol_gpios, 0))
 #define POL_GPIO_PIN       DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_spi_pol_gpios, pin)
 #define POL_GPIO_FLAGS     DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_spi_pol_gpios, flags)
 
-#define PHA_GPIO_PORT      DT_LABEL(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_spi_pha_gpios, 0))
+#define PHA_GPIO_PORT      DT_NODE_FULL_NAME(DT_PHANDLE_BY_IDX(DT_INST(0, qorvo_dwm3000), dwm_spi_pha_gpios, 0))
 #define PHA_GPIO_PIN       DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_spi_pha_gpios, pin)
 #define PHA_GPIO_FLAGS     DT_PHA(DT_INST(0, qorvo_dwm3000), dwm_spi_pha_gpios, flags)
 

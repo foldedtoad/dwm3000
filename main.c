@@ -17,13 +17,13 @@
  *   along with Zephyr-DWM1001.  If not, see <https://www.gnu.org/licenses/>.
  * 
  */
-#include <zephyr.h>
-#include <sys/printk.h>
+#include <zephyr/kernel.h>
+#include <zephyr/sys/printk.h>
 
 #include "port.h"
 
 #define LOG_LEVEL 3
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(main);
 
 #define STACKSIZE 1024

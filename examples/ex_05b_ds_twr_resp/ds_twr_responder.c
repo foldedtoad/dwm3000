@@ -34,11 +34,11 @@
 #include <config_options.h>
 
 //zephyr includes
-#include <zephyr.h>
-#include <sys/printk.h>
+#include <zephyr/kernel.h>
+#include <zephyr/sys/printk.h>
 
 #define LOG_LEVEL 3
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(dw_twr_resp);
 
 /* Example application name */
@@ -310,9 +310,10 @@ int app_main(void)
                         distance = tof * SPEED_OF_LIGHT;
 
                         /* Display computed distance. */
-                        char dist[20] = {0};
+                        static char dist[20] = {0};
                         sprintf(dist, "dist %3.2f m", distance);
-                        LOG_INF("%s", log_strdup(dist));
+                        //LOG_INF("%s", log_strdup(dist));
+                        LOG_INF("%s", dist);
 
                         /* As DS-TWR initiator is waiting for RNG_DELAY_MS
                          * before next poll transmission we can add a delay
