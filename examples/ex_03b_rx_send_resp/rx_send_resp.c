@@ -25,11 +25,11 @@
 #include <shared_defines.h>
 
 //zephyr includes
-#include <zephyr.h>
-#include <sys/printk.h>
+#include <zephyr/kernel.h>
+#include <zephyr/sys/printk.h>
 
 #define LOG_LEVEL 3
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(rx_send_resp);
 
 /* Example application name */
