@@ -14,8 +14,8 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <zephyr.h>
-#include <sys/printk.h>
+#include <zephyr/kernel.h>
+#include <zephyr/sys/printk.h>
 
 #include "deca_types.h"
 #include "deca_regs.h"
@@ -23,7 +23,7 @@
 #include "deca_version.h"
 
 #define LOG_LEVEL 3
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(deca_device);
 
 // -------------------------------------------------------------------------------------------------------------------
