@@ -78,7 +78,7 @@ int openspi(void)
     /* Propagate CS config into all spi_cfgs[] elements */
     cs_ctrl.gpio.port = device_get_binding(DT_NODE_FULL_NAME(DWM_CS_GPIO));
     if (!cs_ctrl.gpio.port) {
-        LOG_ERR("%s: GPIO binding failed.", __func__)
+        LOG_ERR("%s: GPIO binding failed.", __func__);
         return -1;
     }
     cs_ctrl.gpio.pin = DWM_CS_PIN;
