@@ -147,7 +147,7 @@ int app_main(void)
             dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_RXFCG_BIT_MASK);
 
             {
-                char len[5];
+                char len[9];
                 sprintf(len, "len %d", frame_len-FCS_LEN);
                 LOG_HEXDUMP_INF((char*)&rx_buffer, frame_len-FCS_LEN, (char*) &len);
             }

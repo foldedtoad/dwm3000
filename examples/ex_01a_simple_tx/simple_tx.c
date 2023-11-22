@@ -113,7 +113,7 @@ int app_main(void)
     /* Loop forever sending frames periodically. */
     while (1) {
         {
-            char len[5];
+            char len[9];
             sprintf(len, "len %d", FRAME_LENGTH-FCS_LEN);
             LOG_HEXDUMP_INF((char*)&tx_msg, sizeof(tx_msg), (char*) &len);
         }

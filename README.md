@@ -1,6 +1,6 @@
-# Nordic nRF52-series + Decawave DWM3000 on Zephyr v3.4
+# Nordic nRF52-series + Decawave DWM3000 on Zephyr v3.5
 
-**NOTE: This set of projects require Zephyr Version 3.4.**  
+**NOTE: This set of projects require Zephyr Version 3.5.**  
 
 This project contains firmware examples for the Decawave DWM3000-series Ultra Wideband (UWB) modules with Zephyr RTOS. It's a port of Qorvo/Decawave's SDK found on their website.
 
@@ -39,7 +39,7 @@ The major changes from the original Decawave project are:
 ### Supported Development OSes
 Linux, Mac or Windows
 
-This project was developed in a Ubuntu 20.04 (LTS) and MacOS (Big Sur), but there is no reason these changes should work with the other OSes.
+This project was developed in a Ubuntu 22.04 (LTS) and MacOS (Ventura), but there is no reason these changes should work with the other OSes.
 Windows OSes have not been part of the development process, but following Zephyr's instruction for Windows setup, it should not be a problem.
 
 ### Interoperability Between the DWM3000 Project and the DWM1001 Project.
@@ -163,8 +163,8 @@ set(SHIELD qorvo_dwm3000)
 ```
 
 ### Software
-* Install Zephyr (V3.4) on your build system.
-* Install Zephyr SDK -- zephyr-sdk-0.16.1.
+* Install Zephyr (V3.5) on your build system.
+* Install Zephyr SDK -- zephyr-sdk-0.16.3.
 * Install Segger JLink (latest) on your build system.
 * (Optional) Install Segger Ozone (latest) on your build system.
 * (Optional) Install the Nordic [nrfjprog](https://www.nordicsemi.com/Software-and-tools/Development-Tools/nRF-Command-Line-Tools/Download) utility. After installing, make sure that your system's PATH contains the path to where it is installed.
@@ -208,11 +208,7 @@ The target board and shield are hardcoded into the CMakeList.txt files. While th
 To build all this examples at one time, use the `./examples/build_all.sh` shell script. This will build all the projects and put the `*.hex` file for each project into the `./examples/bin` directory.  You can then install this hex files individually with the `examples/install_hex.sh` shell script.
 
 #### Build Individual Examples
-Follow the instructions from Zephyr [here](https://docs.zephyrproject.org/latest/getting_started/index.html#set-up-a-development-system).
-
-**NOTE:** For Ubuntu, the ARM toolchain is provided in the version of Zephyr, so you will not need to install or build them yourself.
-This provides build-consistency across Zephyr projects.
-
+Follow the instructions from Zephyr [here](https://docs.zephyrproject.org/latest/getting_started/index.html#set-up-a-development-system).  
 
 Next, navigate to the location where you've cloned the dwm3000 root directory, and then to the examples directory.
 ```
