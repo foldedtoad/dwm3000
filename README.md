@@ -1,6 +1,6 @@
-# Nordic nRF52-series + Decawave DWM3000 on Zephyr v3.5
+# Nordic nRF52-series + Decawave DWM3000 on Zephyr v3.6
 
-**NOTE: This set of projects require Zephyr Version 3.5.**  
+**NOTE: This set of projects require Zephyr Version 3.6.**  
 
 This project contains firmware examples for the Decawave DWM3000-series Ultra Wideband (UWB) modules with Zephyr RTOS. It's a port of Qorvo/Decawave's SDK found on their website.
 
@@ -163,8 +163,8 @@ set(SHIELD qorvo_dwm3000)
 ```
 
 ### Software
-* Install Zephyr (V3.5) on your build system.
-* Install Zephyr SDK -- zephyr-sdk-0.16.3.
+* Install Zephyr (V3.6) on your build system.
+* Install Zephyr SDK -- zephyr-sdk-0.16.5.
 * Install Segger JLink (latest) on your build system.
 * (Optional) Install Segger Ozone (latest) on your build system.
 * (Optional) Install the Nordic [nrfjprog](https://www.nordicsemi.com/Software-and-tools/Development-Tools/nRF-Command-Line-Tools/Download) utility. After installing, make sure that your system's PATH contains the path to where it is installed.
