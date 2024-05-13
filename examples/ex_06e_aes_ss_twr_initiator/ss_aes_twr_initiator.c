@@ -364,7 +364,7 @@ int app_main(void)
                 rtd_init = resp_rx_ts - poll_tx_ts;
                 rtd_resp = resp_tx_ts - poll_rx_ts;
 
-                tof = ((rtd_init - rtd_resp * (1 - clockOffsetRatio)) / 2.0) * DWT_TIME_UNITS;
+                tof = ((rtd_init - rtd_resp * (1 - clockOffsetRatio)) / (float)2.0) * (float)DWT_TIME_UNITS;
                 distance = tof * SPEED_OF_LIGHT;
             }
 

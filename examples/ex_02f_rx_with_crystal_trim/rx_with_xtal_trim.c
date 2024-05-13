@@ -190,7 +190,7 @@ int app_main(void)
                  * For a valid result the clock offset should be read before 
                  * the receiver is re-enabled.
                  */
-                xtalOffset_ppm = ((float)dwt_readclockoffset()) * CLOCK_OFFSET_PPM_TO_RATIO * 1e6;
+                xtalOffset_ppm = (float)((dwt_readclockoffset()) * CLOCK_OFFSET_PPM_TO_RATIO * 1e6);
 
                 /* TESTING BREAKPOINT LOCATION #1 */
 
@@ -200,8 +200,8 @@ int app_main(void)
                  * This may be used in application, which require small offset 
                  * to be present between ranging sides.
                  */
-                if (fabs(xtalOffset_ppm) > TARGET_XTAL_OFFSET_VALUE_PPM_MAX ||
-                   fabs(xtalOffset_ppm) < TARGET_XTAL_OFFSET_VALUE_PPM_MIN) {
+                if ((float)fabs(xtalOffset_ppm) > (float)TARGET_XTAL_OFFSET_VALUE_PPM_MAX ||
+                    (float)fabs(xtalOffset_ppm) < (float)TARGET_XTAL_OFFSET_VALUE_PPM_MIN) {
 
                     uCurrentTrim_val -= ((TARGET_XTAL_OFFSET_VALUE_PPM_MAX + 
                                           TARGET_XTAL_OFFSET_VALUE_PPM_MIN)/2 +
